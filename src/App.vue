@@ -2,41 +2,48 @@
   <div class="background">
     <div class="columns is-12">
       <div class="column is-1 side-menu">
-        <div class="fundo-botao">
-          <router-link to="/home"><img src="./imagens/home.png" /></router-link>
-        </div>
-        <div class="fundo-botao">
-          <router-link to="/listarproduto"
-            ><img src="./imagens/compras.png"
-          /></router-link>
-        </div>
-        <div class="fundo-botao">
-          <router-link to="/produto-list"
-            ><img src="./imagens/produtos.png"
-          /></router-link>
-        </div>
-        <div class="fundo-botao">
-          <router-link to="/cliente-list"
-            ><img src="./imagens/estoque.png"
-          /></router-link>
-        </div>
-        <div class="fundo-botao">
-          <router-link to="/cliente-list"
-            ><img src="./imagens/user.png"
-          /></router-link>
-        </div>
-        <div class="fundo-botao">
-          <router-link to="/funcionario-list"
-            ><img src="./imagens/pessoas.png"
-          /></router-link>
-        </div>
-        <div class="fundo-botao flecha">
-          <router-link to="/home"
-            ><img src="./imagens/flecha.png"
-          /></router-link>
-        </div>
-      </div>
+        <router-link to="/home"
+          ><div class="fundo-botao">
+            <img src="./imagens/home.png" />
+          </div>
+        </router-link>
 
+        <router-link to="/listarproduto">
+          <div class="fundo-botao">
+            <img src="./imagens/compras.png" />
+          </div>
+        </router-link>
+
+        <router-link to="/produto-list">
+          <div class="fundo-botao">
+            <img src="./imagens/produtos.png" />
+          </div>
+        </router-link>
+
+        <router-link to="/estoque-list">
+          <div class="fundo-botao">
+            <img src="./imagens/estoque.png" />
+          </div>
+        </router-link>
+
+        <router-link to="/cliente-list">
+          <div class="fundo-botao">
+            <img src="./imagens/user.png" />
+          </div>
+        </router-link>
+
+        <router-link to="/funcionario-list">
+          <div class="fundo-botao">
+            <img src="./imagens/pessoas.png" />
+          </div>
+        </router-link>
+
+        <router-link to="/home">
+          <div class="fundo-botao flecha">
+            <img src="./imagens/flecha.png" />
+          </div>
+        </router-link>
+      </div>
       <div class="column is-11 conteudo">
         <router-view> </router-view>
       </div>
@@ -80,13 +87,12 @@ body {
   margin-left: 10px;
   margin-top: 10px;
   width: 200px;
-  height: 800px;
+  height: 102vh;
   background-color: blue;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  border-radius: 20px;
   background-color: #d4d4d4;
 }
 

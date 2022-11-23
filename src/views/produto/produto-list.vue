@@ -1,20 +1,22 @@
 <template>
-  <div class="produto-list columns is-12">
+  <div class="produto-list list columns is-12">
     <div class="column is-12 is-size-3 nomePage" style="color: black">
       <div class=""><img src="../imagens/produtos.png" /></div>
-      <p style="margin-left: 10px">Lista de produtos</p>
+      <p style="margin-left: 10px">Produto - Lista de Registros</p>
     </div>
   </div>
 
   <div class="columns is-12 pesquisa-bar" style="display: flex">
     <div class="pesquisa" style="display: flex">
       <input class="input" type="text" placeholder="Buscar..." />
-      <button class="button botao buscar">Buscar</button>
+      <button class="button botao buscar">
+        <img src="../imagens/pesquisa.png" />
+      </button>
     </div>
     <div class="botoes">
       <router-link to="/produto-cadastro"
         ><button class="button botao novo" style="margin-right: 30px">
-          +
+          Novo Produto
         </button></router-link
       >
       <router-link to="/categoria-list"
@@ -37,6 +39,7 @@
         <th>Ativo</th>
         <th>Nome</th>
         <th>Categoria</th>
+        <th>Fornecedor</th>
         <th>Opções</th>
       </tr>
     </thead>
@@ -49,6 +52,7 @@
         </th>
         <th>{{ item.nome }}</th>
         <th>{{ item.categoria.nome }}</th>
+        <th>{{ item.fornecedor.nome }}</th>
         <th>
           <button class="button botao detalhar">
             <router-link
@@ -124,15 +128,19 @@ export default class ProdutoList extends Vue {
 .botao {
   margin-right: 22px;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-top: 1px solid rgba(237, 176, 255, 0.5);
-  border-left: 1px solid rgba(255, 255, 255, 0.5);
-  background-color: #2c80fd;
+  background-color: #044dbc;
+}
+
+.botao:hover {
+  background-color: #1271ff;
 }
 
 .buscar {
   border-radius: 0px 10px 10px 0px;
   background-color: #b1b1b1;
+}
+.buscar img {
+  width: 3vh;
 }
 
 .buscar:hover {
@@ -141,13 +149,13 @@ export default class ProdutoList extends Vue {
 }
 
 .novo {
-  color: rgb(0, 0, 0);
-  background-color: rgb(127, 252, 127);
+  color: white;
+  background-color: rgb(43, 168, 62);
 }
 
 .novo:hover {
-  color: rgb(11, 253, 23);
-  background-color: rgb(23, 175, 23);
+  color: white;
+  background-color: rgb(45, 255, 77);
 }
 
 .fornecedores {
@@ -176,16 +184,12 @@ export default class ProdutoList extends Vue {
 }
 
 .pesquisa-bar {
-  width: 130em;
-  margin-left: 0px;
+  width: 160vh;
+  margin-left: 2vh;
 }
 
 .pesquisa .input {
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   border-radius: 10px 0px 0px 10px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-top: 1px solid rgba(237, 176, 255, 0.5);
-  border-left: 1px solid rgba(255, 255, 255, 0.5);
   background: #d4d4d4;
 }
 
@@ -197,8 +201,13 @@ export default class ProdutoList extends Vue {
 
 .table {
   border-radius: 15px;
-  width: 105em;
+  width: 150vh;
   background: #d4d4d4;
+  margin-left: 2vh;
+}
+
+.list {
+  width: 150vh;
 }
 
 .table tr {

@@ -1,19 +1,21 @@
 <template>
-  <div class="cliente-list columns is-12">
+  <div class="cliente-list list columns is-12">
     <div class="column is-12 is-size-3 nomePage" style="color: black">
-      <div class=""><img src="../imagens/user.png" /></div>
+      <div class=""><img src="../imagens/estoque.png" /></div>
       <p style="margin-left: 10px">Estoque - Lista de Registros</p>
     </div>
   </div>
   <div class="columns is-12 pesquisa-bar" style="display: flex">
     <div class="pesquisa" style="display: flex">
       <input class="input" type="text" placeholder="Buscar..." />
-      <button class="button buscar">Buscar</button>
+      <button class="button botao buscar">
+        <img src="../imagens/pesquisa.png" />
+      </button>
     </div>
     <div class="botoes">
       <router-link to="/estoque-cadastro"
         ><button class="button novo" style="margin-right: 30px">
-          +
+          Nova Entrada
         </button></router-link
       >
     </div>
@@ -24,7 +26,8 @@
         <th>ID</th>
         <th>Ativo</th>
         <th>Nome</th>
-        <th>Cpf</th>
+        <th>Categoria</th>
+        <th>Fornecedor</th>
         <th>Opções</th>
       </tr>
     </thead>
@@ -113,15 +116,19 @@ export default class clienteList extends Vue {
 .botao {
   margin-right: 22px;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-top: 1px solid rgba(237, 176, 255, 0.5);
-  border-left: 1px solid rgba(255, 255, 255, 0.5);
-  background-color: #2c80fd;
+  background-color: #044dbc;
+}
+
+.botao:hover {
+  background-color: #1271ff;
 }
 
 .buscar {
   border-radius: 0px 10px 10px 0px;
   background-color: #b1b1b1;
+}
+.buscar img {
+  width: 3vh;
 }
 
 .buscar:hover {
@@ -130,13 +137,29 @@ export default class clienteList extends Vue {
 }
 
 .novo {
-  color: rgb(0, 0, 0);
-  background-color: rgb(127, 252, 127);
+  color: white;
+  background-color: rgb(43, 168, 62);
 }
 
 .novo:hover {
-  color: rgb(11, 253, 23);
-  background-color: rgb(23, 175, 23);
+  color: white;
+  background-color: rgb(45, 255, 77);
+}
+
+.fornecedores {
+  color: #fff;
+}
+
+.fornecedores:hover {
+  color: #fff;
+}
+
+.categorias {
+  color: #fff;
+}
+
+.categorias:hover {
+  color: #fff;
 }
 
 .detalhar {
@@ -149,16 +172,12 @@ export default class clienteList extends Vue {
 }
 
 .pesquisa-bar {
-  width: 130em;
-  margin-left: 0px;
+  width: 160vh;
+  margin-left: 2vh;
 }
 
 .pesquisa .input {
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   border-radius: 10px 0px 0px 10px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-top: 1px solid rgba(237, 176, 255, 0.5);
-  border-left: 1px solid rgba(255, 255, 255, 0.5);
   background: #d4d4d4;
 }
 
@@ -170,8 +189,13 @@ export default class clienteList extends Vue {
 
 .table {
   border-radius: 15px;
-  width: 105em;
+  width: 150vh;
   background: #d4d4d4;
+  margin-left: 2vh;
+}
+
+.list {
+  width: 150vh;
 }
 
 .table tr {
