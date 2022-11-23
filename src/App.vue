@@ -48,7 +48,7 @@
 @import "~bulma/bulma.sass";
 
 .flecha {
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
 body {
@@ -71,6 +71,8 @@ body {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border-radius: 24px;
+  // width: 80px;
+  // height: 60px;
   border: none;
 }
 
@@ -78,7 +80,7 @@ body {
   margin-left: 10px;
   margin-top: 10px;
   width: 200px;
-  height: 1200px;
+  height: 800px;
   background-color: blue;
   display: flex;
   flex-direction: column;
@@ -89,7 +91,7 @@ body {
 }
 
 .side-menu img {
-  width: 30px;
+  width: 20px;
 }
 
 .fundo-botao:hover {

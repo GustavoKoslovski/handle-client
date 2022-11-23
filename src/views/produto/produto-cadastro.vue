@@ -70,36 +70,27 @@
               />
             </div>
             <div class="control column is-one-quarter">
-              <label class="label">Categoria:</label>
-              <input
-                class="input"
-                type="text"
-                v-model="produto.categoria.id"
-                placeholder="Id da categoria"
-                :disabled="model === 'detalhar'"
-              />
+              <label class="label">Fornecedor:</label>
+              <select class="input" id="fornecedor" v-model="fornecedor.id">
+              <option value="" disabled selected>Lista de Fornecedores</option>
+              <option v-for="item in fornecedorList" v-bind:key="item.id" v-bind:value="item.id">{{
+                  item.nome
+                }}</option>
+              </select>
+              
             </div>
             <div class="control column is-one-quarter">
-              <label class="label">Fornecedor:</label>
-              <input
-                class="input"
-                type="text"
-                v-model="produto.fornecedor.id"
-                placeholder="Id do fornecedor"
-                :disabled="model === 'detalhar'"
-              />
+              <label class="label">Categoria:</label>
+              <select class="input" id="categoria" v-model="categoria.id">
+            <option value="" disabled selected>Lista de Categorias</option>
+            <option v-for="item in categoriaList" v-bind:key="item.id" v-bind:value="item.id">{{
+                item.nome
+              }}</option>
+          </select>
+
             </div>
           </div>
           <div class="linha3 column" style="display: flex; margin-left: 12px">
-            <label class="label">
-              <input
-                v-model="produto.disponivel"
-                checked
-                type="checkbox"
-                :disabled="model === 'detalhar'"
-              />
-              Disponível
-            </label>
             <label class="label">
               <input
                 v-model="produto.ativo"
@@ -153,9 +144,26 @@ import { Prop } from "vue-property-decorator";
 import { Produto } from "@/model/produto";
 import { Notification } from "@/model/notification";
 import { ProdutoClient } from "@/client/produto.client";
+import { FornecedorClient } from "@/client/fornecedor.client";
+import { CategoriaClient } from "@/client/categoria.client";
 import { Categoria } from "@/model/categoria";
+import {Fornecedor} from "@/model/fornecedor";
+import { PageRequest } from "@/model/page/page-request";
+import {PageResponse} from "@/model/page/page-response";
+
 
 export default class ProdutoForm extends Vue {
+
+  public fornecedorList: Fornecedor[] = []
+  public categoriaList: Categoria [] = []
+  public fornecedorClient!: FornecedorClient;
+  public categoriaClient!: CategoriaClient;
+  public fornecedor : Fornecedor = new Fornecedor()
+  public categoria : Categoria = new Categoria()
+  public pageRequest: PageRequest = new PageRequest()
+  public pageResponse: PageResponse<Fornecedor> = new PageResponse()
+  public pageResponse2: PageResponse<Categoria> = new PageResponse()
+
   public produtoClient!: ProdutoClient;
   public produto: Produto = new Produto();
   public notification: Notification = new Notification();
@@ -166,9 +174,36 @@ export default class ProdutoForm extends Vue {
   @Prop({ type: String, default: false })
   readonly model!: string;
 
+  
+  public listarFornecedor(): void{
+            this.fornecedorClient.findByFiltrosPaginado(this.pageRequest)
+        .then(
+          success => {
+            this.pageResponse = success
+            this.fornecedorList = this.pageResponse.content
+          },
+          error => console.log(error)
+        )
+    }
+
+    public listarCategoria(): void{
+            this.categoriaClient.findByFiltrosPaginado(this.pageRequest)
+        .then(
+          success => {
+            this.pageResponse2 = success
+            this.categoriaList = this.pageResponse2.content
+          },
+          error => console.log(error)
+        )
+    }
+
   public mounted(): void {
     this.produtoClient = new ProdutoClient();
     this.carregarProduto();
+    this.fornecedorClient = new FornecedorClient();
+    this.listarFornecedor();
+    this.categoriaClient = new CategoriaClient();
+    this.listarCategoria();
 
     console.log(this.id);
     console.log(this.model);
