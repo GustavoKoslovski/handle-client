@@ -15,7 +15,7 @@
     <div class="botoes">
       <router-link to="/funcionario-cadastro"
         ><button class="button novo" style="margin-right: 30px">
-          +
+          Novo funcionario
         </button></router-link
       >
     </div>

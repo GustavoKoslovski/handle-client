@@ -1,6 +1,15 @@
 <template>
-  <div class="cliente-cadastro columns is-centered" style="margin-top: 100px">
-    <form class="fundo">
+  <div class="cliente-cadastro columns is-centered" style="margin-top: 2vh">
+    <div
+      class="column is-size-3"
+      v-if="model != 'detalhar' && model != 'editar'"
+    >
+      <div class="column is-9 nomePageCadastro" style="color: black">
+        <div class=""><img src="../imagens/user.png" /></div>
+        <p style="margin-left: 10px">Cliente - Novo Registro</p>
+      </div>
+    </div>
+    <form class="menu">
       <div class="columns" v-if="notification.ativo">
         <div class="column is-12">
           <div :class="notification.classe">
@@ -14,12 +23,6 @@
           <div class="linha0 column" style="display: flex">
             <div class="column is-size-3" v-if="model === 'detalhar'">
               <h1>Detalhes do cliente</h1>
-            </div>
-            <div
-              class="column is-size-3"
-              v-if="model != 'detalhar' && model != 'editar'"
-            >
-              <h1>Cadastro de cliente</h1>
             </div>
             <div class="column is-size-3" v-if="model === 'editar'">
               <h1>Edição de cliente</h1>
@@ -221,12 +224,22 @@ export default class ClienteForm extends Vue {
 </script>
 
 <style>
-.fundo {
-  background-color: #d4d4d4;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 10px 10px 0 rgba(46, 46, 46, 0.37);
-  width: 60em;
-  border-radius: 40px;
+.nomePageCadastro {
+  width: 80vh;
+  height: 10vh;
+  left: 40vh;
+  background: #d4d4d4;
+  border-radius: 10px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.menu {
+  width: 130vh;
+  position: absolute;
+  right: 40vh;
+  top: 20vh;
 }
 
 .control .input {

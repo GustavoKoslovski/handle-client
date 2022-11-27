@@ -1,6 +1,15 @@
 <template>
-  <div class="produto-cadastro columns is-centered" style="margin-top: 100px">
-    <form class="fundo">
+  <div class="produto-cadastro columns is-centered" style="margin-top: 2vh">
+    <div
+      class="column is-size-3"
+      v-if="model != 'detalhar' && model != 'editar'"
+    >
+      <div class="column is-9 nomePageCadastro" style="color: black">
+        <div class=""><img src="../imagens/produtos.png" /></div>
+        <p style="margin-left: 10px">Produto - Novo Registro</p>
+      </div>
+    </div>
+    <form class="menu">
       <div class="columns" v-if="notification.ativo">
         <div class="column is-12">
           <div :class="notification.classe">
@@ -72,22 +81,30 @@
             <div class="control column is-one-quarter">
               <label class="label">Fornecedor:</label>
               <select class="input" id="fornecedor" v-model="fornecedor.id">
-              <option value="" disabled selected>Lista de Fornecedores</option>
-              <option v-for="item in fornecedorList" v-bind:key="item.id" v-bind:value="item.id">{{
-                  item.nome
-                }}</option>
+                <option value="" disabled selected>
+                  Lista de Fornecedores
+                </option>
+                <option
+                  v-for="item in fornecedorList"
+                  v-bind:key="item.id"
+                  v-bind:value="item.id"
+                >
+                  {{ item.nome }}
+                </option>
               </select>
-              
             </div>
             <div class="control column is-one-quarter">
               <label class="label">Categoria:</label>
               <select class="input" id="categoria" v-model="categoria.id">
-            <option value="" disabled selected>Lista de Categorias</option>
-            <option v-for="item in categoriaList" v-bind:key="item.id" v-bind:value="item.id">{{
-                item.nome
-              }}</option>
-          </select>
-
+                <option value="" disabled selected>Lista de Categorias</option>
+                <option
+                  v-for="item in categoriaList"
+                  v-bind:key="item.id"
+                  v-bind:value="item.id"
+                >
+                  {{ item.nome }}
+                </option>
+              </select>
             </div>
           </div>
           <div class="linha3 column" style="display: flex; margin-left: 12px">
@@ -147,22 +164,20 @@ import { ProdutoClient } from "@/client/produto.client";
 import { FornecedorClient } from "@/client/fornecedor.client";
 import { CategoriaClient } from "@/client/categoria.client";
 import { Categoria } from "@/model/categoria";
-import {Fornecedor} from "@/model/fornecedor";
+import { Fornecedor } from "@/model/fornecedor";
 import { PageRequest } from "@/model/page/page-request";
-import {PageResponse} from "@/model/page/page-response";
-
+import { PageResponse } from "@/model/page/page-response";
 
 export default class ProdutoForm extends Vue {
-
-  public fornecedorList: Fornecedor[] = []
-  public categoriaList: Categoria [] = []
+  public fornecedorList: Fornecedor[] = [];
+  public categoriaList: Categoria[] = [];
   public fornecedorClient!: FornecedorClient;
   public categoriaClient!: CategoriaClient;
-  public fornecedor : Fornecedor = new Fornecedor()
-  public categoria : Categoria = new Categoria()
-  public pageRequest: PageRequest = new PageRequest()
-  public pageResponse: PageResponse<Fornecedor> = new PageResponse()
-  public pageResponse2: PageResponse<Categoria> = new PageResponse()
+  public fornecedor: Fornecedor = new Fornecedor();
+  public categoria: Categoria = new Categoria();
+  public pageRequest: PageRequest = new PageRequest();
+  public pageResponse: PageResponse<Fornecedor> = new PageResponse();
+  public pageResponse2: PageResponse<Categoria> = new PageResponse();
 
   public produtoClient!: ProdutoClient;
   public produto: Produto = new Produto();
@@ -174,28 +189,25 @@ export default class ProdutoForm extends Vue {
   @Prop({ type: String, default: false })
   readonly model!: string;
 
-  
-  public listarFornecedor(): void{
-            this.fornecedorClient.findByFiltrosPaginado(this.pageRequest)
-        .then(
-          success => {
-            this.pageResponse = success
-            this.fornecedorList = this.pageResponse.content
-          },
-          error => console.log(error)
-        )
-    }
+  public listarFornecedor(): void {
+    this.fornecedorClient.findByFiltrosPaginado(this.pageRequest).then(
+      (success) => {
+        this.pageResponse = success;
+        this.fornecedorList = this.pageResponse.content;
+      },
+      (error) => console.log(error)
+    );
+  }
 
-    public listarCategoria(): void{
-            this.categoriaClient.findByFiltrosPaginado(this.pageRequest)
-        .then(
-          success => {
-            this.pageResponse2 = success
-            this.categoriaList = this.pageResponse2.content
-          },
-          error => console.log(error)
-        )
-    }
+  public listarCategoria(): void {
+    this.categoriaClient.findByFiltrosPaginado(this.pageRequest).then(
+      (success) => {
+        this.pageResponse2 = success;
+        this.categoriaList = this.pageResponse2.content;
+      },
+      (error) => console.log(error)
+    );
+  }
 
   public mounted(): void {
     this.produtoClient = new ProdutoClient();
@@ -302,12 +314,22 @@ export default class ProdutoForm extends Vue {
 </script>
 
 <style>
-.fundo {
-  background-color: #d4d4d4;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 10px 10px 0 rgba(46, 46, 46, 0.37);
-  width: 60em;
-  border-radius: 40px;
+.nomePageCadastro {
+  width: 80vh;
+  height: 10vh;
+  left: 40vh;
+  background: #d4d4d4;
+  border-radius: 10px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.menu {
+  width: 100vh;
+  position: absolute;
+  right: 50vh;
+  top: 20vh;
 }
 
 .control .input {

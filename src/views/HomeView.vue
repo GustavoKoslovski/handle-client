@@ -1,12 +1,7 @@
 <template>
   <div class="home columns is-centered" style="margin-top: 100px">
     <div class="columns is-centered">
-      <div class="column is-11 is-size-3">
-        <div
-          class="bloco1 column"
-          style="display: flex; align-items: center"
-        ></div>
-      </div>
+      <div class="column is-11 is-size-3"></div>
     </div>
   </div>
 </template>
@@ -15,10 +10,21 @@
 import { Vue } from "vue-class-component";
 import { Prop } from "vue-property-decorator";
 
+import VueCharts from 'vue-chartjs'    
+import { Bar } from 'vue-chartjs'
+
+
 import { Produto } from "@/model/produto";
 import { Notification } from "@/model/notification";
 import { ProdutoClient } from "@/client/produto.client";
 import { Categoria } from "@/model/categoria";
+
+export default Bar.sd {
+  extends: Bar,
+  mounted() {
+    this.renderChart(data, options);
+  }
+};
 
 export default class ProdutoForm extends Vue {
   public produtoClient!: ProdutoClient;

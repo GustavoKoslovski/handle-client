@@ -15,7 +15,7 @@
     <div class="botoes">
       <router-link to="/fornecedor-cadastro"
         ><button class="button novo" style="margin-right: 30px">
-          +
+          Novo Fornecedor
         </button></router-link
       >
       <router-link to="/produto-list"

@@ -1,9 +1,15 @@
 <template>
-  <div
-    class="fornecedor-cadastro columns is-centered"
-    style="margin-top: 100px"
-  >
-    <form class="fundo">
+  <div class="estoque-cadastro columns is-centered" style="margin-top: 2vh">
+    <div
+      class="column is-size-3"
+      v-if="model != 'detalhar' && model != 'editar'"
+    >
+      <div class="column is-9 nomePageCadastro" style="color: black">
+        <div class=""><img src="../imagens/estoque.png" /></div>
+        <p style="margin-left: 10px">Movimento de Estoque - Novo Registro</p>
+      </div>
+    </div>
+    <form class="menu">
       <div class="columns" v-if="notification.ativo">
         <div class="column is-12">
           <div :class="notification.classe">
@@ -18,29 +24,23 @@
             <div class="column is-size-3" v-if="model === 'detalhar'">
               <h1>Detalhes do fornecedor</h1>
             </div>
-            <div
-              class="column is-size-3"
-              v-if="model != 'detalhar' && model != 'editar'"
-            >
-              <h1>Cadastro de fornecedor</h1>
-            </div>
             <div class="column is-size-3" v-if="model === 'editar'">
               <h1>Edição de fornecedor</h1>
             </div>
           </div>
           <div class="linha1 column" style="display: flex">
             <div class="control column is-one-quarter">
-              <label class="label">Nome:</label>
+              <label class="label">Produto:</label>
               <input
                 class="input nome"
                 type="text"
                 v-model="fornecedor.nome"
-                placeholder="Nome do fornecedor"
+                placeholder="Selecione o produto"
                 :disabled="model === 'detalhar'"
               />
             </div>
             <div class="control column is-one-quarter">
-              <label class="label">Telefone:</label>
+              <label class="label">Quantidade:</label>
               <input
                 class="input"
                 type="text"
@@ -68,7 +68,7 @@
                 type="checkbox"
                 :disabled="model === 'detalhar'"
               />
-              Ativar fornecedor
+              Entrada?
             </label>
           </div>
           <div class="linha4 column" style="display: flex; margin-top: 10px">
@@ -224,12 +224,22 @@ export default class fornecedorForm extends Vue {
 </script>
 
 <style>
-.fundo {
-  background-color: #d4d4d4;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 10px 10px 0 rgba(46, 46, 46, 0.37);
-  width: 60em;
-  border-radius: 40px;
+.nomePageCadastro {
+  width: 80vh;
+  height: 10vh;
+  left: 40vh;
+  background: #d4d4d4;
+  border-radius: 10px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.menu {
+  width: 150vh;
+  position: absolute;
+  right: 20vh;
+  top: 20vh;
 }
 
 .control .input {
