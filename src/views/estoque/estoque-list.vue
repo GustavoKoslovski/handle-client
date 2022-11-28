@@ -13,11 +13,11 @@
       </button>
     </div>
     <div class="botoes">
-      <router-link to="/estoque-cadastro"
-        ><button class="button novo" style="margin-right: 30px">
+      <router-link to="/estoque-cadastro">
+        <button class="button novo" style="margin-right: 30px">
           Nova Entrada
-        </button></router-link
-      >
+        </button>
+      </router-link>
     </div>
   </div>
   <table class="table">
@@ -48,8 +48,8 @@
             <router-link
               to="/cliente-cadastro"
               @click="onClickPaginaDetalhar(item.id)"
-              >Detalhar</router-link
-            >
+              >Detalhar
+            </router-link>
           </button>
         </th>
       </tr>

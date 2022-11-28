@@ -13,11 +13,11 @@
       </button>
     </div>
     <div class="botoes">
-      <router-link to="/funcionario-cadastro"
-        ><button class="button novo" style="margin-right: 30px">
+      <router-link to="/funcionario-cadastro">
+        <button class="button novo" style="margin-right: 30px">
           Novo funcionario
-        </button></router-link
-      >
+        </button>
+      </router-link>
     </div>
   </div>
   <table class="table">

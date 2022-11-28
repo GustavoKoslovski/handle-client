@@ -282,8 +282,8 @@ export default class ProdutoForm extends Vue {
 .menu {
   width: 130vh;
   position: absolute;
-  right: 30vh;
-  top: 20vh;
+  left: 30vh;
+  top: 15vh;
 }
 
 .control .input {

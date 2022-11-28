@@ -13,16 +13,16 @@
       </button>
     </div>
     <div class="botoes">
-      <router-link to="/fornecedor-cadastro"
-        ><button class="button novo" style="margin-right: 30px">
+      <router-link to="/fornecedor-cadastro">
+        <button class="button novo" style="margin-right: 30px">
           Novo Fornecedor
-        </button></router-link
-      >
-      <router-link to="/produto-list"
-        ><button class="button botao voltar" style="margin-right: 30px">
+        </button>
+      </router-link>
+      <router-link to="/produto-list">
+        <button class="button botao voltar" style="margin-right: 30px">
           Voltar
-        </button></router-link
-      >
+        </button>
+      </router-link>
     </div>
   </div>
   <table class="table">

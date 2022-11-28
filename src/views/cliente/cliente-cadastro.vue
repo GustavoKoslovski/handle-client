@@ -236,10 +236,10 @@ export default class ClienteForm extends Vue {
 }
 
 .menu {
-  width: 130vh;
+  width: 100vh;
   position: absolute;
-  right: 40vh;
-  top: 20vh;
+  left: 30vh;
+  top: 15vh;
 }
 
 .control .input {

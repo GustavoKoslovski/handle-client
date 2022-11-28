@@ -218,8 +218,8 @@ export default class CategoriaForm extends Vue {
 .menu {
   width: 100vh;
   position: absolute;
-  right: 50vh;
-  top: 20vh;
+  left: 30vh;
+  top: 15vh;
 }
 
 .control .input {

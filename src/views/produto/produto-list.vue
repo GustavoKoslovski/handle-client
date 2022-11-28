@@ -14,21 +14,21 @@
       </button>
     </div>
     <div class="botoes">
-      <router-link to="/produto-cadastro"
-        ><button class="button botao novo" style="margin-right: 30px">
+      <router-link to="/produto-cadastro">
+        <button class="button botao novo" style="margin-right: 30px">
           Novo Produto
-        </button></router-link
-      >
-      <router-link to="/categoria-list"
-        ><button class="button botao categorias" style="margin-right: 30px">
+        </button>
+      </router-link>
+      <router-link to="/categoria-list">
+        <button class="button botao categorias" style="margin-right: 30px">
           Categorias
-        </button></router-link
-      >
-      <router-link to="/fornecedor-list"
-        ><button class="button botao fornecedores" style="margin-right: 30px">
+        </button>
+      </router-link>
+      <router-link to="/fornecedor-list">
+        <button class="button botao fornecedores" style="margin-right: 30px">
           Fornecedores
-        </button></router-link
-      >
+        </button>
+      </router-link>
     </div>
   </div>
 

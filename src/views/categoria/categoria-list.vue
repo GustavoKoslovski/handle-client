@@ -13,16 +13,16 @@
       </button>
     </div>
     <div class="botoes">
-      <router-link to="/categoria-cadastro"
-        ><button class="button novo" style="margin-right: 30px">
+      <router-link to="/categoria-cadastro">
+        <button class="button novo" style="margin-right: 30px">
           Nova Categoria
-        </button></router-link
-      >
-      <router-link to="/produto-list"
-        ><button class="button botao is-danger" style="margin-right: 30px">
+        </button>
+      </router-link>
+      <router-link to="/produto-list">
+        <button class="button botao is-danger" style="margin-right: 30px">
           Voltar
-        </button></router-link
-      >
+        </button>
+      </router-link>
     </div>
   </div>
   <table class="table">
@@ -47,8 +47,8 @@
             <router-link
               to="/categoria-cadastro"
               @click="onClickPaginaDetalhar(item.id)"
-              >Detalhar</router-link
-            >
+              >Detalhar
+            </router-link>
           </button>
         </th>
       </tr>

@@ -249,8 +249,8 @@ export default class MovimentoEstoqueForm extends Vue {
 .menu {
   width: 150vh;
   position: absolute;
-  right: 20vh;
-  top: 20vh;
+  left: 30vh;
+  top: 15vh;
 }
 
 .control .input {
