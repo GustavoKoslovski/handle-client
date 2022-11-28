@@ -18,18 +18,11 @@
           </div>
         </div>
       </div>
-
       <div class="columns is-centered">
         <div class="column is-11 is-size-3">
           <div class="linha0 column" style="display: flex">
             <div class="column is-size-3" v-if="model === 'detalhar'">
               <h1>Detalhes do produto</h1>
-            </div>
-            <div
-              class="column is-size-3"
-              v-if="model != 'detalhar' && model != 'editar'"
-            >
-              <h1>Cadastro de produto</h1>
             </div>
             <div class="column is-size-3" v-if="model === 'editar'">
               <h1>Edição de produto</h1>
@@ -80,10 +73,12 @@
             </div>
             <div class="control column is-one-quarter">
               <label class="label">Fornecedor:</label>
-              <select class="input" id="fornecedor" v-model="fornecedor.id">
-                <option value="" disabled selected>
-                  Lista de Fornecedores
-                </option>
+              <select
+                class="input"
+                id="produto"
+                v-model="produto.fornecedor.id"
+              >
+                <option value="" disabled selected>Lista de produtos</option>
                 <option
                   v-for="item in fornecedorList"
                   v-bind:key="item.id"
@@ -95,7 +90,11 @@
             </div>
             <div class="control column is-one-quarter">
               <label class="label">Categoria:</label>
-              <select class="input" id="categoria" v-model="categoria.id">
+              <select
+                class="input"
+                id="categoria"
+                v-model="produto.categoria.id"
+              >
                 <option value="" disabled selected>Lista de Categorias</option>
                 <option
                   v-for="item in categoriaList"
@@ -137,6 +136,7 @@
               >
                 Editar
               </button>
+              <a href="/produto-list" class="button">Voltar</a>
               <button class="button excluir" @click="onClickDeletar">
                 Excluir
               </button>
@@ -222,6 +222,8 @@ export default class ProdutoForm extends Vue {
   }
 
   public onClickCadastrar(): void {
+    console.log(this.produto);
+    debugger;
     this.produtoClient.cadastrar(this.produto).then(
       (success) => {
         this.notification = this.notification.new(
@@ -229,7 +231,6 @@ export default class ProdutoForm extends Vue {
           "notification is-success",
           "Produto Cadastrado com sucesso!"
         );
-        this.onClickLimpar();
       },
       (error) => {
         this.notification = this.notification.new(
@@ -334,7 +335,7 @@ export default class ProdutoForm extends Vue {
 
 .control .input {
   background-color: #d4d4d4;
-  color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
 

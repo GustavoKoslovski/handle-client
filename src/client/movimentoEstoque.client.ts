@@ -1,47 +1,53 @@
 import axios, { AxiosInstance } from "axios";
 
-import { Produto } from "@/model/produto";
+import { MovimentoEstoque } from "@/model/movimentoEstoque";
 import { PageRequest } from "@/model/page/page-request";
 import { PageResponse } from "@/model/page/page-response";
 
-export class ProdutoClient {
+export class MovimentoEstoqueClient {
   private axiosClient: AxiosInstance;
 
   constructor() {
     this.axiosClient = axios.create({
-      baseURL: "http://localhost:8080/api/produtos",
+      baseURL: "http://localhost:8080/api/movimentoEstoque",
       headers: { "Content-type": "application/json" },
     });
   }
 
-  public async findById(id: number): Promise<Produto> {
+  public async findById(id: number): Promise<MovimentoEstoque> {
     try {
-      return (await this.axiosClient.get<Produto>(`/${id}`)).data;
+      return (await this.axiosClient.get<MovimentoEstoque>(`/${id}`)).data;
     } catch (error: any) {
       return Promise.reject(error.response);
     }
   }
 
-  public async cadastrar(produto: Produto): Promise<void> {
+  public async cadastrar(movimentoEstoque: MovimentoEstoque): Promise<void> {
     try {
-      return await this.axiosClient.post("/", produto);
+      return await this.axiosClient.post("/", movimentoEstoque);
     } catch (error: any) {
       return Promise.reject(error.response);
     }
   }
 
-  public async editar(produto: Produto): Promise<void> {
+  public async editar(movimentoEstoque: MovimentoEstoque): Promise<void> {
     try {
-      return (await this.axiosClient.put(`/${produto.id}`, Produto)).data;
+      return (
+        await this.axiosClient.put(`/${movimentoEstoque.id}`, MovimentoEstoque)
+      ).data;
     } catch (error: any) {
       return Promise.reject(error.response);
     }
   }
 
-  public async desativar(produto: Produto): Promise<void> {
+  public async desativar(movimentoEstoque: MovimentoEstoque): Promise<void> {
     try {
-      return (await this.axiosClient.put(`/desativar/${produto.id}`, produto))
-        .data;
+      return (
+        await this.axiosClient.put(
+          `/desativar/${movimentoEstoque.id}`,
+          movimentoEstoque
+        )
+      ).data;
     } catch (error: any) {
       return Promise.reject(error.response);
     }
@@ -49,7 +55,7 @@ export class ProdutoClient {
 
   public async findByFiltrosPaginado(
     pageRequest: PageRequest
-  ): Promise<PageResponse<Produto>> {
+  ): Promise<PageResponse<MovimentoEstoque>> {
     try {
       let requestPath = "";
 
@@ -60,9 +66,12 @@ export class ProdutoClient {
       },${pageRequest.direction}`;
 
       return (
-        await this.axiosClient.get<PageResponse<Produto>>(requestPath, {
-          params: { filtros: pageRequest.filter },
-        })
+        await this.axiosClient.get<PageResponse<MovimentoEstoque>>(
+          requestPath,
+          {
+            params: { filtros: pageRequest.filter },
+          }
+        )
       ).data;
     } catch (error: any) {
       return Promise.reject(error.response);

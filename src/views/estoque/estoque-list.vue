@@ -26,20 +26,23 @@
         <th>ID</th>
         <th>Ativo</th>
         <th>Nome</th>
+        <th>Quantidade</th>
         <th>Categoria</th>
         <th>Fornecedor</th>
         <th>Opções</th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="item in clienteList" :key="item.id">
+      <tr v-for="item in produtoList" :key="item.id">
         <th>{{ item.id }}</th>
         <th>
           <span v-if="item.ativo" class="tag is-success"> Ativo </span>
           <span v-if="!item.ativo" class="tag is-danger"> Inativo </span>
         </th>
         <th>{{ item.nome }}</th>
-        <th>{{ item.cpf }}</th>
+        <th>{{ item.quantidade }}</th>
+        <th>{{ item.categoria.nome }}</th>
+        <th>{{ item.fornecedor.nome }}</th>
         <th>
           <button class="button detalhar">
             <router-link
@@ -54,46 +57,44 @@
   </table>
 </template>
   
-  <script lang="ts">
+<script lang="ts">
 import { Vue } from "vue-class-component";
 
 import { PageRequest } from "@/model/page/page-request";
 import { PageResponse } from "@/model/page/page-response";
 
-import { Cliente } from "@/model/cliente";
-import { ClienteClient } from "@/client/cliente.client";
+import { Produto } from "@/model/produto";
+import { ProdutoClient } from "@/client/produto.client";
 
-export default class clienteList extends Vue {
+export default class ProdutoList extends Vue {
   public pageRequest: PageRequest = new PageRequest();
-  public pageResponse: PageResponse<Cliente> = new PageResponse();
-  public clienteList: Cliente[] = [];
-  public clienteClient!: ClienteClient;
+  public pageResponse: PageResponse<Produto> = new PageResponse();
+  public produtoList: Produto[] = [];
+  public produtoClient!: ProdutoClient;
 
   public mounted(): void {
-    this.clienteClient = new ClienteClient();
-    this.listarcliente();
+    this.produtoClient = new ProdutoClient();
+    this.listarProduto();
   }
 
-  public listarcliente(): void {
-    this.clienteClient.findByFiltrosPaginado(this.pageRequest).then(
+  public listarProduto(): void {
+    this.produtoClient.findByFiltrosPaginado(this.pageRequest).then(
       (success) => {
         this.pageResponse = success;
-        this.clienteList = this.pageResponse.content;
+        this.produtoList = this.pageResponse.content;
       },
       (error) => console.log(error)
     );
   }
 
-  public onClickPaginaDetalhar(idCliente: number) {
+  public onClickPaginaDetalhar(idProduto: number) {
     this.$router.push({
-      name: "cliente-detalhar",
-      params: { id: idCliente, model: "detalhar" },
+      name: "produto-detalhar",
+      params: { id: idProduto, model: "detalhar" },
     });
   }
 }
 </script>
-  
-  
   <style>
 .nomePage {
   width: 1666px;

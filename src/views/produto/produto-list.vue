@@ -38,8 +38,6 @@
         <th>ID</th>
         <th>Ativo</th>
         <th>Nome</th>
-        <th>Categoria</th>
-        <th>Fornecedor</th>
         <th>Opções</th>
       </tr>
     </thead>
@@ -51,8 +49,6 @@
           <span v-if="!item.ativo" class="tag is-danger"> Inativo </span>
         </th>
         <th>{{ item.nome }}</th>
-        <th>{{ item.categoria.nome }}</th>
-        <th>{{ item.fornecedor.nome }}</th>
         <th>
           <button class="button botao detalhar">
             <router-link

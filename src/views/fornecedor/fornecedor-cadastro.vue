@@ -177,10 +177,12 @@ export default class fornecedorForm extends Vue {
       name: "fornecedor-editar",
       params: { id: idfornecedor, model: "editar" },
     });
+
     console.log("ta chamando");
   }
 
   public onClickSalvarAlteracao(): void {
+    debugger;
     this.fornecedorClient.editar(this.fornecedor).then(
       (success) => {
         this.notification = this.notification.new(
@@ -195,6 +197,7 @@ export default class fornecedorForm extends Vue {
           "notification is-danger",
           "Error: " + error
         );
+        debugger;
       }
     );
   }
@@ -244,7 +247,7 @@ export default class fornecedorForm extends Vue {
 
 .control .input {
   background-color: #d4d4d4;
-  color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
 

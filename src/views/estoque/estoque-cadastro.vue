@@ -22,40 +22,33 @@
         <div class="column is-11 is-size-3">
           <div class="linha0 column" style="display: flex">
             <div class="column is-size-3" v-if="model === 'detalhar'">
-              <h1>Detalhes do fornecedor</h1>
+              <h1>Detalhes do registro de Estoque</h1>
             </div>
             <div class="column is-size-3" v-if="model === 'editar'">
-              <h1>Edição de fornecedor</h1>
+              <h1>Edição de Estoque</h1>
             </div>
           </div>
           <div class="linha1 column" style="display: flex">
             <div class="control column is-one-quarter">
               <label class="label">Produto:</label>
-              <input
-                class="input nome"
-                type="text"
-                v-model="fornecedor.nome"
-                placeholder="Selecione o produto"
-                :disabled="model === 'detalhar'"
-              />
+              <select class="input" id="produto" v-model="produto.id">
+                <option value="" disabled selected>Lista de produtos</option>
+                <option
+                  v-for="item in produtoList"
+                  v-bind:key="item.id"
+                  v-bind:value="item.id"
+                >
+                  {{ item.nome }}
+                </option>
+              </select>
             </div>
             <div class="control column is-one-quarter">
               <label class="label">Quantidade:</label>
               <input
                 class="input"
                 type="text"
-                v-model="fornecedor.telefone"
+                v-model="produto.quantidade"
                 placeholder="Apenas números"
-                :disabled="model === 'detalhar'"
-              />
-            </div>
-            <div class="control column is-half">
-              <label class="label">Endereço:</label>
-              <input
-                class="input"
-                type="text"
-                v-model="fornecedor.endereco"
-                placeholder="Rua/Numero/Bairro/CEP"
                 :disabled="model === 'detalhar'"
               />
             </div>
@@ -63,7 +56,7 @@
           <div class="linha3 column" style="display: flex; margin-left: 12px">
             <label class="label">
               <input
-                v-model="fornecedor.ativo"
+                v-model="produto.ativo"
                 checked
                 type="checkbox"
                 :disabled="model === 'detalhar'"
@@ -74,18 +67,21 @@
           <div class="linha4 column" style="display: flex; margin-top: 10px">
             <div
               class="opcoes column"
-              v-if="model != 'detalhar' && model != 'editar'"
+              v-if="model != 'detalhar' && model != 'movimento-estoque'"
             >
-              <a href="/fornecedor-list" class="button">Voltar</a>
-              <button class="button salvar" @click="onClickCadastrar()">
+              <a href="/estoque-list" class="button">Voltar</a>
+              <button
+                class="button salvar"
+                @click="onClickPaginaEditar(produto.id)"
+              >
                 Salvar
               </button>
             </div>
             <div class="opcoes column" v-if="model === 'detalhar'">
-              <a href="/fornecedor-list" class="button">Voltar</a>
+              <a href="/estoque-list" class="button">Voltar</a>
               <button
                 class="button editar"
-                @click="onClickPaginaEditar(fornecedor.id)"
+                @click="onClickPaginaEditar(movimentoEstoque.id)"
               >
                 Editar
               </button>
@@ -94,7 +90,7 @@
               </button>
             </div>
             <div class="opcoes column" v-if="model === 'editar'">
-              <a href="/fornecedor-list" class="button">Voltar</a>
+              <a href="/estoque-list" class="button">Voltar</a>
               <button class="button salvar" @click="onClickSalvarAlteracao()">
                 Salvar Alterações
               </button>
@@ -109,14 +105,23 @@
 <script lang="ts">
 import { Vue } from "vue-class-component";
 import { Prop } from "vue-property-decorator";
-
-import { Fornecedor } from "@/model/fornecedor";
 import { Notification } from "@/model/notification";
-import { FornecedorClient } from "@/client/fornecedor.client";
+import { MovimentoEstoque } from "@/model/movimentoEstoque";
+import { MovimentoEstoqueClient } from "@/client/movimentoEstoque.client";
+import { Produto } from "@/model/produto";
+import { ProdutoClient } from "@/client/produto.client";
+import { PageRequest } from "@/model/page/page-request";
+import { PageResponse } from "@/model/page/page-response";
 
-export default class fornecedorForm extends Vue {
-  public fornecedorClient!: FornecedorClient;
-  public fornecedor: Fornecedor = new Fornecedor();
+export default class MovimentoEstoqueForm extends Vue {
+  public movimentoEstoqueList: MovimentoEstoque[] = [];
+  public movimentoEstoqueClient!: MovimentoEstoqueClient;
+  public produtoList: Produto[] = [];
+  public produtoClient!: ProdutoClient;
+  public produto: Produto = new Produto();
+  public movimentoEstoque: MovimentoEstoque = new MovimentoEstoque();
+  public pageRequest: PageRequest = new PageRequest();
+  public pageResponse: PageResponse<Produto> = new PageResponse();
   public notification: Notification = new Notification();
 
   @Prop({ type: Number, required: false })
@@ -125,23 +130,31 @@ export default class fornecedorForm extends Vue {
   @Prop({ type: String, default: false })
   readonly model!: string;
 
-  public mounted(): void {
-    this.fornecedorClient = new FornecedorClient();
-    this.carregarfornecedor();
+  public listarProduto(): void {
+    this.produtoClient.findByFiltrosPaginado(this.pageRequest).then(
+      (success) => {
+        this.pageResponse = success;
+        this.produtoList = this.pageResponse.content;
+      },
+      (error) => console.log(error)
+    );
+  }
 
-    console.log(this.id);
-    console.log(this.model);
+  public mounted(): void {
+    this.movimentoEstoqueClient = new MovimentoEstoqueClient();
+    this.carregarMovimentoEstoque();
+    this.produtoClient = new ProdutoClient();
+    this.listarProduto();
   }
 
   public onClickCadastrar(): void {
-    this.fornecedorClient.cadastrar(this.fornecedor).then(
+    this.movimentoEstoqueClient.cadastrar(this.movimentoEstoque).then(
       (success) => {
         this.notification = this.notification.new(
           true,
           "notification is-success",
-          "fornecedor cadastrado com sucesso!"
+          "movimentoEstoque Cadastrado com sucesso!"
         );
-        this.onClickLimpar();
       },
       (error) => {
         this.notification = this.notification.new(
@@ -154,12 +167,12 @@ export default class fornecedorForm extends Vue {
   }
 
   public onClickDeletar(): void {
-    this.fornecedorClient.desativar(this.fornecedor).then(
+    this.produtoClient.desativar(this.produto).then(
       (sucess) => {
         this.notification = this.notification.new(
           true,
           "notification is-success",
-          "fornecedor foi Desativado com sucesso!"
+          "Produto foi Desativado com sucesso!"
         );
       },
       (error) => {
@@ -172,21 +185,21 @@ export default class fornecedorForm extends Vue {
     );
   }
 
-  public onClickPaginaEditar(idfornecedor: number) {
+  public onClickPaginaEditar(idProduto: number) {
     this.$router.push({
-      name: "fornecedor-editar",
-      params: { id: idfornecedor, model: "editar" },
+      name: "movimento-estoque",
+      params: { id: idProduto, model: "movimento-estoque" },
     });
     console.log("ta chamando");
   }
 
   public onClickSalvarAlteracao(): void {
-    this.fornecedorClient.editar(this.fornecedor).then(
+    this.produtoClient.editar(this.produto).then(
       (success) => {
         this.notification = this.notification.new(
           true,
           "notification is-success",
-          "fornecedor foi Editado com sucesso!"
+          "Produto foi Editado com sucesso!"
         );
       },
       (error) => {
@@ -199,14 +212,11 @@ export default class fornecedorForm extends Vue {
     );
   }
 
-  public carregarfornecedor(): void {
-    console.log("carregarfornecedor" + this.id);
-    console.log("nome" + this.fornecedor.nome);
-    this.fornecedorClient
+  public carregarMovimentoEstoque(): void {
+    this.movimentoEstoqueClient
       .findById(this.id)
       .then((value) => {
-        this.fornecedor = value;
-        console.log("fornecedor" + value);
+        this.movimentoEstoque = value;
       })
       .catch((error) => {
         console.log(error);
@@ -218,11 +228,12 @@ export default class fornecedorForm extends Vue {
   }
 
   public onClickLimpar(): void {
-    this.fornecedor = new Fornecedor();
+    this.movimentoEstoque = new MovimentoEstoque();
   }
+
+  // private created(): void { }
 }
 </script>
-
 <style>
 .nomePageCadastro {
   width: 80vh;
@@ -244,7 +255,7 @@ export default class fornecedorForm extends Vue {
 
 .control .input {
   background-color: #d4d4d4;
-  color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
 

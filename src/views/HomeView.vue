@@ -10,22 +10,9 @@
 import { Vue } from "vue-class-component";
 import { Prop } from "vue-property-decorator";
 
-import VueCharts from 'vue-chartjs'    
-import { Bar } from 'vue-chartjs'
-
-
 import { Produto } from "@/model/produto";
 import { Notification } from "@/model/notification";
 import { ProdutoClient } from "@/client/produto.client";
-import { Categoria } from "@/model/categoria";
-
-export default Bar.sd {
-  extends: Bar,
-  mounted() {
-    this.renderChart(data, options);
-  }
-};
-
 export default class ProdutoForm extends Vue {
   public produtoClient!: ProdutoClient;
   public produto: Produto = new Produto();
