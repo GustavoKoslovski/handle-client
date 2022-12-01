@@ -1,15 +1,14 @@
 <template>
-  <div class="produto-cadastro columns is-centered" style="margin-top: 2vh">
+  <div class="container">
     <div
-      class="column is-size-3"
+      class="title-box columns is-12 title is-4"
       v-if="model != 'detalhar' && model != 'editar'"
     >
-      <div class="column is-9 nomePageCadastro" style="color: black">
-        <div class=""><img src="../imagens/produtos.png" /></div>
-        <p style="margin-left: 10px">Produto - Novo Registro</p>
+      <div class="title-box columns is-12 title is-4">
+        <p style="margin-left: 15px">Produto - Novo Registro</p>
       </div>
     </div>
-    <form class="menu">
+    <form class="form">
       <div class="columns" v-if="notification.ativo">
         <div class="column is-12">
           <div :class="notification.classe">
@@ -19,6 +18,15 @@
         </div>
       </div>
       <div class="columns is-centered">
+        <div class="control column is-one-quarter">
+          <label class="label">Data:</label>
+          <input
+            class="input"
+            type="datetime"
+            v-model="produto.data"
+            :disabled="model === 'detalhar' || model != 'detalhar'"
+          />
+        </div>
         <div class="column is-11 is-size-3">
           <div class="linha0 column" style="display: flex">
             <div class="column is-size-3" v-if="model === 'detalhar'">
@@ -157,6 +165,7 @@
 <script lang="ts">
 import { Vue } from "vue-class-component";
 import { Prop } from "vue-property-decorator";
+import moment, { Moment } from "moment";
 
 import { Produto } from "@/model/produto";
 import { Notification } from "@/model/notification";
@@ -164,6 +173,7 @@ import { ProdutoClient } from "@/client/produto.client";
 import { FornecedorClient } from "@/client/fornecedor.client";
 import { CategoriaClient } from "@/client/categoria.client";
 import { Categoria } from "@/model/categoria";
+import { AbstractEntity } from "@/model/abstract-entity";
 import { Fornecedor } from "@/model/fornecedor";
 import { PageRequest } from "@/model/page/page-request";
 import { PageResponse } from "@/model/page/page-response";
@@ -174,6 +184,7 @@ export default class ProdutoForm extends Vue {
   public fornecedorClient!: FornecedorClient;
   public categoriaClient!: CategoriaClient;
   public fornecedor: Fornecedor = new Fornecedor();
+  public abstractEntity: AbstractEntity = new AbstractEntity();
   public categoria: Categoria = new Categoria();
   public pageRequest: PageRequest = new PageRequest();
   public pageResponse: PageResponse<Fornecedor> = new PageResponse();
@@ -211,19 +222,18 @@ export default class ProdutoForm extends Vue {
 
   public mounted(): void {
     this.produtoClient = new ProdutoClient();
+    var currentDate = moment().format("YYYY-MM-DD HH:mm:ss");
+    this.produto.data = currentDate;
     this.carregarProduto();
     this.fornecedorClient = new FornecedorClient();
     this.listarFornecedor();
     this.categoriaClient = new CategoriaClient();
     this.listarCategoria();
 
-    console.log(this.id);
     console.log(this.model);
   }
 
   public onClickCadastrar(): void {
-    console.log(this.produto);
-    debugger;
     this.produtoClient.cadastrar(this.produto).then(
       (success) => {
         this.notification = this.notification.new(
@@ -295,6 +305,9 @@ export default class ProdutoForm extends Vue {
       .findById(this.id)
       .then((value) => {
         this.produto = value;
+        this.produto.data = moment(this.produto.cadastro).format(
+          "YYYY-MM-DD HH:mm:ss"
+        );
         console.log("produto" + value);
       })
       .catch((error) => {
@@ -315,22 +328,28 @@ export default class ProdutoForm extends Vue {
 </script>
 
 <style>
-.nomePageCadastro {
-  width: 80vh;
-  height: 10vh;
-  left: 40vh;
-  background: #d4d4d4;
-  border-radius: 10px;
+.container {
+  margin: 0;
+  width: 100%;
+  max-width: 88vw !important;
   display: flex;
-  justify-content: left;
-  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
-.menu {
-  width: 100vh;
-  position: absolute;
-  left: 30vh;
-  top: 15vh;
+.title-box {
+  background: #d4d4d4;
+  border-radius: 7px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+}
+
+.form {
+  width: 100%;
 }
 
 .control .input {
