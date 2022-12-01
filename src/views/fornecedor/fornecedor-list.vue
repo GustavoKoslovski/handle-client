@@ -1,61 +1,65 @@
 <template>
-  <div class="fornecedor-list list columns is-12">
-    <div class="column is-12 is-size-3 nomePage" style="color: black">
-      <div class=""><img src="../imagens/produtos.png" /></div>
-      <p style="margin-left: 10px">Lista de fornecedores</p>
+  <div class="container">
+
+    <div class="title-box columns is-12 title is-4">
+      <p style="margin-left: 15px">Fornecedor - Lista de Registros</p>
     </div>
-  </div>
-  <div class="columns is-12 pesquisa-bar" style="display: flex">
-    <div class="pesquisa" style="display: flex">
-      <input class="input" type="text" placeholder="Buscar..." />
-      <button class="button botao buscar">
-        <img src="../imagens/pesquisa.png" />
-      </button>
-    </div>
-    <div class="botoes">
-      <router-link to="/fornecedor-cadastro">
-        <button class="button novo" style="margin-right: 30px">
-          Novo Fornecedor
+
+    <div class="columns is-12 pesquisa-bar" style="display: flex">
+      <div class="pesquisa" style="display: flex">
+        <input class="input" type="text" placeholder="Buscar..." />
+        <button class="button buscar">
+          <img src="../imagens/pesquisa.png" />
         </button>
-      </router-link>
-      <router-link to="/produto-list">
-        <button class="button botao voltar" style="margin-right: 30px">
-          Voltar
-        </button>
-      </router-link>
-    </div>
-  </div>
-  <table class="table">
-    <thead class="blue">
-      <tr>
-        <th>ID</th>
-        <th>Ativo</th>
-        <th>Nome</th>
-        <th>Telefone</th>
-        <th>Opções</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="item in fornecedorList" :key="item.id">
-        <th>{{ item.id }}</th>
-        <th>
-          <span v-if="item.ativo" class="tag is-success"> Ativo </span>
-          <span v-if="!item.ativo" class="tag is-danger"> Inativo </span>
-        </th>
-        <th>{{ item.nome }}</th>
-        <th>{{ item.telefone }}</th>
-        <th>
-          <button class="button detalhar">
-            <router-link
-              to="/fornecedor-cadastro"
-              @click="onClickPaginaDetalhar(item.id)"
-              >Detalhar</router-link
-            >
+        <router-link to="/fornecedor-cadastro">
+          <button class="button botao novo" style="margin-right: 30px">
+            Novo Fornecedor
           </button>
-        </th>
-      </tr>
-    </tbody>
-  </table>
+        </router-link>
+      </div>
+      <div class="botoes">
+        <router-link to="/produto-list">
+          <button class="button voltar">
+            Voltar
+          </button>
+        </router-link>
+      </div>
+    </div>
+
+    <div class="columns is-12 table">
+      <table class="table-list">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Ativo</th>
+            <th>Nome</th>
+            <th>Telefone</th>
+            <th>Opções</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in fornecedorList" :key="item.id">
+            <th>{{ item.id }}</th>
+            <th>
+              <span v-if="item.ativo" class="tag is-success"> Ativo </span>
+              <span v-if="!item.ativo" class="tag is-danger"> Inativo </span>
+            </th>
+            <th>{{ item.nome }}</th>
+            <th>{{ item.telefone }}</th>
+            <th>
+              <button class="button botao detalhar">
+                <router-link
+                  to="/fornecedor-cadastro"
+                  @click="onClickPaginaDetalhar(item.id)"
+                  >Detalhar</router-link
+                >
+              </button>
+            </th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -99,55 +103,77 @@ export default class fornecedorList extends Vue {
 
 
 <style>
-.nomePage {
-  width: 1666px;
-  height: 84px;
-  left: 253px;
-  margin-top: 34px;
-  margin-bottom: 30px;
-  margin-left: 30px;
-  background: #d4d4d4;
-  border-radius: 10px;
+
+.container{
+  margin: 0;
+  width: 100%;
+  max-width: 88vw !important;
   display: flex;
-  justify-content: left;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.title-box {
+  background: #d4d4d4;
+  border-radius: 7px;
+  display: flex;
+  justify-content: flex-start;
   align-items: center;
+  width: 100%;
+  height: 50px;
 }
 
-.botoes {
-  margin-left: 7px;
+.pesquisa-bar {
+  width: 100%;
+  margin-top: 40px;
+  justify-content: space-between;
 }
 
-.botao {
-  margin-right: 22px;
-  border-radius: 10px;
-  background-color: #044dbc;
+.pesquisa .input {
+  border-radius: 7px 0px 0px 7px;
+  background: #d4d4d4;
 }
 
-.botao:hover {
-  background-color: #1271ff;
+.pesquisa {
+  width: 45em;
 }
 
 .buscar {
-  border-radius: 0px 10px 10px 0px;
+  border-radius: 0px 7px 7px 0px;
   background-color: #b1b1b1;
 }
+
 .buscar img {
-  width: 3vh;
+  width: 19px;
 }
 
 .buscar:hover {
-  border-radius: 0px 10px 10px 0px;
-  background-color: #ebe6e6;
+  background-color: #b1b1b1c4;
+  outline: none;
+  border: none;
+}
+
+.voltar {
+  border-radius: 7px;
+  background-color: #ec2c2c;
+  color: #FFF;
+}
+
+.voltar:hover {
+  background-color: #d21717;
+  color: #FFF;
 }
 
 .novo {
+  margin-left: 30px;
   color: white;
-  background-color: rgb(43, 168, 62);
+  background-color: #044dbc;
 }
 
 .novo:hover {
   color: white;
-  background-color: rgb(45, 255, 77);
+  background-color: #1271ff;
 }
 
 .fornecedores {
@@ -166,6 +192,18 @@ export default class fornecedorList extends Vue {
   color: #fff;
 }
 
+.table {
+  width: 100%;
+  background-color: #EAEAEA;
+  margin-top: 5px;
+}
+
+.table-list {
+  width: 100%;
+  background: #d4d4d4;
+  border-radius: 7px;
+}
+
 .detalhar {
   color: #fff;
   background-color: yellow;
@@ -175,34 +213,5 @@ export default class fornecedorList extends Vue {
   color: rgb(208, 255, 0);
 }
 
-.pesquisa-bar {
-  width: 160vh;
-  margin-left: 2vh;
-}
 
-.pesquisa .input {
-  border-radius: 10px 0px 0px 10px;
-  background: #d4d4d4;
-}
-
-.pesquisa {
-  margin-left: 2px;
-  width: 40em;
-  margin-bottom: 20px;
-}
-
-.table {
-  border-radius: 15px;
-  width: 150vh;
-  background: #d4d4d4;
-  margin-left: 2vh;
-}
-
-.list {
-  width: 150vh;
-}
-
-.table tr {
-  border: solid 3px rgba(194, 194, 194, 0.188);
-}
 </style>

@@ -12,19 +12,19 @@
           <img src="../imagens/pesquisa.png" />
         </button>
         <router-link to="/produto-cadastro">
-          <button class="button botao novo" style="margin-right: 30px">
+          <button class="button novo" style="margin-right: 30px">
             Novo Produto
           </button>
         </router-link>
       </div>
       <div class="botoes">
         <router-link to="/categoria-list">
-          <button class="button botao categorias" style="margin-right: 30px">
+          <button class="button categorias" style="margin-right: 30px">
             Categorias
           </button>
         </router-link>
         <router-link to="/fornecedor-list">
-          <button class="button botao fornecedores">
+          <button class="button fornecedores">
             Fornecedores
           </button>
         </router-link>
@@ -50,7 +50,7 @@
             </th>
             <th>{{ item.nome }}</th>
             <th>
-              <button class="button botao detalhar">
+              <button class="botao detalhar">
                 <router-link
                   to="/produto-cadastro"
                   @click="onClickPaginaDetalhar(item.id)"
@@ -156,40 +156,38 @@ export default class ProdutoList extends Vue {
   border: none;
 }
 
-.botao {
-  border-radius: 7px;
-  background-color: #044dbc;
-}
-
-.botao:hover {
-  background-color: #1271ff;
-}
-
 .novo {
+  border-radius: 7px;
   margin-left: 30px;
   color: white;
-  background-color: rgb(43, 168, 62);
+  background-color: #1271ff;
 }
 
 .novo:hover {
   color: white;
-  background-color: rgb(45, 255, 77);
+  background-color: #68a4ff;
 }
 
 .fornecedores {
+  border-radius: 7px;
+  background-color: #ff6d12;
   color: #fff;
 }
 
 .fornecedores:hover {
   color: #fff;
+  background-color: #ff904b;
 }
 
 .categorias {
+  border-radius: 7px;
+  background-color: #ff6d12;
   color: #fff;
 }
 
 .categorias:hover {
   color: #fff;
+  background-color: #ff904b;
 }
 
 .table {
