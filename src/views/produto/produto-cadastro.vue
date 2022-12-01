@@ -1,14 +1,11 @@
 <template>
   <div class="container">
-    <div
-      class="title-box columns is-12 title is-4"
-      v-if="model != 'detalhar' && model != 'editar'"
-    >
-      <div class="title-box columns is-12 title is-4">
+
+    <div class="title-box columns is-12 title is-4" v-if="model != 'detalhar' && model != 'editar'">
         <p style="margin-left: 15px">Produto - Novo Registro</p>
-      </div>
     </div>
-    <form class="form">
+
+    <form class="form columns is-12">
       <div class="columns" v-if="notification.ativo">
         <div class="column is-12">
           <div :class="notification.classe">
@@ -17,18 +14,9 @@
           </div>
         </div>
       </div>
-      <div class="columns is-centered">
-        <div class="control column is-one-quarter">
-          <label class="label">Data:</label>
-          <input
-            class="input"
-            type="datetime"
-            v-model="produto.data"
-            :disabled="model === 'detalhar' || model != 'detalhar'"
-          />
-        </div>
-        <div class="column is-11 is-size-3">
-          <div class="linha0 column" style="display: flex">
+      <div class="columns">
+        <div class="column is-12 is-size-3 form-inputs">
+          <div class="column linha0" style="display: flex">
             <div class="column is-size-3" v-if="model === 'detalhar'">
               <h1>Detalhes do produto</h1>
             </div>
@@ -37,67 +25,27 @@
             </div>
           </div>
           <div class="linha1 column" style="display: flex">
-            <div class="control column is-half">
-              <label class="label">Nome:</label>
-              <input
-                class="input nome"
-                type="text"
-                v-model="produto.nome"
-                placeholder="Nome do produto"
-                :disabled="model === 'detalhar'"
-              />
-            </div>
-            <div class="control column is-half">
-              <label class="label">Código de barras:</label>
-              <input
-                class="input codigo"
-                type="text"
-                v-model="produto.codigoDeBarras"
-                placeholder="Apenas Números"
-                :disabled="model === 'detalhar'"
-              />
-            </div>
-          </div>
-          <div class="linha2 column" style="display: flex">
-            <div class="control column is-one-quarter">
-              <label class="label">Valor de custo:</label>
+            <div class="control column is-one-fifth">
+              <label class="label">ID</label>
               <input
                 class="input"
-                type="text"
-                v-model="produto.valorCusto"
-                placeholder="Apenas números"
-                :disabled="model === 'detalhar'"
+                type="number"
+                v-model="produto.id"
+                placeholder="000"
+                :disabled="model === 'detalhar' || model != 'detalhar'"
               />
             </div>
-            <div class="control column is-one-quarter">
-              <label class="label">Valor de venda:</label>
+            <div class="control column is-two-fifths">
+              <label class="label">Data</label>
               <input
                 class="input"
-                type="text"
-                v-model="produto.valorVenda"
-                placeholder="Apenas números"
-                :disabled="model === 'detalhar'"
+                type="datetime"
+                v-model="produto.data"
+                :disabled="model === 'detalhar' || model != 'detalhar'"
               />
             </div>
-            <div class="control column is-one-quarter">
-              <label class="label">Fornecedor:</label>
-              <select
-                class="input"
-                id="produto"
-                v-model="produto.fornecedor.id"
-              >
-                <option value="" disabled selected>Lista de produtos</option>
-                <option
-                  v-for="item in fornecedorList"
-                  v-bind:key="item.id"
-                  v-bind:value="item.id"
-                >
-                  {{ item.nome }}
-                </option>
-              </select>
-            </div>
-            <div class="control column is-one-quarter">
-              <label class="label">Categoria:</label>
+            <div class="control column is-two-fifths">
+              <label class="label">Categoria</label>
               <select
                 class="input"
                 id="categoria"
@@ -113,35 +61,95 @@
                 </option>
               </select>
             </div>
+            <div class="control column is-half">
+              <label class="label">Fornecedor</label>
+              <select
+                class="input"
+                id="produto"
+                v-model="produto.fornecedor.id"
+              >
+                <option value="" disabled selected>Lista de produtos</option>
+                <option
+                  v-for="item in fornecedorList"
+                  v-bind:key="item.id"
+                  v-bind:value="item.id"
+                >
+                  {{ item.nome }}
+                </option>
+              </select>
+            </div>
           </div>
-          <div class="linha3 column" style="display: flex; margin-left: 12px">
-            <label class="label">
+          <div class="linha2 column" style="display: flex">
+            <div class="control column is-full">
+              <label class="label">Nome do produto</label>
               <input
-                v-model="produto.ativo"
-                checked
-                type="checkbox"
+                class="input nome"
+                type="text"
+                v-model="produto.nome"
+                placeholder="Nome do produto"
                 :disabled="model === 'detalhar'"
-                style="margin-left: 3em"
               />
-              Ativar produto
-            </label>
+            </div>
+            <div class="control column is-half">
+              <label class="label">Código de barras</label>
+              <input
+                class="input codigo"
+                type="text"
+                v-model="produto.codigoDeBarras"
+                placeholder="Apenas Números"
+                :disabled="model === 'detalhar'"
+              />
+            </div>
+          </div>
+          <div class="linha3 column" style="display: flex;">
+            <div class="control column is-half">
+              <label class="label">Valor de custo</label>
+              <input
+                class="input"
+                type="text"
+                v-model="produto.valorCusto"
+                placeholder="00,00"
+                :disabled="model === 'detalhar'"
+              />
+            </div>
+            <div class="control column is-half">
+              <label class="label">Valor de venda</label>
+              <input
+                class="input"
+                type="text"
+                v-model="produto.valorVenda"
+                placeholder="00,00"
+                :disabled="model === 'detalhar'"
+              />
+            </div>
+            <div class="control column is-half">
+              <label class="label">Quantidade</label>
+              <input
+                class="input"
+                type="text"
+                v-model="produto.quantidade"
+                placeholder="Apenas números"
+                :disabled="model === 'detalhar'"
+              />
+            </div>
           </div>
           <div class="linha4 column" style="display: flex; margin-top: 10px">
-            <div
-              class="opcoes column"
-              v-if="model != 'detalhar' && model != 'editar'"
-            >
-              <a href="/produto-list" class="button">Voltar</a>
+            
+            <div class="opcoes column" v-if="model != 'detalhar' && model != 'editar'">
+              <button class="button ativo" @click="onClickCadastrar()">
+                 Ativo
+              </button>
+              <router-link to="/produto-list">
+                <button class="button voltar">
+                  Cancelar
+                </button>
+              </router-link>
               <button class="button salvar" @click="onClickCadastrar()">
                 Salvar
               </button>
             </div>
             <div class="opcoes column" v-if="model === 'detalhar'">
-              <a href="/produto-list" class="button">Voltar</a>
-              <button
-                class="button editar"
-                @click="onClickPaginaEditar(produto.id)"
-              >
+              <button class="button editar" @click="onClickPaginaEditar(produto.id)">
                 Editar
               </button>
               <a href="/produto-list" class="button">Voltar</a>
@@ -165,7 +173,7 @@
 <script lang="ts">
 import { Vue } from "vue-class-component";
 import { Prop } from "vue-property-decorator";
-import moment, { Moment } from "moment";
+import moment from "moment";
 
 import { Produto } from "@/model/produto";
 import { Notification } from "@/model/notification";
@@ -323,6 +331,13 @@ export default class ProdutoForm extends Vue {
     this.produto = new Produto();
   }
 
+  // public formatCurrency(): void {
+  //   debugger;
+  //   console.log(this.produto.valorVenda)
+  //   this.produto.valorVenda = Number(this.produto.valorVenda).toFixed(2);
+  //   console.log(this.produto.valorVenda)
+  // }
+
   // private created(): void { }
 }
 </script>
@@ -352,13 +367,22 @@ export default class ProdutoForm extends Vue {
   width: 100%;
 }
 
+.form-inputs{
+  padding-left: 0 !important;
+}
+
+.linha1, .linha2, .linha3, .linha4{
+  padding: 0 !important;
+}
+
+.control{
+  padding-top: 0;
+}
+
 .control .input {
   background-color: #d4d4d4;
   color: rgb(0, 0, 0);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-
-  border-left: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 7px;
 }
 ::placeholder {
   color: rgb(255, 255, 255);
@@ -369,23 +393,23 @@ export default class ProdutoForm extends Vue {
   color: rgb(255, 255, 255);
 }
 
-.opcoes a,
-.opcoes button {
-  margin-right: 22px;
-  border-radius: 10px;
+.ativo {
+  background-color: #E51A1A;
 }
 
-.opcoes a,
-.opcoes button {
-  border: 1px solid rgba(255, 255, 255, 0.18);
+.voltar,
+.salvar {
+  border-radius: 7px;
 }
 
-.opcoes a {
-  background-color: rgb(102, 21, 21);
+.voltar {
+  background-color: #E51A1A
 }
 
-.opcoes a:hover {
-  background-color: red;
+.voltar:hover {
+  color: #fff;
+  background-color: rgb(255, 85, 85);
+  
 }
 
 .opcoes .salvar {

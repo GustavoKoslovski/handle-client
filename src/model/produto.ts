@@ -9,7 +9,7 @@ export class Produto extends AbstractEntity {
   fornecedor!: Fornecedor;
   codigoDeBarras!: string;
   valorCusto!: number;
-  valorVenda!: number;
+  valorVenda!: string;
   quantidade!: number;
 
   constructor() {
