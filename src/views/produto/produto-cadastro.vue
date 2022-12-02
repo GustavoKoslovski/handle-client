@@ -14,7 +14,7 @@
           </div>
         </div>
       </div>
-      <div class="columns">
+      <div class="columns is-12 form-inputs">
         <div class="column is-12 is-size-3 form-inputs">
           <div class="column linha0" style="display: flex">
             <div class="column is-size-3" v-if="model === 'detalhar'">
@@ -25,7 +25,7 @@
             </div>
           </div>
           <div class="linha1 column" style="display: flex">
-            <div class="control column is-one-fifth">
+            <div class="control column is-one-fifth pl-0">
               <label class="label">ID</label>
               <input
                 class="input"
@@ -79,8 +79,8 @@
               </select>
             </div>
           </div>
-          <div class="linha2 column" style="display: flex">
-            <div class="control column is-full">
+          <div class="linha2 column is-12" style="display: flex">
+            <div class="control column is-full pl-0">
               <label class="label">Nome do produto</label>
               <input
                 class="input nome"
@@ -102,7 +102,7 @@
             </div>
           </div>
           <div class="linha3 column" style="display: flex;">
-            <div class="control column is-half">
+            <div class="control column is-half pl-0">
               <label class="label">Valor de custo</label>
               <input
                 class="input"
@@ -122,7 +122,7 @@
                 :disabled="model === 'detalhar'"
               />
             </div>
-            <div class="control column is-half">
+            <div class="control column is-half pr-0">
               <label class="label">Quantidade</label>
               <input
                 class="input"
@@ -136,31 +136,33 @@
           <div class="linha4 column" style="display: flex; margin-top: 10px">
             
             <div class="opcoes column" v-if="model != 'detalhar' && model != 'editar'">
-              <button class="button ativo" @click="onClickCadastrar()">
-                 Ativo
+              <button type='button' class="button" v-bind:class="[produto.ativo == true ? 'ativo' : 'inativo']" @click="setStatus()">
+                {{produto.ativo == true ? 'ATIVO' : 'INATIVO'}}
               </button>
-              <router-link to="/produto-list">
-                <button class="button voltar">
-                  Cancelar
-                </button>
-              </router-link>
-              <button class="button salvar" @click="onClickCadastrar()">
-                Salvar
+              <a type='button' href="/produto-list" class="button voltar">
+                CANCELAR
+              </a>
+              <button type='button' class="button salvar" @click="onClickCadastrar()">
+                SALVAR
               </button>
             </div>
             <div class="opcoes column" v-if="model === 'detalhar'">
               <button class="button editar" @click="onClickPaginaEditar(produto.id)">
-                Editar
+                EDITAR
               </button>
-              <a href="/produto-list" class="button">Voltar</a>
+              <a href="/produto-list" class="button">
+                VOLTAR
+              </a>
               <button class="button excluir" @click="onClickDeletar">
-                Excluir
+                EXCLUIR
               </button>
             </div>
             <div class="opcoes column" v-if="model === 'editar'">
-              <a href="/produto-list" class="button">Voltar</a>
+              <a href="/produto-list" class="button">
+                VOLTAR
+              </a>
               <button class="button salvar" @click="onClickSalvarAlteracao()">
-                Salvar Alterações
+                SALVAR ALTERAÇÕES
               </button>
             </div>
           </div>
@@ -331,6 +333,15 @@ export default class ProdutoForm extends Vue {
     this.produto = new Produto();
   }
 
+  public setStatus(): void {
+    if(this.produto.ativo == false){
+      this.produto.ativo = true;
+    }else{
+      this.produto.ativo = false;
+    }
+      
+  }
+
   // public formatCurrency(): void {
   //   debugger;
   //   console.log(this.produto.valorVenda)
@@ -369,6 +380,7 @@ export default class ProdutoForm extends Vue {
 
 .form-inputs{
   padding-left: 0 !important;
+  margin-left: 0 !important
 }
 
 .linha1, .linha2, .linha3, .linha4{
@@ -384,6 +396,7 @@ export default class ProdutoForm extends Vue {
   color: rgb(0, 0, 0);
   border-radius: 7px;
 }
+
 ::placeholder {
   color: rgb(255, 255, 255);
 }
@@ -393,48 +406,44 @@ export default class ProdutoForm extends Vue {
   color: rgb(255, 255, 255);
 }
 
-.ativo {
-  background-color: #E51A1A;
+.ativo, .salvar {
+  color: #fff !important;
+  border-radius: 7px !important;
+  background-color: #1BC856 !important;
 }
 
-.voltar,
-.salvar {
-  border-radius: 7px;
+.voltar, .inativo {
+  color: #fff !important;
+  border-radius: 7px !important;
+  background-color: #E51A1A !important;
 }
 
-.voltar {
-  background-color: #E51A1A
-}
-
-.voltar:hover {
+.voltar:hover, .inativo:hover {
   color: #fff;
-  background-color: rgb(255, 85, 85);
-  
+  background-color: #ff5353 !important;
+  border: solid 1px #ff5353;
 }
 
-.opcoes .salvar {
-  background-color: #1d660b;
+.salvar:hover, .ativo:hover {
+  color: #fff;;
+  background-color: #34f374 !important;
+  border: solid 1px #34f374;
 }
 
-.opcoes .salvar:hover {
-  color: rgb(255, 255, 255);
-  background-color: #1bc856;
-}
-
-.opcoes .editar {
+.editar {
   background-color: #11138d;
 }
 
-.opcoes .editar:hover {
+.editar:hover {
   color: #fff;
   background-color: #2125fd;
 }
 
-.opcoes .excluir {
+.excluir {
   background-color: #641c1c;
 }
 
-.opcoes .excluir:hover {
+.excluir:hover {
   color: #fff;
   background-color: #fa0909;
 }
