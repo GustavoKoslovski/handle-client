@@ -235,32 +235,52 @@ export default class MovimentoEstoqueForm extends Vue {
 }
 </script>
 <style>
-.nomePageCadastro {
-  width: 80vh;
-  height: 10vh;
-  left: 40vh;
-  background: #d4d4d4;
-  border-radius: 10px;
+.container {
+  margin: 0;
+  width: 100%;
+  max-width: 88vw !important;
   display: flex;
-  justify-content: left;
-  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
-.menu {
-  width: 150vh;
-  position: absolute;
-  left: 30vh;
-  top: 15vh;
+.title-box {
+  background: #d4d4d4;
+  border-radius: 7px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+}
+
+.form {
+  width: 100%;
+}
+
+.form-inputs {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+.linha1,
+.linha2,
+.linha3,
+.linha4 {
+  padding: 0 !important;
+}
+
+.control {
+  padding-top: 0;
 }
 
 .control .input {
   background-color: #d4d4d4;
   color: rgb(0, 0, 0);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-
-  border-left: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 7px;
 }
+
 ::placeholder {
   color: rgb(255, 255, 255);
 }
@@ -270,48 +290,48 @@ export default class MovimentoEstoqueForm extends Vue {
   color: rgb(255, 255, 255);
 }
 
-.opcoes a,
-.opcoes button {
-  margin-right: 22px;
-  border-radius: 10px;
+.ativo,
+.salvar {
+  color: #fff !important;
+  border-radius: 7px !important;
+  background-color: #1bc856 !important;
 }
 
-.opcoes a,
-.opcoes button {
-  border: 1px solid rgba(255, 255, 255, 0.18);
+.voltar,
+.inativo {
+  color: #fff !important;
+  border-radius: 7px !important;
+  background-color: #e51a1a !important;
 }
 
-.opcoes a {
-  background-color: rgb(102, 21, 21);
+.voltar:hover,
+.inativo:hover {
+  color: #fff;
+  background-color: #ff5353 !important;
+  border: solid 1px #ff5353;
 }
 
-.opcoes a:hover {
-  background-color: red;
+.salvar:hover,
+.ativo:hover {
+  color: #fff;
+  background-color: #34f374 !important;
+  border: solid 1px #34f374;
 }
 
-.opcoes .salvar {
-  background-color: #1d660b;
-}
-
-.opcoes .salvar:hover {
-  color: rgb(255, 255, 255);
-  background-color: #1bc856;
-}
-
-.opcoes .editar {
+.editar {
   background-color: #11138d;
 }
 
-.opcoes .editar:hover {
+.editar:hover {
   color: #fff;
   background-color: #2125fd;
 }
 
-.opcoes .excluir {
+.excluir {
   background-color: #641c1c;
 }
 
-.opcoes .excluir:hover {
+.excluir:hover {
   color: #fff;
   background-color: #fa0909;
 }

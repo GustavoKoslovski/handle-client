@@ -1,56 +1,67 @@
 <template>
-  <div class="cliente-cadastro columns is-centered" style="margin-top: 2vh">
+  <div class="container">
     <div
-      class="column is-size-3"
+      class="title-box columns is-12 title is-4"
       v-if="model != 'detalhar' && model != 'editar'"
     >
-      <div class="column is-9 nomePageCadastro" style="color: black">
-        <div class=""><img src="../imagens/user.png" /></div>
-        <p style="margin-left: 10px">Cliente - Novo Registro</p>
-      </div>
+      <p style="margin-left: 15px">Cliente - Novo Registro</p>
     </div>
-    <form class="menu">
-      <div class="columns" v-if="notification.ativo">
-        <div class="column is-12">
-          <div :class="notification.classe">
-            <button @click="onClickFecharNotificacao()" class="delete"></button>
-            {{ notification.mensagem }}
+    <form class="form columns is-12">
+      <div class="columns is-12 form-inputs">
+        <div class="column is-12 is-size-3 form-inputs">
+          <div class="columns" v-if="notification.ativo">
+            <div class="column is-12">
+              <div :class="notification.classe">
+                <button
+                  @click="onClickFecharNotificacao()"
+                  class="delete"
+                ></button>
+                {{ notification.mensagem }}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="columns is-centered">
-        <div class="column is-11 is-size-3">
-          <div class="linha0 column" style="display: flex">
+          <div class="column linha0" style="display: flex">
             <div class="column is-size-3" v-if="model === 'detalhar'">
-              <h1>Detalhes do cliente</h1>
+              <h1>Detalhes do Cliente</h1>
             </div>
             <div class="column is-size-3" v-if="model === 'editar'">
-              <h1>Edição de cliente</h1>
+              <h1>Edição de Cliente</h1>
             </div>
           </div>
           <div class="linha1 column" style="display: flex">
-            <div class="control column is-half">
-              <label class="label">Nome:</label>
+            <div class="control column is-one-fifth pl-0">
+              <label class="label">ID</label>
               <input
-                class="input nome"
-                type="text"
-                v-model="cliente.nome"
-                placeholder="Nome do cliente"
-                :disabled="model === 'detalhar'"
+                class="input"
+                type="number"
+                v-model="cliente.id"
+                placeholder="000"
+                :disabled="model === 'detalhar' || model != 'detalhar'"
               />
             </div>
-            <div class="control column is-one-quarter">
-              <label class="label">Cpf:</label>
+            <div class="control column is-two-fifths">
+              <label class="label">Data</label>
               <input
-                class="input codigo"
+                class="input"
+                type="datetime"
+                v-model="cliente.data"
+                :disabled="model === 'detalhar' || model != 'detalhar'"
+              />
+            </div>
+            <div class="control column is-two-fifths">
+              <label class="label">CPF</label>
+              <input
+                class="input"
                 type="text"
+                placeholder="Apenas números"
                 v-model="cliente.cpf"
-                placeholder="Apenas Números"
                 :disabled="model === 'detalhar'"
               />
             </div>
-            <div class="control column is-one-quarter">
-              <label class="label">Telefone:</label>
+          </div>
+          <div class="linha2 column is-12" style="display: flex">
+            <div class="control column is-two-fifths">
+              <label class="label">Telefone</label>
               <input
                 class="input"
                 type="text"
@@ -60,43 +71,58 @@
               />
             </div>
           </div>
-          <div class="linha3 column" style="display: flex; margin-left: 12px">
-            <label class="label">
+          <div class="linha3 column" style="display: flex">
+            <div class="control column is-full pl-0">
+              <label class="label">Nome do cliente</label>
               <input
-                v-model="cliente.ativo"
-                checked
-                type="checkbox"
+                class="input"
+                type="text"
+                placeholder="Nome do cliente..."
+                v-model="cliente.nome"
                 :disabled="model === 'detalhar'"
               />
-              Ativar cliente
-            </label>
+            </div>
           </div>
           <div class="linha4 column" style="display: flex; margin-top: 10px">
             <div
               class="opcoes column"
               v-if="model != 'detalhar' && model != 'editar'"
             >
-              <a href="/cliente-list" class="button">Voltar</a>
-              <button class="button salvar" @click="onClickCadastrar()">
-                Salvar
+              <button
+                type="button"
+                class="button"
+                v-bind:class="[cliente.ativo == true ? 'ativo' : 'inativo']"
+                @click="setStatus()"
+              >
+                {{ cliente.ativo == true ? "ATIVO" : "INATIVO" }}
+              </button>
+              <a type="button" href="/cliente-list" class="button voltar">
+                CANCELAR
+              </a>
+              <button
+                type="button"
+                class="button salvar"
+                @click="onClickCadastrar()"
+              >
+                SALVAR
               </button>
             </div>
             <div class="opcoes column" v-if="model === 'detalhar'">
-              <a href="/cliente-list" class="button">Voltar</a>
               <button
                 class="button editar"
                 @click="onClickPaginaEditar(cliente.id)"
               >
-                Editar
+                EDITAR
               </button>
+              <a href="/cliente-list" class="button"> VOLTAR </a>
               <button class="button excluir" @click="onClickDeletar">
-                Excluir
+                EXCLUIR
               </button>
             </div>
             <div class="opcoes column" v-if="model === 'editar'">
-              <a href="/cliente-list" class="button">Voltar</a>
+              <a href="/cliente-list" class="button"> VOLTAR </a>
               <button class="button salvar" @click="onClickSalvarAlteracao()">
-                Salvar Alterações
+                SALVAR ALTERAÇÕES
               </button>
             </div>
           </div>
@@ -109,7 +135,7 @@
 <script lang="ts">
 import { Vue } from "vue-class-component";
 import { Prop } from "vue-property-decorator";
-
+import moment from "moment";
 import { Cliente } from "@/model/cliente";
 import { Notification } from "@/model/notification";
 import { ClienteClient } from "@/client/cliente.client";
@@ -127,6 +153,8 @@ export default class ClienteForm extends Vue {
 
   public mounted(): void {
     this.clienteClient = new ClienteClient();
+    var currentDate = moment().format("YYYY-MM-DD HH:mm:ss");
+    this.cliente.data = currentDate;
     this.carregarcliente();
 
     console.log(this.id);
@@ -220,36 +248,63 @@ export default class ClienteForm extends Vue {
   public onClickLimpar(): void {
     this.cliente = new Cliente();
   }
+  public setStatus(): void {
+    if (this.cliente.ativo == false) {
+      this.cliente.ativo = true;
+    } else {
+      this.cliente.ativo = false;
+    }
+  }
 }
 </script>
 
 <style>
-.nomePageCadastro {
-  width: 80vh;
-  height: 10vh;
-  left: 40vh;
-  background: #d4d4d4;
-  border-radius: 10px;
+.container {
+  margin: 0;
+  width: 100%;
+  max-width: 88vw !important;
   display: flex;
-  justify-content: left;
-  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
-.menu {
-  width: 100vh;
-  position: absolute;
-  left: 30vh;
-  top: 15vh;
+.title-box {
+  background: #d4d4d4;
+  border-radius: 7px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+}
+
+.form {
+  width: 100%;
+}
+
+.form-inputs {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+.linha1,
+.linha2,
+.linha3,
+.linha4 {
+  padding: 0 !important;
+}
+
+.control {
+  padding-top: 0;
 }
 
 .control .input {
   background-color: #d4d4d4;
   color: rgb(0, 0, 0);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-
-  border-left: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 7px;
 }
+
 ::placeholder {
   color: rgb(255, 255, 255);
 }
@@ -259,48 +314,48 @@ export default class ClienteForm extends Vue {
   color: rgb(255, 255, 255);
 }
 
-.opcoes a,
-.opcoes button {
-  margin-right: 22px;
-  border-radius: 10px;
+.ativo,
+.salvar {
+  color: #fff !important;
+  border-radius: 7px !important;
+  background-color: #1bc856 !important;
 }
 
-.opcoes a,
-.opcoes button {
-  border: 1px solid rgba(255, 255, 255, 0.18);
+.voltar,
+.inativo {
+  color: #fff !important;
+  border-radius: 7px !important;
+  background-color: #e51a1a !important;
 }
 
-.opcoes a {
-  background-color: rgb(102, 21, 21);
+.voltar:hover,
+.inativo:hover {
+  color: #fff;
+  background-color: #ff5353 !important;
+  border: solid 1px #ff5353;
 }
 
-.opcoes a:hover {
-  background-color: red;
+.salvar:hover,
+.ativo:hover {
+  color: #fff;
+  background-color: #34f374 !important;
+  border: solid 1px #34f374;
 }
 
-.opcoes .salvar {
-  background-color: #1d660b;
-}
-
-.opcoes .salvar:hover {
-  color: rgb(255, 255, 255);
-  background-color: #1bc856;
-}
-
-.opcoes .editar {
+.editar {
   background-color: #11138d;
 }
 
-.opcoes .editar:hover {
+.editar:hover {
   color: #fff;
   background-color: #2125fd;
 }
 
-.opcoes .excluir {
+.excluir {
   background-color: #641c1c;
 }
 
-.opcoes .excluir:hover {
+.excluir:hover {
   color: #fff;
   background-color: #fa0909;
 }

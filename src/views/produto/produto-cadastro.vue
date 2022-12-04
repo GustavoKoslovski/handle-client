@@ -1,21 +1,26 @@
 <template>
   <div class="container">
-
-    <div class="title-box columns is-12 title is-4" v-if="model != 'detalhar' && model != 'editar'">
-        <p style="margin-left: 15px">Produto - Novo Registro</p>
+    <div
+      class="title-box columns is-12 title is-4"
+      v-if="model != 'detalhar' && model != 'editar'"
+    >
+      <p style="margin-left: 15px">Produto - Novo Registro</p>
     </div>
 
     <form class="form columns is-12">
-      <div class="columns" v-if="notification.ativo">
-        <div class="column is-12">
-          <div :class="notification.classe">
-            <button @click="onClickFecharNotificacao()" class="delete"></button>
-            {{ notification.mensagem }}
-          </div>
-        </div>
-      </div>
       <div class="columns is-12 form-inputs">
         <div class="column is-12 is-size-3 form-inputs">
+          <div class="columns" v-if="notification.ativo">
+            <div class="column is-12">
+              <div :class="notification.classe">
+                <button
+                  @click="onClickFecharNotificacao()"
+                  class="delete"
+                ></button>
+                {{ notification.mensagem }}
+              </div>
+            </div>
+          </div>
           <div class="column linha0" style="display: flex">
             <div class="column is-size-3" v-if="model === 'detalhar'">
               <h1>Detalhes do produto</h1>
@@ -86,7 +91,7 @@
                 class="input nome"
                 type="text"
                 v-model="produto.nome"
-                placeholder="Nome do produto"
+                placeholder="Nome do produto..."
                 :disabled="model === 'detalhar'"
               />
             </div>
@@ -101,7 +106,7 @@
               />
             </div>
           </div>
-          <div class="linha3 column" style="display: flex;">
+          <div class="linha3 column" style="display: flex">
             <div class="control column is-half pl-0">
               <label class="label">Valor de custo</label>
               <input
@@ -134,33 +139,43 @@
             </div>
           </div>
           <div class="linha4 column" style="display: flex; margin-top: 10px">
-            
-            <div class="opcoes column" v-if="model != 'detalhar' && model != 'editar'">
-              <button type='button' class="button" v-bind:class="[produto.ativo == true ? 'ativo' : 'inativo']" @click="setStatus()">
-                {{produto.ativo == true ? 'ATIVO' : 'INATIVO'}}
+            <div
+              class="opcoes column"
+              v-if="model != 'detalhar' && model != 'editar'"
+            >
+              <button
+                type="button"
+                class="button"
+                v-bind:class="[produto.ativo == true ? 'ativo' : 'inativo']"
+                @click="setStatus()"
+              >
+                {{ produto.ativo == true ? "ATIVO" : "INATIVO" }}
               </button>
-              <a type='button' href="/produto-list" class="button voltar">
+              <a type="button" href="/produto-list" class="button voltar">
                 CANCELAR
               </a>
-              <button type='button' class="button salvar" @click="onClickCadastrar()">
+              <button
+                type="button"
+                class="button salvar"
+                @click="onClickCadastrar()"
+              >
                 SALVAR
               </button>
             </div>
             <div class="opcoes column" v-if="model === 'detalhar'">
-              <button class="button editar" @click="onClickPaginaEditar(produto.id)">
+              <button
+                class="button editar"
+                @click="onClickPaginaEditar(produto.id)"
+              >
                 EDITAR
               </button>
-              <a href="/produto-list" class="button">
-                VOLTAR
-              </a>
+              <a href="/produto-list" class="button"> VOLTAR </a>
               <button class="button excluir" @click="onClickDeletar">
                 EXCLUIR
               </button>
             </div>
             <div class="opcoes column" v-if="model === 'editar'">
-              <a href="/produto-list" class="button">
-                VOLTAR
-              </a>
+              <a href="/produto-list" class="button"> VOLTAR </a>
               <button class="button salvar" @click="onClickSalvarAlteracao()">
                 SALVAR ALTERAÇÕES
               </button>
@@ -334,12 +349,11 @@ export default class ProdutoForm extends Vue {
   }
 
   public setStatus(): void {
-    if(this.produto.ativo == false){
+    if (this.produto.ativo == false) {
       this.produto.ativo = true;
-    }else{
+    } else {
       this.produto.ativo = false;
     }
-      
   }
 
   // public formatCurrency(): void {
@@ -378,16 +392,19 @@ export default class ProdutoForm extends Vue {
   width: 100%;
 }
 
-.form-inputs{
+.form-inputs {
   padding-left: 0 !important;
-  margin-left: 0 !important
+  margin-left: 0 !important;
 }
 
-.linha1, .linha2, .linha3, .linha4{
+.linha1,
+.linha2,
+.linha3,
+.linha4 {
   padding: 0 !important;
 }
 
-.control{
+.control {
   padding-top: 0;
 }
 
@@ -406,26 +423,30 @@ export default class ProdutoForm extends Vue {
   color: rgb(255, 255, 255);
 }
 
-.ativo, .salvar {
+.ativo,
+.salvar {
   color: #fff !important;
   border-radius: 7px !important;
-  background-color: #1BC856 !important;
+  background-color: #1bc856 !important;
 }
 
-.voltar, .inativo {
+.voltar,
+.inativo {
   color: #fff !important;
   border-radius: 7px !important;
-  background-color: #E51A1A !important;
+  background-color: #e51a1a !important;
 }
 
-.voltar:hover, .inativo:hover {
+.voltar:hover,
+.inativo:hover {
   color: #fff;
   background-color: #ff5353 !important;
   border: solid 1px #ff5353;
 }
 
-.salvar:hover, .ativo:hover {
-  color: #fff;;
+.salvar:hover,
+.ativo:hover {
+  color: #fff;
   background-color: #34f374 !important;
   border: solid 1px #34f374;
 }

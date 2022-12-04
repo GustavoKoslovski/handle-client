@@ -1,13 +1,13 @@
 import { AbstractEntity } from "./abstract-entity";
 
-export class Fornecedor extends AbstractEntity{
+export class Fornecedor extends AbstractEntity {
+  data!: string;
+  nome!: string;
+  telefone!: string;
+  endereco!: string;
 
-    nome! : string
-   telefone! : string
-   endereco!: string
-
-    constructor() {
-        super()
-        this.ativo = true
-    }
+  constructor() {
+    super();
+    this.ativo = true;
+  }
 }

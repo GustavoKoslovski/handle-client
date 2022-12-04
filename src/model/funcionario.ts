@@ -1,6 +1,7 @@
 import { AbstractEntity } from "./abstract-entity";
 
 export class Funcionario extends AbstractEntity {
+  data!: string;
   nome!: string;
   rg!: string;
   cpf!: string;
