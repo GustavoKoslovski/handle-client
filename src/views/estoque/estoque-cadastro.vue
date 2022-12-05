@@ -160,7 +160,7 @@ export default class MovimentoEstoqueForm extends Vue {
         this.notification = this.notification.new(
           true,
           "notification is-danger",
-          "Error: " + error
+          "Error: " + error.data
         );
       }
     );
@@ -179,7 +179,7 @@ export default class MovimentoEstoqueForm extends Vue {
         this.notification = this.notification.new(
           true,
           "notification is-danger",
-          "Error: " + error
+          "Error: " + error.data
         );
       }
     );
@@ -206,7 +206,7 @@ export default class MovimentoEstoqueForm extends Vue {
         this.notification = this.notification.new(
           true,
           "notification is-danger",
-          "Error: " + error
+          "Error: " + error.data
         );
       }
     );
@@ -235,6 +235,9 @@ export default class MovimentoEstoqueForm extends Vue {
 }
 </script>
 <style>
+.notification {
+  font-size: 18px;
+}
 .container {
   margin: 0;
   width: 100%;

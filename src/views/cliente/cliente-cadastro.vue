@@ -167,7 +167,7 @@ export default class ClienteForm extends Vue {
         this.notification = this.notification.new(
           true,
           "notification is-success",
-          "cliente cadastrado com sucesso!"
+          "Cliente cadastrado com sucesso!"
         );
         this.onClickLimpar();
       },
@@ -175,7 +175,7 @@ export default class ClienteForm extends Vue {
         this.notification = this.notification.new(
           true,
           "notification is-danger",
-          "Error: " + error
+          "Error: " + error.data
         );
       }
     );
@@ -194,7 +194,7 @@ export default class ClienteForm extends Vue {
         this.notification = this.notification.new(
           true,
           "notification is-danger",
-          "Error: " + error
+          "Error: " + error.data
         );
       }
     );
@@ -221,7 +221,7 @@ export default class ClienteForm extends Vue {
         this.notification = this.notification.new(
           true,
           "notification is-danger",
-          "Error: " + error
+          "Error: " + error.data
         );
       }
     );
@@ -259,6 +259,9 @@ export default class ClienteForm extends Vue {
 </script>
 
 <style>
+.notification {
+  font-size: 18px;
+}
 .container {
   margin: 0;
   width: 100%;

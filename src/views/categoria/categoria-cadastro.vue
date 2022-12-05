@@ -10,7 +10,7 @@
       <div class="columns is-12 form-inputs">
         <div class="column is-12 is-size-3 form-inputs">
           <div class="columns" v-if="notification.ativo">
-            <div class="column is-12">
+            <div class="column is-12 mensagem">
               <div :class="notification.classe">
                 <button
                   @click="onClickFecharNotificacao()"
@@ -153,7 +153,7 @@ export default class CategoriaForm extends Vue {
         this.notification = this.notification.new(
           true,
           "notification is-danger",
-          "Error: " + error
+          "Error: " + error.data
         );
       }
     );
@@ -165,14 +165,14 @@ export default class CategoriaForm extends Vue {
         this.notification = this.notification.new(
           true,
           "notification is-success",
-          "categoria foi Desativado com sucesso!"
+          "Categoria foi Desativado com sucesso!"
         );
       },
       (error) => {
         this.notification = this.notification.new(
           true,
           "notification is-danger",
-          "Error: " + error
+          "Error: " + error.data
         );
       }
     );
@@ -199,7 +199,7 @@ export default class CategoriaForm extends Vue {
         this.notification = this.notification.new(
           true,
           "notification is-danger",
-          "Error: " + error
+          "Error: " + error.data
         );
       }
     );
@@ -237,6 +237,9 @@ export default class CategoriaForm extends Vue {
 </script>
 
 <style>
+.notification {
+  font-size: 18px;
+}
 .container {
   margin: 0;
   width: 100%;

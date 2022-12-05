@@ -268,10 +268,11 @@ export default class ProdutoForm extends Vue {
         );
       },
       (error) => {
+        console.log(error.response);
         this.notification = this.notification.new(
           true,
           "notification is-danger",
-          "Error: " + error
+          "Error: " + error.data
         );
       }
     );
@@ -290,7 +291,7 @@ export default class ProdutoForm extends Vue {
         this.notification = this.notification.new(
           true,
           "notification is-danger",
-          "Error: " + error
+          "Error: " + error.data
         );
       }
     );
@@ -317,7 +318,7 @@ export default class ProdutoForm extends Vue {
         this.notification = this.notification.new(
           true,
           "notification is-danger",
-          "Error: " + error
+          "Error: " + error.data
         );
       }
     );
@@ -368,6 +369,9 @@ export default class ProdutoForm extends Vue {
 </script>
 
 <style>
+.notification {
+  font-size: 18px;
+}
 .container {
   margin: 0;
   width: 100%;
