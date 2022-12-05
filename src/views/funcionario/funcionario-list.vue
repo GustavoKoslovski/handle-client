@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-
     <div class="title-box columns is-12 title is-4">
       <p style="margin-left: 15px">Funcionario - Lista de Registros</p>
     </div>
@@ -40,7 +39,7 @@
             <th>{{ item.nome }}</th>
             <th>{{ item.salario }}</th>
             <th>
-              <button class="button botao detalhar">
+              <button class="botao detalhar">
                 <router-link
                   to="/funcionario-cadastro"
                   @click="onClickPaginaDetalhar(item.id)"
@@ -96,8 +95,7 @@ export default class FuncionarioList extends Vue {
 
 
 <style>
-
-.container{
+.container {
   margin: 0;
   width: 100%;
   max-width: 88vw !important;
@@ -159,9 +157,31 @@ export default class FuncionarioList extends Vue {
   background-color: #68a4ff;
 }
 
+.fornecedores {
+  border-radius: 7px;
+  background-color: #ff6d12;
+  color: #fff;
+}
+
+.fornecedores:hover {
+  color: #fff;
+  background-color: #ff904b;
+}
+
+.categorias {
+  border-radius: 7px;
+  background-color: #ff6d12;
+  color: #fff;
+}
+
+.categorias:hover {
+  color: #fff;
+  background-color: #ff904b;
+}
+
 .table {
   width: 100%;
-  background-color: #EAEAEA;
+  background-color: #eaeaea;
   margin-top: 5px;
 }
 
@@ -179,5 +199,4 @@ export default class FuncionarioList extends Vue {
 .detalhar:hover {
   color: rgb(208, 255, 0);
 }
-
 </style>
