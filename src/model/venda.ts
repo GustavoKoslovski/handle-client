@@ -3,6 +3,7 @@ import { Cliente } from "./cliente";
 import { Funcionario } from "./funcionario";
 
 export class Venda extends AbstractEntity {
+  data2!: string;
   data!: Date;
   valorRecebido!: number;
   valorTotal!: number;
@@ -10,10 +11,12 @@ export class Venda extends AbstractEntity {
   valorDesconto!: number;
   valorFinal!: number;
   cliente!: Cliente;
-  funcionaio!: Funcionario;
+  funcionario!: Funcionario;
 
   constructor() {
     super();
     this.ativo = true;
+    this.cliente = new Cliente();
+    this.funcionario = new Funcionario();
   }
 }

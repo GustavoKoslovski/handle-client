@@ -146,6 +146,28 @@ const routes: Array<RouteRecordRaw> = [
     props: (router) => ({ id: router.params.id, model: router.params.model }),
     component: () => import("../views/estoque/estoque-cadastro.vue"),
   },
+  {
+    path: "/venda-list",
+    name: "venda-list",
+    component: () => import("../views/venda/venda-list.vue"),
+  },
+  {
+    path: "/venda-cadastro",
+    name: "venda-cadastro",
+    component: () => import("../views/venda/venda-cadastro.vue"),
+  },
+  {
+    path: "/venda-cadastro/:model/:id",
+    name: "venda-detalhar",
+    props: (router) => ({ id: router.params.id, model: router.params.model }),
+    component: () => import("../views/venda/venda-cadastro.vue"),
+  },
+  {
+    path: "/venda-cadastro/:model/:id",
+    name: "venda-editar",
+    props: (router) => ({ id: router.params.id, model: router.params.model }),
+    component: () => import("../views/venda/venda-cadastro.vue"),
+  },
 ];
 
 const router = createRouter({

@@ -9,7 +9,7 @@
             </div>
           </router-link>
 
-          <router-link to="/listarproduto">
+          <router-link to="/venda-list">
             <div class="fundo-botao">
               <img src="./imagens/compras.png" />
             </div>
@@ -39,7 +39,7 @@
             </div>
           </router-link>
         </div>
-        
+
         <div class="side-menu-arrow">
           <router-link to="/home">
             <div class="fundo-botao flecha">
@@ -70,11 +70,11 @@ body {
 }
 
 body::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .background {
-  background-color: #EAEAEA;
+  background-color: #eaeaea;
   width: 100vw;
   height: 100%;
   overflow: hidden;
@@ -103,8 +103,7 @@ body::-webkit-scrollbar {
   margin-top: 10px;
   padding-top: 10px;
   padding-bottom: 10px;
-  background-color: #CCCCCC;
-  
+  background-color: #cccccc;
 }
 
 .side-menu img {
@@ -115,7 +114,7 @@ body::-webkit-scrollbar {
   background: #b1b1b1;
 }
 
-.side-menu-options{
+.side-menu-options {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -125,10 +124,9 @@ body::-webkit-scrollbar {
   margin-top: 20px;
 }
 
-.conteudo{
-  width:100%;
+.conteudo {
+  width: 100%;
   padding: 0;
   margin: 53px 37px 42px 37px;
 }
-
 </style>
