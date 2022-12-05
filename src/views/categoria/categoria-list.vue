@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-
     <div class="title-box columns is-12 title is-4">
       <p style="margin-left: 15px">Categoria - Lista de Registros</p>
     </div>
@@ -19,9 +18,7 @@
       </div>
       <div class="botoes">
         <router-link to="/produto-list">
-          <button class="button voltar">
-            Voltar
-          </button>
+          <button class="button voltar">Voltar</button>
         </router-link>
       </div>
     </div>
@@ -101,8 +98,7 @@ export default class categoriaList extends Vue {
 
 
 <style>
-
-.container{
+.container {
   margin: 0;
   width: 100%;
   max-width: 88vw !important;
@@ -155,12 +151,12 @@ export default class categoriaList extends Vue {
 .voltar {
   border-radius: 7px;
   background-color: #ec2c2c;
-  color: #FFF;
+  color: #fff;
 }
 
 .voltar:hover {
   background-color: #d21717;
-  color: #FFF;
+  color: #fff;
 }
 
 .novo {
@@ -192,7 +188,7 @@ export default class categoriaList extends Vue {
 
 .table {
   width: 100%;
-  background-color: #EAEAEA;
+  background-color: #eaeaea;
   margin-top: 5px;
 }
 
@@ -210,5 +206,4 @@ export default class categoriaList extends Vue {
 .detalhar:hover {
   color: rgb(208, 255, 0);
 }
-
 </style>

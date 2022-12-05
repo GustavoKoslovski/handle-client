@@ -69,7 +69,7 @@
             <div class="control column is-half">
               <label class="label">Fornecedor</label>
               <select
-                class="input"
+                class="select input"
                 id="produto"
                 v-model="produto.fornecedor.id"
               >
