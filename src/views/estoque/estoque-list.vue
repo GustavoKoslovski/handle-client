@@ -13,7 +13,7 @@
         </button>
         <router-link to="/estoque-cadastro">
           <button class="button novo" style="margin-right: 30px">
-            Nova Entrada
+            Novo Produto
           </button>
         </router-link>
       </div>
@@ -23,13 +23,10 @@
       <table class="table-list">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Ativo</th>
+            <th>Codigo</th>
             <th>Nome</th>
             <th>Quantidade</th>
-            <th>Categoria</th>
-            <th>Fornecedor</th>
-            <th>Opções</th>
+            <th>Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -40,9 +37,6 @@
               <span v-if="!item.ativo" class="tag is-danger"> Inativo </span>
             </th>
             <th>{{ item.nome }}</th>
-            <th>{{ item.quantidade }}</th>
-            <th>{{ item.categoria.nome }}</th>
-            <th>{{ item.fornecedor.nome }}</th>
             <th>
               <button class="botao detalhar">
                 <router-link
@@ -162,6 +156,27 @@ export default class ProdutoList extends Vue {
   background-color: #68a4ff;
 }
 
+.fornecedores {
+  border-radius: 7px;
+  background-color: #ff6d12;
+  color: #fff;
+}
+
+.fornecedores:hover {
+  color: #fff;
+  background-color: #ff904b;
+}
+
+.categorias {
+  border-radius: 7px;
+  background-color: #ff6d12;
+  color: #fff;
+}
+
+.categorias:hover {
+  color: #fff;
+  background-color: #ff904b;
+}
 
 .table {
   width: 100%;
@@ -183,6 +198,4 @@ export default class ProdutoList extends Vue {
 .detalhar:hover {
   color: rgb(208, 255, 0);
 }
-
-
 </style>
