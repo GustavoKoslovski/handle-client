@@ -13,7 +13,7 @@
         </button>
         <router-link to="/estoque-cadastro">
           <button class="button novo" style="margin-right: 30px">
-            Novo Produto
+            Novo Movimento
           </button>
         </router-link>
       </div>
@@ -82,7 +82,7 @@ export default class ProdutoList extends Vue {
 
   public onClickPaginaDetalhar(idProduto: number) {
     this.$router.push({
-      name: "produto-detalhar",
+      name: "estoque-detalhar",
       params: { id: idProduto, model: "detalhar" },
     });
   }

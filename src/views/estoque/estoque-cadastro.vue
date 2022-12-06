@@ -23,12 +23,13 @@
           </div>
           <div class="column linha0" style="display: flex">
             <div class="column is-size-3" v-if="model === 'detalhar'">
-              <h1>Detalhes do produto</h1>
+              <h1>Detalhes do Estoque</h1>
             </div>
             <div class="column is-size-3" v-if="model === 'editar'">
-              <h1>Edição de produto</h1>
+              <h1>Edição do Estoque</h1>
             </div>
           </div>
+
           <div class="linha1 column" style="display: flex">
             <div class="control column is-one-fifth pl-0">
               <label class="label">ID</label>
@@ -66,7 +67,14 @@
                 </option>
               </select>
             </div>
+            <!-- <div class="columns is-12">
+              <label class="label">Quantidade</label>
+              
+            </div> -->
+
+
           </div>
+
           <div class="linha4 column" style="display: flex; margin-top: 10px">
             <div
               class="opcoes column"
