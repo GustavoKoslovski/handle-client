@@ -80,27 +80,17 @@
               </select>
             </div>
           </div>
+          <div class="pesquisaVenda" style="display: flex">
+            <input class="input" type="text" placeholder="Buscar..." />
+            <button class="button buscar">
+              <img src="../imagens/pesquisa.png" />
+            </button>
+          </div>
           <div class="columns is-12 table">
             <table class="table-list">
-              <thead>
-                <tr>
-                  <th>Nome</th>
-                  <th>Status</th>
-                  <th>Preço</th>
-                  <th>Ações</th>
-                </tr>
-              </thead>
               <tbody>
                 <tr v-for="item in produtoList" :key="item.id">
                   <th>{{ item.nome }}</th>
-                  <th>
-                    <span v-if="item.ativo" class="tag is-success">
-                      Ativo
-                    </span>
-                    <span v-if="!item.ativo" class="tag is-danger">
-                      Inativo
-                    </span>
-                  </th>
                   <th>{{ item.valorVenda }}</th>
                 </tr>
               </tbody>
@@ -352,6 +342,48 @@ export default class vendaForm extends Vue {
 </script>
   
   <style>
+.pesquisa-bar {
+  width: 100%;
+  margin-top: 40px;
+  justify-content: space-between;
+}
+
+.pesquisaVenda .input {
+  border-radius: 7px 0px 0px 7px;
+  background: #d4d4d4;
+}
+.table {
+  width: 22vw;
+  background-color: #eaeaea;
+  margin-top: 5px;
+  justify-content: space-between;
+}
+
+.table-list {
+  width: 100%;
+  background: #d4d4d4;
+  border-radius: 7px;
+  justify-content: space-between;
+}
+
+.pesquisaVenda {
+  width: 22vw;
+}
+
+.buscar {
+  border-radius: 0px 7px 7px 0px;
+  background-color: #b1b1b1;
+}
+
+.buscar img {
+  width: 19px;
+}
+
+.buscar:hover {
+  background-color: #b1b1b1c4;
+  outline: none;
+  border: none;
+}
 .notification {
   font-size: 18px;
 }
