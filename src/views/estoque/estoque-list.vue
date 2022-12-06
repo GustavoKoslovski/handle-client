@@ -23,7 +23,7 @@
       <table class="table-list">
         <thead>
           <tr>
-            <th>Codigo</th>
+            <th>Código</th>
             <th>Nome</th>
             <th>Quantidade</th>
             <th>Ações</th>
@@ -32,11 +32,8 @@
         <tbody>
           <tr v-for="item in produtoList" :key="item.id">
             <th>{{ item.id }}</th>
-            <th>
-              <span v-if="item.ativo" class="tag is-success"> Ativo </span>
-              <span v-if="!item.ativo" class="tag is-danger"> Inativo </span>
-            </th>
             <th>{{ item.nome }}</th>
+            <th>{{ item.quantidade }}</th>
             <th>
               <button class="botao detalhar">
                 <router-link
