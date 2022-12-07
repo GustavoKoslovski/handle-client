@@ -38,13 +38,12 @@
             <div class="control column is-three-fifths">
               <label class="label">Produto</label>
               <div class="pesquisa" style="display: flex">
-                <input class="input" type="text" placeholder="Buscar..." />
+                <input class="input" type="text" placeholder="Pesquisar..." />
                 <button class="button buscar">
-                  <img src="../imagens/pesquisa.png" />
+                  <img src="../imagens/mais.png" />
                 </button>
               </div>
             </div>
-
           </div>
 
           <div class="linha4 column" style="display: flex; margin-top: 10px">
@@ -266,14 +265,10 @@ export default class ProdutoForm extends Vue {
   justify-content: space-between;
 }
 
-.pesquisa .input {
-  border-radius: 7px 0px 0px 7px;
-  background: #d4d4d4;
+.pesquisa button {
+  border-radius: 0px 7px 7px 0px;
+  background-color: #b1b1b1;
 }
-
-/* .pesquisa {
-  width: 45em;
-} */
 
 .buscar {
   border-radius: 0px 7px 7px 0px;
