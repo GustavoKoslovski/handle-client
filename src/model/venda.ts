@@ -3,8 +3,7 @@ import { Cliente } from "./cliente";
 import { Funcionario } from "./funcionario";
 
 export class Venda extends AbstractEntity {
-  data2!: string;
-  data!: Date;
+  data!: string;
   valorRecebido!: number;
   valorTotal!: number;
   valorTroco!: number;

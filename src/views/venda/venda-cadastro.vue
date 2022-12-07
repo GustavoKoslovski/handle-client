@@ -29,7 +29,7 @@
               <h1>Edição de Venda</h1>
             </div>
           </div>
-          <div class="linha1 column" style="display: flex">
+          <div class="linha1 columns is-12 m-0 p-0">
             <div class="control column is-one-fifth pl-0">
               <label class="label">ID</label>
               <input
@@ -45,7 +45,7 @@
               <input
                 class="input"
                 type="datetime"
-                v-model="venda.data2"
+                v-model="venda.data"
                 :disabled="model === 'detalhar' || model != 'detalhar'"
               />
             </div>
@@ -66,7 +66,7 @@
                 </option>
               </select>
             </div>
-            <div class="control column is-half">
+            <div class="control column is-two-fifths">
               <label class="label">Cliente</label>
               <select class="input" id="cliente" v-model="venda.cliente.id">
                 <option value="" disabled selected>Lista de Clientes</option>
@@ -80,59 +80,157 @@
               </select>
             </div>
           </div>
-          <div class="pesquisaVenda" style="display: flex">
-            <input class="input" type="text" placeholder="Buscar..." />
-            <button class="button buscar">
-              <img src="../imagens/pesquisa.png" />
-            </button>
-          </div>
-          <div class="columns is-12 table">
-            <table class="table-list">
-              <tbody>
-                <tr v-for="item in produtoList" :key="item.id">
-                  <th>{{ item.nome }}</th>
-                  <th>{{ item.valorVenda }}</th>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="linha3 column" style="display: flex"></div>
-          <div class="linha4 column" style="display: flex; margin-top: 10px">
-            <div
-              class="opcoes column"
-              v-if="model != 'detalhar' && model != 'editar'"
-            >
-              <button
-                type="button"
-                class="button"
-                v-bind:class="[venda.ativo == true ? 'ativo' : 'inativo']"
-                @click="setStatus()"
+          <div class="linha2 columns is-8 m-0 p-0">
+            <div class="control column is-half">
+              <label class="label">Produto</label>
+              <select
+                class="input"
+                id="vendaProduto"
+                v-model="vendaProduto.produto"
               >
-                {{ venda.ativo == true ? "ATIVO" : "INATIVO" }}
-              </button>
-              <a type="button" href="/venda-list" class="button voltar">
-                CANCELAR
-              </a>
+                <option value="" disabled selected>Lista de Produtos</option>
+                <option
+                  v-for="item in produtoList"
+                  v-bind:key="item.id"
+                  v-bind:value="item"
+                >
+                  {{ item.nome }}
+                </option>
+              </select>
+            </div>
+            <div>
               <button
                 type="button"
                 class="button salvar"
-                @click="onClickCadastrar()"
+                @click="onClickAdicionarProduto(vendaProduto)"
               >
-                SALVAR
+                +
               </button>
             </div>
-            <div class="opcoes column" v-if="model === 'detalhar'">
-              <button
-                class="button editar"
-                @click="onClickPaginaEditar(venda.id)"
-              >
-                EDITAR
-              </button>
-              <a href="/venda-list" class="button"> VOLTAR </a>
-              <button class="button excluir" @click="onClickDeletar">
-                EXCLUIR
-              </button>
+          </div>
+          <div class="linha3 columns is-8 m-0 p-0">
+            <div class="column is-12 table-produtos">
+              <table class="table-list-produtos">
+                <tbody>
+                  <tr v-for="item in vendaProdutoList" :key="item.id">
+                    <th>{{ item.produto.nome }}</th>
+                    <th>{{ item.produto.valorVenda }}</th>
+                    <th>
+                      <button
+                        type="button"
+                        @click="setQuantidade('-')"
+                        class="botao menos"
+                      >
+                        -
+                      </button>
+                      {{ item.quantidade }}
+                      <button
+                        type="button"
+                        @click="setQuantidade('+')"
+                        class="botao mais"
+                      >
+                        +
+                      </button>
+                    </th>
+                  </tr>
+                </tbody>
+              </table>
             </div>
+          </div>
+          <div class="linha4 column" style="display: flex; margin-top: 10px">
+            <div>
+              <div class="venda-linha1 columns is-6 m-0 p-0">
+                <div class="control column is-half pl-0">
+                  <label class="label">Total</label>
+                  <input
+                    class="input"
+                    type="number"
+                    v-model="venda.valorTotal"
+                    placeholder="000"
+                    :disabled="model === 'detalhar' || model != 'detalhar'"
+                  />
+                </div>
+                <div class="control column is-half pl-0">
+                  <label class="label">Desconto</label>
+                  <input
+                    class="input"
+                    type="number"
+                    v-model="venda.valorDesconto"
+                    placeholder="000"
+                    :disabled="model === 'detalhar' || model != 'detalhar'"
+                  />
+                </div>
+              </div>
+              <div class="venda-linha2 columns is-6 m-0 p-0">
+                <div class="control column is-half pl-0">
+                  <label class="label">Total final</label>
+                  <input
+                    class="input"
+                    type="number"
+                    v-model="venda.valorFinal"
+                    placeholder="000"
+                    :disabled="model === 'detalhar' || model != 'detalhar'"
+                  />
+                </div>
+              </div>
+              <div class="venda-linha3 columns is-6 m-0 p-0">
+                <div class="control column is-half pl-0">
+                  <label class="label">Recebido</label>
+                  <input
+                    class="input"
+                    type="number"
+                    v-model="venda.valorRecebido"
+                    placeholder="000"
+                    :disabled="model === 'detalhar' || model != 'detalhar'"
+                  />
+                </div>
+                <div class="control column is-half pl-0">
+                  <label class="label">Troco</label>
+                  <input
+                    class="input"
+                    type="number"
+                    v-model="venda.valorTroco"
+                    placeholder="000"
+                    :disabled="model === 'detalhar' || model != 'detalhar'"
+                  />
+                </div>
+              </div>
+              <div class="venda-linha4 columns is-6 m-0 p-0">
+                <div class="control column is-full pl-0">
+                  <label class="label">Forma de pagamento</label>
+                  <select class="input" id="cliente" v-model="venda.cliente.id">
+                    <option value="Forma de Pagamento" disabled selected>
+                      Lista de formas
+                    </option>
+                    <option
+                      v-for="item in clienteList"
+                      v-bind:key="item.id"
+                      v-bind:value="item.id"
+                    >
+                      {{ item.nome }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="venda-linha5 columns is-6 m-0 p-0">
+                <div
+                  class="opcoes column"
+                  v-if="model != 'detalhar' && model != 'editar'"
+                >
+                  <a type="button" href="/venda-list" class="button voltar">
+                    CANCELAR
+                  </a>
+                  <button
+                    type="button"
+                    class="button salvar"
+                    @click="onClickCadastrar()"
+                  >
+                    SALVAR
+                  </button>
+                </div>
+              </div>
+            </div>
+
             <div class="opcoes column" v-if="model === 'editar'">
               <a href="/venda-list" class="button"> VOLTAR </a>
               <button class="button salvar" @click="onClickSalvarAlteracao()">
@@ -163,7 +261,8 @@ import { Cliente } from "@/model/cliente";
 import { AbstractEntity } from "@/model/abstract-entity";
 import { PageRequest } from "@/model/page/page-request";
 import { PageResponse } from "@/model/page/page-response";
-import { vendaProduto } from "@/model/vendaProduto";
+import { VendaProduto } from "@/model/vendaProduto";
+import { VendaProdutoClient } from "@/client/vendaProduto.client";
 
 export default class vendaForm extends Vue {
   public abstractEntity: AbstractEntity = new AbstractEntity();
@@ -171,6 +270,7 @@ export default class vendaForm extends Vue {
   public pageResponse: PageResponse<Cliente> = new PageResponse();
   public pageResponse2: PageResponse<Funcionario> = new PageResponse();
   public pageResponse3: PageResponse<Produto> = new PageResponse();
+  public pageResponse4: PageResponse<VendaProduto> = new PageResponse();
 
   public clienteList: Cliente[] = [];
   public funcionarioList: Funcionario[] = [];
@@ -180,6 +280,9 @@ export default class vendaForm extends Vue {
   public produtoClient!: ProdutoClient;
   public vendaClient!: VendaClient;
   public venda: Venda = new Venda();
+  public vendaProduto: VendaProduto = new VendaProduto();
+  public vendaProdutoList: VendaProduto[] = [];
+  public vendaProdutoClient!: VendaProdutoClient;
   public notification: Notification = new Notification();
 
   @Prop({ type: Number, required: false })
@@ -218,6 +321,16 @@ export default class vendaForm extends Vue {
     );
   }
 
+  public listarVendaProduto(): void {
+    this.vendaProdutoClient.findByFiltrosPaginado(this.pageRequest).then(
+      (success) => {
+        this.pageResponse4 = success;
+        this.vendaProdutoList = this.pageResponse4.content;
+      },
+      (error) => console.log(error)
+    );
+  }
+
   public mounted(): void {
     this.clienteClient = new ClienteClient();
     this.listarCliente();
@@ -225,9 +338,11 @@ export default class vendaForm extends Vue {
     this.listarFuncionario();
     this.produtoClient = new ProdutoClient();
     this.listarProduto();
+    this.vendaProdutoClient = new VendaProdutoClient();
+    this.listarVendaProduto();
     this.vendaClient = new VendaClient();
     var currentDate = moment().format("YYYY-MM-DD HH:mm:ss");
-    this.venda.data2 = currentDate;
+    this.venda.data = currentDate;
     this.carregarVenda();
 
     console.log(this.model);
@@ -251,6 +366,19 @@ export default class vendaForm extends Vue {
         );
       }
     );
+    this.vendaProdutoList.forEach((element) => {
+      this.vendaProdutoClient.cadastrar(element);
+    });
+  }
+
+  public onClickAdicionarProduto(vendaProduto: VendaProduto): void {
+    debugger;
+    vendaProduto.venda = this.venda;
+    vendaProduto.produto = this.vendaProduto.produto;
+    vendaProduto.precoUnitario = this.vendaProduto.produto.valorVenda;
+    vendaProduto.precoFinal = this.vendaProduto.precoFinal;
+    vendaProduto.quantidade = 0;
+    this.vendaProdutoList.push(vendaProduto);
   }
 
   public onClickDeletar(): void {
@@ -304,7 +432,7 @@ export default class vendaForm extends Vue {
       .findById(this.id)
       .then((value) => {
         this.venda = value;
-        this.venda.data2 = moment(this.venda.cadastro).format(
+        this.venda.data = moment(this.venda.cadastro).format(
           "YYYY-MM-DD HH:mm:ss"
         );
         console.log("venda" + value);
@@ -330,6 +458,17 @@ export default class vendaForm extends Vue {
     }
   }
 
+  public setQuantidade(sinal: string): void {
+    debugger;
+    if (sinal == "-") {
+      if (this.vendaProduto.quantidade != 0) {
+        this.vendaProduto.quantidade--;
+      }
+    } else {
+      this.vendaProduto.quantidade++;
+    }
+  }
+
   // public formatCurrency(): void {
   //   debugger;
   //   console.log(this.venda.valorVenda)
@@ -341,7 +480,7 @@ export default class vendaForm extends Vue {
 }
 </script>
   
-  <style>
+<style>
 .pesquisa-bar {
   width: 100%;
   margin-top: 40px;
@@ -352,14 +491,15 @@ export default class vendaForm extends Vue {
   border-radius: 7px 0px 0px 7px;
   background: #d4d4d4;
 }
-.table {
-  width: 22vw;
+
+.table-produtos {
+  width: 100%;
   background-color: #eaeaea;
   margin-top: 5px;
   justify-content: space-between;
 }
 
-.table-list {
+.table-list-produtos {
   width: 100%;
   background: #d4d4d4;
   border-radius: 7px;
@@ -367,7 +507,7 @@ export default class vendaForm extends Vue {
 }
 
 .pesquisaVenda {
-  width: 22vw;
+  width: 100%;
 }
 
 .buscar {

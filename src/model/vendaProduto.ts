@@ -2,7 +2,7 @@ import { AbstractEntity } from "./abstract-entity";
 import { Venda } from "./venda";
 import { Produto } from "./produto";
 
-export class vendaProduto extends AbstractEntity {
+export class VendaProduto extends AbstractEntity {
   venda!: Venda;
   produto!: Produto;
   quantidade!: number;
@@ -11,6 +11,8 @@ export class vendaProduto extends AbstractEntity {
 
   constructor() {
     super();
+    this.venda = new Venda();
+    this.produto = new Produto();
     this.ativo = true;
   }
 }
