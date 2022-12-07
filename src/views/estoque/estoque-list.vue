@@ -9,7 +9,7 @@
       <div class="pesquisa" style="display: flex">
         <input class="input" type="text" placeholder="Buscar..." />
         <button class="button buscar">
-          <img src="../imagens/pesquisa.png" />
+          <img src="../imagens/mais.png" />
         </button>
         <router-link to="/estoque-cadastro">
           <button class="button novo" style="margin-right: 30px">

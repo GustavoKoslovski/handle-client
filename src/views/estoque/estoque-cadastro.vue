@@ -1,9 +1,6 @@
 <template>
   <div class="container">
-    <div
-      class="title-box columns is-12 title is-4"
-      v-if="model != 'detalhar' && model != 'editar'"
-    >
+    <div class="title-box columns is-12 title is-4" v-if="model != 'detalhar' && model != 'editar'">
       <p style="margin-left: 15px">Movimento de Estoque - Novo Produto</p>
     </div>
 
@@ -13,10 +10,7 @@
           <div class="columns" v-if="notification.ativo">
             <div class="column is-12">
               <div :class="notification.classe">
-                <button
-                  @click="onClickFecharNotificacao()"
-                  class="delete"
-                ></button>
+                <button @click="onClickFecharNotificacao()" class="delete"></button>
                 {{ notification.mensagem }}
               </div>
             </div>
@@ -33,77 +27,41 @@
           <div class="linha1 column" style="display: flex">
             <div class="control column is-one-fifth pl-0">
               <label class="label">ID</label>
-              <input
-                class="input"
-                type="number"
-                v-model="produto.id"
-                placeholder="000"
-                :disabled="model === 'detalhar' || model != 'detalhar'"
-              />
+              <input class="input" type="number" v-model="produto.id" placeholder="000"
+                :disabled="model === 'detalhar' || model != 'detalhar'" />
             </div>
             <div class="control column is-two-fifths">
               <label class="label">Data</label>
-              <input
-                class="input"
-                type="datetime"
-                v-model="produto.data"
-                :disabled="model === 'detalhar' || model != 'detalhar'"
-              />
+              <input class="input" type="datetime" v-model="produto.data"
+                :disabled="model === 'detalhar' || model != 'detalhar'" />
             </div>
-            <div class="control column is-two-fifths">
+            <div class="control column is-three-fifths">
               <label class="label">Produto</label>
-              <select
-                class="input"
-                id="produto"
-                v-model="produto.id"
-              >
-                <option value="" disabled selected>Lista de Produto</option>
-                <option
-                  v-for="item in produtoList"
-                  v-bind:key="item.id"
-                  v-bind:value="item.id"
-                >
-                  {{ item.nome }}
-                </option>
-              </select>
+              <div class="pesquisa" style="display: flex">
+                <input class="input" type="text" placeholder="Buscar..." />
+                <button class="button buscar">
+                  <img src="../imagens/pesquisa.png" />
+                </button>
+              </div>
             </div>
-            <!-- <div class="columns is-12">
-              <label class="label">Quantidade</label>
-              
-            </div> -->
-
 
           </div>
 
           <div class="linha4 column" style="display: flex; margin-top: 10px">
-            <div
-              class="opcoes column"
-              v-if="model != 'detalhar' && model != 'editar'"
-            >
-              <button
-                type="button"
-                class="button"
-                v-bind:class="[produto.ativo == true ? 'ativo' : 'inativo']"
-                @click="setStatus()"
-              >
+            <div class="opcoes column" v-if="model != 'detalhar' && model != 'editar'">
+              <button type="button" class="button" v-bind:class="[produto.ativo == true ? 'ativo' : 'inativo']"
+                @click="setStatus()">
                 {{ produto.ativo == true ? "ATIVO" : "INATIVO" }}
               </button>
               <a type="button" href="/produto-list" class="button voltar">
                 CANCELAR
               </a>
-              <button
-                type="button"
-                class="button salvar"
-                @click="onClickCadastrar()"
-              >
+              <button type="button" class="button salvar" @click="onClickCadastrar()">
                 SALVAR
               </button>
             </div>
             <div class="opcoes column" v-if="model === 'detalhar'">
-              <button
-                class="button editar"
-                @click="onClickPaginaEditar(produto.id)"
-              >
+              <button class="button editar" @click="onClickPaginaEditar(produto.id)">
                 EDITAR
               </button>
               <a href="/produto-list" class="button"> VOLTAR </a>
@@ -129,7 +87,9 @@ import { Vue } from "vue-class-component";
 import { Prop } from "vue-property-decorator";
 import moment from "moment";
 
+import { MovimentoEstoqueClient } from "@/client/movimentoEstoque.client";
 import { Produto } from "@/model/produto";
+import { MovimentoEstoque } from "@/model/movimentoEstoque";
 import { Notification } from "@/model/notification";
 import { ProdutoClient } from "@/client/produto.client";
 import { AbstractEntity } from "@/model/abstract-entity";
@@ -138,6 +98,7 @@ import { PageResponse } from "@/model/page/page-response";
 
 export default class ProdutoForm extends Vue {
   public produtoList: Produto[] = [];
+  public movimentoEstoqueClient: MovimentoEstoqueClient[] = [];
   public produtoClient!: ProdutoClient;
   public abstractEntity: AbstractEntity = new AbstractEntity();
   public produto: Produto = new Produto();
@@ -278,6 +239,7 @@ export default class ProdutoForm extends Vue {
 .notification {
   font-size: 18px;
 }
+
 .container {
   margin: 0;
   width: 100%;
@@ -298,6 +260,36 @@ export default class ProdutoForm extends Vue {
   height: 50px;
 }
 
+.pesquisa-bar {
+  width: 100%;
+  margin-top: 40px;
+  justify-content: space-between;
+}
+
+.pesquisa .input {
+  border-radius: 7px 0px 0px 7px;
+  background: #d4d4d4;
+}
+
+/* .pesquisa {
+  width: 45em;
+} */
+
+.buscar {
+  border-radius: 0px 7px 7px 0px;
+  background-color: #b1b1b1;
+}
+
+.buscar img {
+  width: 19px;
+}
+
+.buscar:hover {
+  background-color: #b1b1b1c4;
+  outline: none;
+  border: none;
+}
+
 .form {
   width: 100%;
 }
@@ -306,6 +298,7 @@ export default class ProdutoForm extends Vue {
   padding-left: 0 !important;
   margin-left: 0 !important;
 }
+
 
 .linha1,
 .linha2,
