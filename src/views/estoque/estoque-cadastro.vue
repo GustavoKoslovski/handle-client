@@ -18,56 +18,41 @@
           <div class="linha1 columns is-12 m-0 pl-0 pr-0">
             <div class="control column is-2 pl-0">
               <label class="label">ID</label>
-              <input class="input" type="number" v-model="venda.id" placeholder="000"
+              <input class="input" type="number" v-model="movimentoEstoque.id" placeholder="000"
                 :disabled="model === 'detalhar' || model != 'detalhar'" />
             </div>
             <div class="control column is-3">
               <label class="label">Data</label>
-              <input class="input" type="datetime" v-model="venda.data"
+              <input class="input" type="datetime" v-model="movimentoEstoque.data"
                 :disabled="model === 'detalhar' || model != 'detalhar'" />
             </div>
-            <div class="control column">
-              <label class="label">Vendedor</label>
-              <select class="input" id="funcionario" v-model="venda.funcionario.id">
-                <option value="" disabled selected>Lista de Vendedores</option>
-                <option v-for="item in funcionarioList" v-bind:key="item.id" v-bind:value="item.id">
-                  {{ item.nome }}
-                </option>
-              </select>
-            </div>
-            <div class="control column pr-0">
-              <label class="label">Cliente</label>
-              <select class="input" id="cliente" v-model="venda.cliente.id">
-                <option value="" disabled selected>Lista de Clientes</option>
-                <option v-for="item in clienteList" v-bind:key="item.id" v-bind:value="item.id">
-                  {{ item.nome }}
-                </option>
-              </select>
-            </div>
-          </div>
+
+
           <div class="linha2 columns is-12 pr-0">
             <div class="produto column is-7 pr-0">
               <div class="column is-12">
                 <label class="label">Produto</label>
                 <div class="control" style="display: flex;">
-                  <select class="input " id="vendaProduto" v-model="vendaProduto.produto">
+                  <select class="input " id="movEstoqueProduto" v-model="movEstoqueProduto.produto">
                     <option value="" disabled selected>Lista de Produtos</option>
                     <option v-for="item in produtoList" v-bind:key="item.id" v-bind:value="item">
                       {{ item.nome }}
                     </option>
                   </select>
-                  <button type="button" class="button adicionar" @click="onClickAdicionarProduto(vendaProduto)">
+                  <button type="button" class="button adicionar" @click="onClickAdicionarProduto(movEstoqueProduto)">
                     +
                   </button>
                 </div>
               </div>
+
+
               <div class="column is-12 table-produtos">
                 <div style="background-color: #d4d4d4; height: 320px;">
                   <table class="table-list-produtos">
                     <tbody>
-                      <tr v-for="(item, index) in vendaProdutoList" :key="item.id">
+                      <tr v-for="(item, index) in movEstoqueProdutoList" :key="item.id">
                         <th>{{ item.produto.nome }}</th>
-                        <th>{{ item.produto.valorVenda }}</th>
+                        <th>{{ item.produto.valorCusto }}</th>
                         <th>
                           <button type="button" @click="setQuantidade('-', index)" class="botao menos">
                             -
@@ -164,6 +149,7 @@ import moment from "moment";
 
 import { MovimentoEstoque } from "@/model/movimentoEstoque";
 import { MovEstoqueProduto } from "@/model/movEstoqueProduto";
+import { MovEstoqueProdutoClient } from "@/client/movEstoqueProduto.client";
 import { Notification } from "@/model/notification";
 import { MovimentoEstoqueClient } from "@/client/movimentoEstoque.client";
 import { ProdutoClient } from "@/client/produto.client";
@@ -172,16 +158,20 @@ import { AbstractEntity } from "@/model/abstract-entity";
 import { PageRequest } from "@/model/page/page-request";
 import { PageResponse } from "@/model/page/page-response";
 
-export default class vendaForm extends Vue {
+export default class EstoqueForm extends Vue {
   public abstractEntity: AbstractEntity = new AbstractEntity();
   public pageRequest: PageRequest = new PageRequest();
   public pageResponse1: PageResponse<Produto> = new PageResponse();
-  public pageResponse2: PageResponse<Produto> = new PageResponse();
+  public pageResponse2: PageResponse<MovEstoqueProduto> = new PageResponse();
 
-  public movimentoEstoque!: MovimentoEstoque;
+  public movimentoEstoque: MovimentoEstoque = new MovimentoEstoque();
   public movimentoEstoqueClient!: MovimentoEstoqueClient;
+  public movEstoqueProduto: MovEstoqueProduto = new MovEstoqueProduto();
+  public movEstoqueProdutoList: MovEstoqueProduto[] = [];
+  public movEstoqueProdutoClient!: MovEstoqueProdutoClient;
   public produtoList: Produto[] = [];
   public produtoClient!: ProdutoClient;
+
   public notification: Notification = new Notification();
 
   @Prop({ type: Number, required: false })
@@ -200,41 +190,37 @@ export default class vendaForm extends Vue {
     );
   }
 
-  public listarMovimentoEstoque(): void {
-    this.movimentoEstoqueClient.findByFiltrosPaginado(this.pageRequest).then(
+  public listarMovimentoProduto(): void {
+    this.movEstoqueProdutoClient.findByFiltrosPaginado(this.pageRequest).then(
       (success) => {
-        this.pageResponse4 = success;
-        this.vendaProdutoList = this.pageResponse4.content;
+        this.pageResponse2 = success;
+        this.movEstoqueProdutoList = this.pageResponse2.content;
       },
       (error) => console.log(error)
     );
   }
 
   public mounted(): void {
-    this.clienteClient = new ClienteClient();
-    this.listarCliente();
-    this.funcionarioClient = new FuncionarioClient();
-    this.listarFuncionario();
     this.produtoClient = new ProdutoClient();
     this.listarProduto();
-    this.vendaProdutoClient = new VendaProdutoClient();
-    this.listarVendaProduto();
-    this.vendaClient = new VendaClient();
+    this.movEstoqueProdutoClient = new MovEstoqueProdutoClient();
+    this.listarMovimentoProduto();
+    this.movimentoEstoqueClient = new MovimentoEstoqueClient();
     var currentDate = moment().format("YYYY-MM-DD HH:mm:ss");
-    this.venda.data = currentDate;
-    this.carregarVenda();
+    this.movimentoEstoque.data = currentDate;
+    this.carregarEstoque();
 
     console.log(this.model);
   }
 
   public onClickCadastrar(): void {
     debugger;
-    this.vendaClient.cadastrar(this.venda).then(
+    this.movimentoEstoqueClient.cadastrar(this.movimentoEstoque).then(
       (success) => {
         this.notification = this.notification.new(
           true,
           "notification is-success",
-          "venda Cadastrado com sucesso!"
+          "Movimento de Estoque Cadastrado com sucesso!"
         );
       },
       (error) => {
@@ -246,18 +232,18 @@ export default class vendaForm extends Vue {
         );
       }
     );
-    this.vendaProdutoList.forEach((element) => {
-      this.vendaProdutoClient.cadastrar(element);
+    this.movEstoqueProdutoList.forEach((element) => {
+      this.movEstoqueProdutoClient.cadastrar(element);
     });
   }
 
   public onClickDeletar(): void {
-    this.vendaClient.desativar(this.venda).then(
+    this.movimentoEstoqueClient.desativar(this.movimentoEstoque).then(
       (sucess) => {
         this.notification = this.notification.new(
           true,
           "notification is-success",
-          "venda foi Desativado com sucesso!"
+          "Movimento de Estoque foi Desativado com sucesso!"
         );
       },
       (error) => {
@@ -271,24 +257,24 @@ export default class vendaForm extends Vue {
   }
 
   public onClickCancelar(): void {
-    this.$router.push("venda-list");
+    this.$router.push("estoque-list");
   }
 
-  public onClickPaginaEditar(idvenda: number) {
+  public onClickPaginaEditar(idestoque: number) {
     this.$router.push({
-      name: "venda-editar",
-      params: { id: idvenda, model: "editar" },
+      name: "estoque-editar",
+      params: { id: idestoque, model: "editar" },
     });
     console.log("ta chamando");
   }
 
   public onClickSalvarAlteracao(): void {
-    this.vendaClient.editar(this.venda).then(
+    this.movimentoEstoqueClient.editar(this.movimentoEstoque).then(
       (success) => {
         this.notification = this.notification.new(
           true,
           "notification is-success",
-          "venda foi Editado com sucesso!"
+          "Movimento do Estoque foi Editado com sucesso!"
         );
       },
       (error) => {
@@ -301,15 +287,15 @@ export default class vendaForm extends Vue {
     );
   }
 
-  public carregarVenda(): void {
-    this.vendaClient
+  public carregarEstoque(): void {
+    this.movimentoEstoqueClient
       .findById(this.id)
       .then((value) => {
-        this.venda = value;
-        this.venda.data = moment(this.venda.cadastro).format(
+        this.movimentoEstoque = value;
+        this.movimentoEstoque.data = moment(this.movimentoEstoque.cadastro).format(
           "YYYY-MM-DD HH:mm:ss"
         );
-        console.log("venda" + value);
+        console.log("estoque" + value);
       })
       .catch((error) => {
         console.log(error);
@@ -321,14 +307,14 @@ export default class vendaForm extends Vue {
   }
 
   public onClickLimpar(): void {
-    this.venda = new Venda();
+    this.movimentoEstoque = new MovimentoEstoque();
   }
 
   public setStatus(): void {
-    if (this.venda.ativo == false) {
-      this.venda.ativo = true;
+    if (this.movimentoEstoque.ativo == false) {
+      this.movimentoEstoque.ativo = true;
     } else {
-      this.venda.ativo = false;
+      this.movimentoEstoque.ativo = false;
     }
   }
 

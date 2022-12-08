@@ -4,7 +4,7 @@ import { Produto } from "./produto";
 export class MovimentoEstoque extends AbstractEntity {
   produto!: Produto;
   tipoMovimento!: boolean;
-  data!: Date;
+  data!: string;
   valor!: number;
   quantidadeTotal!: number;
 
