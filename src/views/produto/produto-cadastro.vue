@@ -266,6 +266,7 @@ export default class ProdutoForm extends Vue {
           "notification is-success",
           "Produto Cadastrado com sucesso!"
         );
+        this.$router.push('/produto-list')
       },
       (error) => {
         console.log(error.response);

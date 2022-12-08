@@ -112,13 +112,13 @@
             <div class="column is-12 table-produtos">
               <table class="table-list-produtos">
                 <tbody>
-                  <tr v-for="item in vendaProdutoList" :key="item.id">
+                  <tr v-for="(item, index) in vendaProdutoList" :key="item.id">
                     <th>{{ item.produto.nome }}</th>
                     <th>{{ item.produto.valorVenda }}</th>
                     <th>
                       <button
                         type="button"
-                        @click="setQuantidade('-')"
+                        @click="setQuantidade('-', index)"
                         class="botao menos"
                       >
                         -
@@ -126,7 +126,7 @@
                       {{ item.quantidade }}
                       <button
                         type="button"
-                        @click="setQuantidade('+')"
+                        @click="setQuantidade('+', index)"
                         class="botao mais"
                       >
                         +
@@ -157,8 +157,14 @@
                     type="number"
                     v-model="venda.valorDesconto"
                     placeholder="000"
-                    :disabled="model === 'detalhar' || model != 'detalhar'"
                   />
+                  <button
+                    type="button"
+                    class="button salvar"
+                    @click="calculaValoresVenda(vendaProduto)"
+                  >
+                    +
+                  </button>
                 </div>
               </div>
               <div class="venda-linha2 columns is-6 m-0 p-0">
@@ -181,7 +187,7 @@
                     type="number"
                     v-model="venda.valorRecebido"
                     placeholder="000"
-                    :disabled="model === 'detalhar' || model != 'detalhar'"
+                    v-on:change="calculaValoresVenda(vendaProduto)"
                   />
                 </div>
                 <div class="control column is-half pl-0">
@@ -195,7 +201,7 @@
                   />
                 </div>
               </div>
-              <div class="venda-linha4 columns is-6 m-0 p-0">
+              <!-- <div class="venda-linha4 columns is-6 m-0 p-0">
                 <div class="control column is-full pl-0">
                   <label class="label">Forma de pagamento</label>
                   <select class="input" id="cliente" v-model="venda.cliente.id">
@@ -211,7 +217,7 @@
                     </option>
                   </select>
                 </div>
-              </div>
+              </div> -->
               <div class="venda-linha5 columns is-6 m-0 p-0">
                 <div
                   class="opcoes column"
@@ -349,6 +355,7 @@ export default class vendaForm extends Vue {
   }
 
   public onClickCadastrar(): void {
+    debugger;
     this.vendaClient.cadastrar(this.venda).then(
       (success) => {
         this.notification = this.notification.new(
@@ -369,16 +376,6 @@ export default class vendaForm extends Vue {
     this.vendaProdutoList.forEach((element) => {
       this.vendaProdutoClient.cadastrar(element);
     });
-  }
-
-  public onClickAdicionarProduto(vendaProduto: VendaProduto): void {
-    debugger;
-    vendaProduto.venda = this.venda;
-    vendaProduto.produto = this.vendaProduto.produto;
-    vendaProduto.precoUnitario = this.vendaProduto.produto.valorVenda;
-    vendaProduto.precoFinal = this.vendaProduto.precoFinal;
-    vendaProduto.quantidade = 0;
-    this.vendaProdutoList.push(vendaProduto);
   }
 
   public onClickDeletar(): void {
@@ -458,15 +455,62 @@ export default class vendaForm extends Vue {
     }
   }
 
-  public setQuantidade(sinal: string): void {
+  public setQuantidade(sinal: string, index: number): void {
     debugger;
     if (sinal == "-") {
-      if (this.vendaProduto.quantidade != 0) {
-        this.vendaProduto.quantidade--;
+      if (this.vendaProdutoList[index].quantidade != 1) {
+        this.vendaProdutoList[index].quantidade--;
+        this.vendaProdutoList[index].precoFinal = this.vendaProdutoList[index].precoUnitario * this.vendaProdutoList[index].quantidade;
+        this.venda.valorTotal -= this.vendaProdutoList[index].precoUnitario;
+      } else {
+        this.vendaProdutoList.splice(index , 1)
       }
     } else {
-      this.vendaProduto.quantidade++;
+      this.vendaProdutoList[index].quantidade++;
+      this.vendaProdutoList[index].precoFinal = this.vendaProdutoList[index].precoUnitario * this.vendaProdutoList[index].quantidade;
+      this.venda.valorTotal += this.vendaProdutoList[index].precoUnitario;
     }
+    
+    this.calculaValoresVenda(this.vendaProdutoList[index]);
+    
+  }
+
+  public onClickAdicionarProduto(vendaProdutoNew: VendaProduto): void {
+    debugger;
+    if(vendaProdutoNew.produto.id != null){
+      vendaProdutoNew = new VendaProduto();
+      vendaProdutoNew.quantidade = 1;
+      vendaProdutoNew.venda = this.venda;
+      vendaProdutoNew.produto = this.vendaProduto.produto;
+      vendaProdutoNew.precoUnitario = this.vendaProduto.produto.valorVenda;
+      vendaProdutoNew.precoFinal = vendaProdutoNew.precoUnitario * vendaProdutoNew.quantidade;
+      if(this.venda.valorTotal == null){
+        this.venda.valorTotal = 0;
+        this.venda.valorDesconto = 0;
+        this.venda.valorFinal = 0;
+        this.venda.valorRecebido = 0;
+        this.venda.valorTroco = 0;
+      }
+      this.venda.valorTotal += vendaProdutoNew.precoFinal;
+    
+      this.calculaValoresVenda(vendaProdutoNew);
+      
+      this.vendaProdutoList.push(vendaProdutoNew);
+    }
+  }
+
+  public calculaValoresVenda(vendaProdutoNew: VendaProduto): void {
+    debugger;
+    
+
+      this.venda.valorFinal = this.venda.valorTotal - this.venda.valorDesconto;
+      
+
+      if(this.venda.valorRecebido > 0){
+        this.venda.valorTroco = this.venda.valorRecebido - this.venda.valorFinal
+      }
+      
+
   }
 
   // public formatCurrency(): void {
