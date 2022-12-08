@@ -7,9 +7,9 @@
       <p style="margin-left: 15px">Venda - Novo Registro</p>
     </div>
 
-    <form class="form columns is-12">
+    <form class="form columns is-12 mt-4">
       <div class="columns is-12 form-inputs">
-        <div class="column is-12 is-size-3 form-inputs">
+        <div class="column is-12 is-size-3 form-inputs pr-0">
           <div class="columns" v-if="notification.ativo">
             <div class="column is-12">
               <div :class="notification.classe">
@@ -21,16 +21,8 @@
               </div>
             </div>
           </div>
-          <div class="column linha0" style="display: flex">
-            <div class="column is-size-3" v-if="model === 'detalhar'">
-              <h1>Detalhes do Venda</h1>
-            </div>
-            <div class="column is-size-3" v-if="model === 'editar'">
-              <h1>Edição de Venda</h1>
-            </div>
-          </div>
-          <div class="linha1 columns is-12 m-0 p-0">
-            <div class="control column is-one-fifth pl-0">
+          <div class="linha1 columns is-12 m-0 pl-0 pr-0">
+            <div class="control column is-2 pl-0">
               <label class="label">ID</label>
               <input
                 class="input"
@@ -40,7 +32,7 @@
                 :disabled="model === 'detalhar' || model != 'detalhar'"
               />
             </div>
-            <div class="control column is-two-fifths">
+            <div class="control column is-3">
               <label class="label">Data</label>
               <input
                 class="input"
@@ -49,7 +41,7 @@
                 :disabled="model === 'detalhar' || model != 'detalhar'"
               />
             </div>
-            <div class="control column is-two-fifths">
+            <div class="control column">
               <label class="label">Vendedor</label>
               <select
                 class="input"
@@ -66,7 +58,7 @@
                 </option>
               </select>
             </div>
-            <div class="control column is-two-fifths">
+            <div class="control column pr-0">
               <label class="label">Cliente</label>
               <select class="input" id="cliente" v-model="venda.cliente.id">
                 <option value="" disabled selected>Lista de Clientes</option>
@@ -80,168 +72,163 @@
               </select>
             </div>
           </div>
-          <div class="linha2 columns is-8 m-0 p-0">
-            <div class="control column is-half">
-              <label class="label">Produto</label>
-              <select
-                class="input"
-                id="vendaProduto"
-                v-model="vendaProduto.produto"
-              >
-                <option value="" disabled selected>Lista de Produtos</option>
-                <option
-                  v-for="item in produtoList"
-                  v-bind:key="item.id"
-                  v-bind:value="item"
-                >
-                  {{ item.nome }}
-                </option>
-              </select>
-            </div>
-            <div>
-              <button
-                type="button"
-                class="button salvar"
-                @click="onClickAdicionarProduto(vendaProduto)"
-              >
-                +
-              </button>
-            </div>
-          </div>
-          <div class="linha3 columns is-8 m-0 p-0">
-            <div class="column is-12 table-produtos">
-              <table class="table-list-produtos">
-                <tbody>
-                  <tr v-for="(item, index) in vendaProdutoList" :key="item.id">
-                    <th>{{ item.produto.nome }}</th>
-                    <th>{{ item.produto.valorVenda }}</th>
-                    <th>
-                      <button
-                        type="button"
-                        @click="setQuantidade('-', index)"
-                        class="botao menos"
-                      >
-                        -
-                      </button>
-                      {{ item.quantidade }}
-                      <button
-                        type="button"
-                        @click="setQuantidade('+', index)"
-                        class="botao mais"
-                      >
-                        +
-                      </button>
-                    </th>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div class="linha4 column" style="display: flex; margin-top: 10px">
-            <div>
-              <div class="venda-linha1 columns is-6 m-0 p-0">
-                <div class="control column is-half pl-0">
-                  <label class="label">Total</label>
-                  <input
-                    class="input"
-                    type="number"
-                    v-model="venda.valorTotal"
-                    placeholder="000"
-                    :disabled="model === 'detalhar' || model != 'detalhar'"
-                  />
-                </div>
-                <div class="control column is-half pl-0">
-                  <label class="label">Desconto</label>
-                  <input
-                    class="input"
-                    type="number"
-                    v-model="venda.valorDesconto"
-                    placeholder="000"
-                  />
+          <div class="linha2 columns is-12 pr-0">
+            <div class="produto column is-7 pr-0">
+              <div class="column is-12">
+                <label class="label">Produto</label>
+                <div class="control" style="display: flex;">
+                  <select
+                  class="input "
+                  id="vendaProduto"
+                  v-model="vendaProduto.produto"
+                  >
+                    <option value="" disabled selected>Lista de Produtos</option>
+                    <option
+                      v-for="item in produtoList"
+                      v-bind:key="item.id"
+                      v-bind:value="item"
+                    >
+                      {{ item.nome }}
+                    </option>
+                  </select>
                   <button
                     type="button"
-                    class="button salvar"
-                    @click="calculaValoresVenda(vendaProduto)"
+                    class="button adicionar"
+                    @click="onClickAdicionarProduto(vendaProduto)"
                   >
                     +
                   </button>
                 </div>
               </div>
-              <div class="venda-linha2 columns is-6 m-0 p-0">
-                <div class="control column is-half pl-0">
-                  <label class="label">Total final</label>
-                  <input
-                    class="input"
-                    type="number"
-                    v-model="venda.valorFinal"
-                    placeholder="000"
-                    :disabled="model === 'detalhar' || model != 'detalhar'"
-                  />
-                </div>
-              </div>
-              <div class="venda-linha3 columns is-6 m-0 p-0">
-                <div class="control column is-half pl-0">
-                  <label class="label">Recebido</label>
-                  <input
-                    class="input"
-                    type="number"
-                    v-model="venda.valorRecebido"
-                    placeholder="000"
-                    v-on:change="calculaValoresVenda(vendaProduto)"
-                  />
-                </div>
-                <div class="control column is-half pl-0">
-                  <label class="label">Troco</label>
-                  <input
-                    class="input"
-                    type="number"
-                    v-model="venda.valorTroco"
-                    placeholder="000"
-                    :disabled="model === 'detalhar' || model != 'detalhar'"
-                  />
-                </div>
-              </div>
-              <!-- <div class="venda-linha4 columns is-6 m-0 p-0">
-                <div class="control column is-full pl-0">
-                  <label class="label">Forma de pagamento</label>
-                  <select class="input" id="cliente" v-model="venda.cliente.id">
-                    <option value="Forma de Pagamento" disabled selected>
-                      Lista de formas
-                    </option>
-                    <option
-                      v-for="item in clienteList"
-                      v-bind:key="item.id"
-                      v-bind:value="item.id"
-                    >
-                      {{ item.nome }}
-                    </option>
-                  </select>
-                </div>
-              </div> -->
-              <div class="venda-linha5 columns is-6 m-0 p-0">
-                <div
-                  class="opcoes column"
-                  v-if="model != 'detalhar' && model != 'editar'"
-                >
-                  <a type="button" href="/venda-list" class="button voltar">
-                    CANCELAR
-                  </a>
-                  <button
-                    type="button"
-                    class="button salvar"
-                    @click="onClickCadastrar()"
-                  >
-                    SALVAR
-                  </button>
+              <div class="column is-12 table-produtos">
+                <div style="background-color: #d4d4d4; height: 320px;">
+                  <table class="table-list-produtos">
+                    <tbody>
+                      <tr v-for="(item, index) in vendaProdutoList" :key="item.id">
+                        <th>{{ item.produto.nome }}</th>
+                        <th>{{ item.produto.valorVenda }}</th>
+                        <th>
+                          <button
+                            type="button"
+                            @click="setQuantidade('-', index)"
+                            class="botao menos"
+                          >
+                            -
+                          </button>
+                          {{ item.quantidade }}
+                          <button
+                            type="button"
+                            @click="setQuantidade('+', index)"
+                            class="botao mais"
+                          >
+                            +
+                          </button>
+                        </th>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
-
-            <div class="opcoes column" v-if="model === 'editar'">
-              <a href="/venda-list" class="button"> VOLTAR </a>
-              <button class="button salvar" @click="onClickSalvarAlteracao()">
-                SALVAR ALTERAÇÕES
-              </button>
+            <div class="valores column is-5 pr-0">
+              <div class="column is-12 pl-0 pr-0">
+                <div class="venda-linha1 columns is-6 m-0 p-0">
+                  <div class="control column is-6 pl-0">
+                    <label class="label">Total</label>
+                    <input
+                      class="input"
+                      type="number"
+                      v-model="venda.valorTotal"
+                      placeholder="000"
+                      :disabled="model === 'detalhar' || model != 'detalhar'"
+                    />
+                  </div>
+                  <div class="control column is-6 pl-0">
+                    <label class="label">Desconto</label>
+                    <input
+                      class="input"
+                      type="number"
+                      v-model="venda.valorDesconto"
+                      placeholder="000"
+                      v-on:change="calculaValoresVenda(vendaProduto)"
+                    />
+                  </div>
+                </div>
+                <div class="venda-linha2 columns is-6 m-0 p-0">
+                  <div class="control column is-half pl-0">
+                    <label class="label">Total final</label>
+                    <input
+                      class="input"
+                      type="number"
+                      v-model="venda.valorFinal"
+                      placeholder="000"
+                      :disabled="model === 'detalhar' || model != 'detalhar'"
+                    />
+                  </div>
+                </div>
+                <div class="venda-linha3 columns is-6 m-0 p-0">
+                  <div class="control column is-half pl-0">
+                    <label class="label">Recebido</label>
+                    <input
+                      class="input"
+                      type="number"
+                      v-model="venda.valorRecebido"
+                      placeholder="000"
+                      v-on:change="calculaValoresVenda(vendaProduto)"
+                    />
+                  </div>
+                  <div class="control column is-half pl-0">
+                    <label class="label">Troco</label>
+                    <input
+                      class="input"
+                      type="number"
+                      v-model="venda.valorTroco"
+                      placeholder="000"
+                      :disabled="model === 'detalhar' || model != 'detalhar'"
+                    />
+                  </div>
+                </div>
+                <!-- <div class="venda-linha4 columns is-6 m-0 p-0">
+                  <div class="control column is-full pl-0">
+                    <label class="label">Forma de pagamento</label>
+                    <select class="input" id="cliente" v-model="venda.cliente.id">
+                      <option value="Forma de Pagamento" disabled selected>
+                        Lista de formas
+                      </option>
+                      <option
+                        v-for="item in clienteList"
+                        v-bind:key="item.id"
+                        v-bind:value="item.id"
+                      >
+                        {{ item.nome }}
+                      </option>
+                    </select>
+                  </div>
+                </div> -->
+                <div class="venda-linha5 columns is-6 m-0 p-0">
+                  <div class="column is-6 pl-0">
+                    <!-- <a type="button" href="/venda-list" class="button voltar">
+                      CANCELAR
+                    </a> -->
+                    <button
+                      type="button"
+                      class="button voltar"
+                      @click="onClickCancelar()"
+                    >
+                      CANCELAR
+                    </button>
+                  </div>
+                  <div class="column is-6 pl-0">
+                    <button
+                      type="button"
+                      class="button salvar"
+                      @click="onClickCadastrar()"
+                    >
+                      SALVAR
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -397,6 +384,10 @@ export default class vendaForm extends Vue {
     );
   }
 
+  public onClickCancelar(): void {
+    this.$router.push("venda-list");
+  }
+
   public onClickPaginaEditar(idvenda: number) {
     this.$router.push({
       name: "venda-editar",
@@ -539,15 +530,12 @@ export default class vendaForm extends Vue {
 .table-produtos {
   width: 100%;
   background-color: #eaeaea;
-  margin-top: 5px;
-  justify-content: space-between;
 }
 
 .table-list-produtos {
   width: 100%;
   background: #d4d4d4;
   border-radius: 7px;
-  justify-content: space-between;
 }
 
 .pesquisaVenda {
@@ -596,6 +584,7 @@ export default class vendaForm extends Vue {
 }
 
 .form-inputs {
+  width: 100%;
   padding-left: 0 !important;
   margin-left: 0 !important;
 }
@@ -617,6 +606,20 @@ export default class vendaForm extends Vue {
   border-radius: 7px;
 }
 
+.produto{
+  padding-left: 0 !important;
+}
+
+.adicionar{
+  background-color: #1271ff;
+  color: #fff
+}
+
+.adicionar:hover{
+  background-color: #68a4ff;
+  color: #fff
+}
+
 ::placeholder {
   color: rgb(255, 255, 255);
 }
@@ -628,6 +631,7 @@ export default class vendaForm extends Vue {
 
 .ativo,
 .salvar {
+  width:100%;
   color: #fff !important;
   border-radius: 7px !important;
   background-color: #1bc856 !important;
@@ -635,6 +639,7 @@ export default class vendaForm extends Vue {
 
 .voltar,
 .inativo {
+  width:100%;
   color: #fff !important;
   border-radius: 7px !important;
   background-color: #e51a1a !important;
