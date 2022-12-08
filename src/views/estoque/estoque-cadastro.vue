@@ -1,12 +1,12 @@
 <template>
   <div class="container">
     <div class="title-box columns is-12 title is-4" v-if="model != 'detalhar' && model != 'editar'">
-      <p style="margin-left: 15px">Movimento de Estoque - Novo Produto</p>
+      <p style="margin-left: 15px">Estoque - Novo Registro</p>
     </div>
 
-    <form class="form columns is-12">
+    <form class="form columns is-12 mt-4">
       <div class="columns is-12 form-inputs">
-        <div class="column is-12 is-size-3 form-inputs">
+        <div class="column is-12 is-size-3 form-inputs pr-0">
           <div class="columns" v-if="notification.ativo">
             <div class="column is-12">
               <div :class="notification.classe">
@@ -15,64 +15,140 @@
               </div>
             </div>
           </div>
-          <div class="column linha0" style="display: flex">
-            <div class="column is-size-3" v-if="model === 'detalhar'">
-              <h1>Detalhes do Estoque</h1>
+          <div class="linha1 columns is-12 m-0 pl-0 pr-0">
+            <div class="control column is-2 pl-0">
+              <label class="label">ID</label>
+              <input class="input" type="number" v-model="venda.id" placeholder="000"
+                :disabled="model === 'detalhar' || model != 'detalhar'" />
             </div>
-            <div class="column is-size-3" v-if="model === 'editar'">
-              <h1>Edição do Estoque</h1>
+            <div class="control column is-3">
+              <label class="label">Data</label>
+              <input class="input" type="datetime" v-model="venda.data"
+                :disabled="model === 'detalhar' || model != 'detalhar'" />
+            </div>
+            <div class="control column">
+              <label class="label">Vendedor</label>
+              <select class="input" id="funcionario" v-model="venda.funcionario.id">
+                <option value="" disabled selected>Lista de Vendedores</option>
+                <option v-for="item in funcionarioList" v-bind:key="item.id" v-bind:value="item.id">
+                  {{ item.nome }}
+                </option>
+              </select>
+            </div>
+            <div class="control column pr-0">
+              <label class="label">Cliente</label>
+              <select class="input" id="cliente" v-model="venda.cliente.id">
+                <option value="" disabled selected>Lista de Clientes</option>
+                <option v-for="item in clienteList" v-bind:key="item.id" v-bind:value="item.id">
+                  {{ item.nome }}
+                </option>
+              </select>
             </div>
           </div>
-
-          <div class="linha1 column" style="display: flex">
-            <div class="control column is-one-fifth pl-0">
-              <label class="label">ID</label>
-              <input class="input" type="number" v-model="produto.id" placeholder="000"
-                :disabled="model === 'detalhar' || model != 'detalhar'" />
-            </div>
-            <div class="control column is-two-fifths">
-              <label class="label">Data</label>
-              <input class="input" type="datetime" v-model="produto.data"
-                :disabled="model === 'detalhar' || model != 'detalhar'" />
-            </div>
-            <div class="control column is-three-fifths">
-              <label class="label">Produto</label>
-              <div class="pesquisa" style="display: flex">
-                <input class="input" type="text" placeholder="Pesquisar..." />
-                <button class="button buscar">
-                  <img src="../imagens/mais.png" />
-                </button>
+          <div class="linha2 columns is-12 pr-0">
+            <div class="produto column is-7 pr-0">
+              <div class="column is-12">
+                <label class="label">Produto</label>
+                <div class="control" style="display: flex;">
+                  <select class="input " id="vendaProduto" v-model="vendaProduto.produto">
+                    <option value="" disabled selected>Lista de Produtos</option>
+                    <option v-for="item in produtoList" v-bind:key="item.id" v-bind:value="item">
+                      {{ item.nome }}
+                    </option>
+                  </select>
+                  <button type="button" class="button adicionar" @click="onClickAdicionarProduto(vendaProduto)">
+                    +
+                  </button>
+                </div>
+              </div>
+              <div class="column is-12 table-produtos">
+                <div style="background-color: #d4d4d4; height: 320px;">
+                  <table class="table-list-produtos">
+                    <tbody>
+                      <tr v-for="(item, index) in vendaProdutoList" :key="item.id">
+                        <th>{{ item.produto.nome }}</th>
+                        <th>{{ item.produto.valorVenda }}</th>
+                        <th>
+                          <button type="button" @click="setQuantidade('-', index)" class="botao menos">
+                            -
+                          </button>
+                          {{ item.quantidade }}
+                          <button type="button" @click="setQuantidade('+', index)" class="botao mais">
+                            +
+                          </button>
+                        </th>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
-          </div>
-
-          <div class="linha4 column" style="display: flex; margin-top: 10px">
-            <div class="opcoes column" v-if="model != 'detalhar' && model != 'editar'">
-              <button type="button" class="button" v-bind:class="[produto.ativo == true ? 'ativo' : 'inativo']"
-                @click="setStatus()">
-                {{ produto.ativo == true ? "ATIVO" : "INATIVO" }}
-              </button>
-              <a type="button" href="/produto-list" class="button voltar">
-                CANCELAR
-              </a>
-              <button type="button" class="button salvar" @click="onClickCadastrar()">
-                SALVAR
-              </button>
-            </div>
-            <div class="opcoes column" v-if="model === 'detalhar'">
-              <button class="button editar" @click="onClickPaginaEditar(produto.id)">
-                EDITAR
-              </button>
-              <a href="/produto-list" class="button"> VOLTAR </a>
-              <button class="button excluir" @click="onClickDeletar">
-                EXCLUIR
-              </button>
-            </div>
-            <div class="opcoes column" v-if="model === 'editar'">
-              <a href="/produto-list" class="button"> VOLTAR </a>
-              <button class="button salvar" @click="onClickSalvarAlteracao()">
-                SALVAR ALTERAÇÕES
-              </button>
+            <div class="valores column is-5 pr-0">
+              <div class="column is-12 pl-0 pr-0">
+                <div class="venda-linha1 columns is-6 m-0 p-0">
+                  <div class="control column is-6 pl-0">
+                    <label class="label">Total</label>
+                    <input class="input" type="number" v-model="venda.valorTotal" placeholder="000"
+                      :disabled="model === 'detalhar' || model != 'detalhar'" />
+                  </div>
+                  <div class="control column is-6 pl-0">
+                    <label class="label">Desconto</label>
+                    <input class="input" type="number" v-model="venda.valorDesconto" placeholder="000"
+                      v-on:change="calculaValoresVenda(vendaProduto)" />
+                  </div>
+                </div>
+                <div class="venda-linha2 columns is-6 m-0 p-0">
+                  <div class="control column is-half pl-0">
+                    <label class="label">Total final</label>
+                    <input class="input" type="number" v-model="venda.valorFinal" placeholder="000"
+                      :disabled="model === 'detalhar' || model != 'detalhar'" />
+                  </div>
+                </div>
+                <div class="venda-linha3 columns is-6 m-0 p-0">
+                  <div class="control column is-half pl-0">
+                    <label class="label">Recebido</label>
+                    <input class="input" type="number" v-model="venda.valorRecebido" placeholder="000"
+                      v-on:change="calculaValoresVenda(vendaProduto)" />
+                  </div>
+                  <div class="control column is-half pl-0">
+                    <label class="label">Troco</label>
+                    <input class="input" type="number" v-model="venda.valorTroco" placeholder="000"
+                      :disabled="model === 'detalhar' || model != 'detalhar'" />
+                  </div>
+                </div>
+                <!-- <div class="venda-linha4 columns is-6 m-0 p-0">
+                  <div class="control column is-full pl-0">
+                    <label class="label">Forma de pagamento</label>
+                    <select class="input" id="cliente" v-model="venda.cliente.id">
+                      <option value="Forma de Pagamento" disabled selected>
+                        Lista de formas
+                      </option>
+                      <option
+                        v-for="item in clienteList"
+                        v-bind:key="item.id"
+                        v-bind:value="item.id"
+                      >
+                        {{ item.nome }}
+                      </option>
+                    </select>
+                  </div>
+                </div> -->
+                <div class="venda-linha5 columns is-6 m-0 p-0">
+                  <div class="column is-6 pl-0">
+                    <!-- <a type="button" href="/venda-list" class="button voltar">
+                      CANCELAR
+                    </a> -->
+                    <button type="button" class="button voltar" @click="onClickCancelar()">
+                      CANCELAR
+                    </button>
+                  </div>
+                  <div class="column is-6 pl-0">
+                    <button type="button" class="button salvar" @click="onClickCadastrar()">
+                      SALVAR
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -80,29 +156,32 @@
     </form>
   </div>
 </template>
-
+  
 <script lang="ts">
 import { Vue } from "vue-class-component";
 import { Prop } from "vue-property-decorator";
 import moment from "moment";
 
-import { MovimentoEstoqueClient } from "@/client/movimentoEstoque.client";
-import { Produto } from "@/model/produto";
 import { MovimentoEstoque } from "@/model/movimentoEstoque";
+import { MovEstoqueProduto } from "@/model/movEstoqueProduto";
 import { Notification } from "@/model/notification";
+import { MovimentoEstoqueClient } from "@/client/movimentoEstoque.client";
 import { ProdutoClient } from "@/client/produto.client";
+import { Produto } from "@/model/produto";
 import { AbstractEntity } from "@/model/abstract-entity";
 import { PageRequest } from "@/model/page/page-request";
 import { PageResponse } from "@/model/page/page-response";
 
-export default class ProdutoForm extends Vue {
-  public produtoList: Produto[] = [];
-  public movimentoEstoqueClient: MovimentoEstoqueClient[] = [];
-  public produtoClient!: ProdutoClient;
+export default class vendaForm extends Vue {
   public abstractEntity: AbstractEntity = new AbstractEntity();
-  public produto: Produto = new Produto();
   public pageRequest: PageRequest = new PageRequest();
+  public pageResponse1: PageResponse<Produto> = new PageResponse();
   public pageResponse2: PageResponse<Produto> = new PageResponse();
+
+  public movimentoEstoque!: MovimentoEstoque;
+  public movimentoEstoqueClient!: MovimentoEstoqueClient;
+  public produtoList: Produto[] = [];
+  public produtoClient!: ProdutoClient;
   public notification: Notification = new Notification();
 
   @Prop({ type: Number, required: false })
@@ -114,31 +193,48 @@ export default class ProdutoForm extends Vue {
   public listarProduto(): void {
     this.produtoClient.findByFiltrosPaginado(this.pageRequest).then(
       (success) => {
-        this.pageResponse2 = success;
-        this.produtoList = this.pageResponse2.content;
+        this.pageResponse1 = success;
+        this.produtoList = this.pageResponse1.content;
+      },
+      (error) => console.log(error)
+    );
+  }
+
+  public listarMovimentoEstoque(): void {
+    this.movimentoEstoqueClient.findByFiltrosPaginado(this.pageRequest).then(
+      (success) => {
+        this.pageResponse4 = success;
+        this.vendaProdutoList = this.pageResponse4.content;
       },
       (error) => console.log(error)
     );
   }
 
   public mounted(): void {
-    this.produtoClient = new ProdutoClient();
-    var currentDate = moment().format("YYYY-MM-DD HH:mm:ss");
-    this.produto.data = currentDate;
-    this.carregarProduto();
+    this.clienteClient = new ClienteClient();
+    this.listarCliente();
+    this.funcionarioClient = new FuncionarioClient();
+    this.listarFuncionario();
     this.produtoClient = new ProdutoClient();
     this.listarProduto();
+    this.vendaProdutoClient = new VendaProdutoClient();
+    this.listarVendaProduto();
+    this.vendaClient = new VendaClient();
+    var currentDate = moment().format("YYYY-MM-DD HH:mm:ss");
+    this.venda.data = currentDate;
+    this.carregarVenda();
 
     console.log(this.model);
   }
 
   public onClickCadastrar(): void {
-    this.produtoClient.cadastrar(this.produto).then(
+    debugger;
+    this.vendaClient.cadastrar(this.venda).then(
       (success) => {
         this.notification = this.notification.new(
           true,
           "notification is-success",
-          "Produto Cadastrado com sucesso!"
+          "venda Cadastrado com sucesso!"
         );
       },
       (error) => {
@@ -150,15 +246,18 @@ export default class ProdutoForm extends Vue {
         );
       }
     );
+    this.vendaProdutoList.forEach((element) => {
+      this.vendaProdutoClient.cadastrar(element);
+    });
   }
 
   public onClickDeletar(): void {
-    this.produtoClient.desativar(this.produto).then(
+    this.vendaClient.desativar(this.venda).then(
       (sucess) => {
         this.notification = this.notification.new(
           true,
           "notification is-success",
-          "Produto foi Desativado com sucesso!"
+          "venda foi Desativado com sucesso!"
         );
       },
       (error) => {
@@ -171,21 +270,25 @@ export default class ProdutoForm extends Vue {
     );
   }
 
-  public onClickPaginaEditar(idProduto: number) {
+  public onClickCancelar(): void {
+    this.$router.push("venda-list");
+  }
+
+  public onClickPaginaEditar(idvenda: number) {
     this.$router.push({
-      name: "produto-editar",
-      params: { id: idProduto, model: "editar" },
+      name: "venda-editar",
+      params: { id: idvenda, model: "editar" },
     });
     console.log("ta chamando");
   }
 
   public onClickSalvarAlteracao(): void {
-    this.produtoClient.editar(this.produto).then(
+    this.vendaClient.editar(this.venda).then(
       (success) => {
         this.notification = this.notification.new(
           true,
           "notification is-success",
-          "Produto foi Editado com sucesso!"
+          "venda foi Editado com sucesso!"
         );
       },
       (error) => {
@@ -198,17 +301,15 @@ export default class ProdutoForm extends Vue {
     );
   }
 
-  public carregarProduto(): void {
-    console.log("carregarProduto" + this.id);
-    console.log("nome" + this.produto.nome);
-    this.produtoClient
+  public carregarVenda(): void {
+    this.vendaClient
       .findById(this.id)
       .then((value) => {
-        this.produto = value;
-        this.produto.data = moment(this.produto.cadastro).format(
+        this.venda = value;
+        this.venda.data = moment(this.venda.cadastro).format(
           "YYYY-MM-DD HH:mm:ss"
         );
-        console.log("produto" + value);
+        console.log("venda" + value);
       })
       .catch((error) => {
         console.log(error);
@@ -220,21 +321,128 @@ export default class ProdutoForm extends Vue {
   }
 
   public onClickLimpar(): void {
-    this.produto = new Produto();
+    this.venda = new Venda();
   }
 
   public setStatus(): void {
-    if (this.produto.ativo == false) {
-      this.produto.ativo = true;
+    if (this.venda.ativo == false) {
+      this.venda.ativo = true;
     } else {
-      this.produto.ativo = false;
+      this.venda.ativo = false;
     }
   }
 
+  public setQuantidade(sinal: string, index: number): void {
+    debugger;
+    if (sinal == "-") {
+      if (this.vendaProdutoList[index].quantidade != 1) {
+        this.vendaProdutoList[index].quantidade--;
+        this.vendaProdutoList[index].precoFinal = this.vendaProdutoList[index].precoUnitario * this.vendaProdutoList[index].quantidade;
+        this.venda.valorTotal -= this.vendaProdutoList[index].precoUnitario;
+      } else {
+        this.vendaProdutoList.splice(index, 1)
+      }
+    } else {
+      this.vendaProdutoList[index].quantidade++;
+      this.vendaProdutoList[index].precoFinal = this.vendaProdutoList[index].precoUnitario * this.vendaProdutoList[index].quantidade;
+      this.venda.valorTotal += this.vendaProdutoList[index].precoUnitario;
+    }
+
+    this.calculaValoresVenda(this.vendaProdutoList[index]);
+
+  }
+
+  public onClickAdicionarProduto(vendaProdutoNew: VendaProduto): void {
+    debugger;
+    if (vendaProdutoNew.produto.id != null) {
+      vendaProdutoNew = new VendaProduto();
+      vendaProdutoNew.quantidade = 1;
+      vendaProdutoNew.venda = this.venda;
+      vendaProdutoNew.produto = this.vendaProduto.produto;
+      vendaProdutoNew.precoUnitario = this.vendaProduto.produto.valorVenda;
+      vendaProdutoNew.precoFinal = vendaProdutoNew.precoUnitario * vendaProdutoNew.quantidade;
+      if (this.venda.valorTotal == null) {
+        this.venda.valorTotal = 0;
+        this.venda.valorDesconto = 0;
+        this.venda.valorFinal = 0;
+        this.venda.valorRecebido = 0;
+        this.venda.valorTroco = 0;
+      }
+      this.venda.valorTotal += vendaProdutoNew.precoFinal;
+
+      this.calculaValoresVenda(vendaProdutoNew);
+
+      this.vendaProdutoList.push(vendaProdutoNew);
+    }
+  }
+
+  public calculaValoresVenda(vendaProdutoNew: VendaProduto): void {
+    debugger;
+
+
+    this.venda.valorFinal = this.venda.valorTotal - this.venda.valorDesconto;
+
+
+    if (this.venda.valorRecebido > 0) {
+      this.venda.valorTroco = this.venda.valorRecebido - this.venda.valorFinal
+    }
+
+
+  }
+
+  // public formatCurrency(): void {
+  //   debugger;
+  //   console.log(this.venda.valorVenda)
+  //   this.venda.valorVenda = Number(this.venda.valorVenda).toFixed(2);
+  //   console.log(this.venda.valorVenda)
+  // }
+
+  // private created(): void { }
 }
 </script>
-
+  
 <style>
+.pesquisa-bar {
+  width: 100%;
+  margin-top: 40px;
+  justify-content: space-between;
+}
+
+.pesquisaVenda .input {
+  border-radius: 7px 0px 0px 7px;
+  background: #d4d4d4;
+}
+
+.table-produtos {
+  width: 100%;
+  background-color: #eaeaea;
+}
+
+.table-list-produtos {
+  width: 100%;
+  background: #d4d4d4;
+  border-radius: 7px;
+}
+
+.pesquisaVenda {
+  width: 100%;
+}
+
+.buscar {
+  border-radius: 0px 7px 7px 0px;
+  background-color: #b1b1b1;
+}
+
+.buscar img {
+  width: 19px;
+}
+
+.buscar:hover {
+  background-color: #b1b1b1c4;
+  outline: none;
+  border: none;
+}
+
 .notification {
   font-size: 18px;
 }
@@ -259,41 +467,15 @@ export default class ProdutoForm extends Vue {
   height: 50px;
 }
 
-.pesquisa-bar {
-  width: 100%;
-  margin-top: 40px;
-  justify-content: space-between;
-}
-
-.pesquisa button {
-  border-radius: 0px 7px 7px 0px;
-  background-color: #b1b1b1;
-}
-
-.buscar {
-  border-radius: 0px 7px 7px 0px;
-  background-color: #b1b1b1;
-}
-
-.buscar img {
-  width: 19px;
-}
-
-.buscar:hover {
-  background-color: #b1b1b1c4;
-  outline: none;
-  border: none;
-}
-
 .form {
   width: 100%;
 }
 
 .form-inputs {
+  width: 100%;
   padding-left: 0 !important;
   margin-left: 0 !important;
 }
-
 
 .linha1,
 .linha2,
@@ -312,6 +494,20 @@ export default class ProdutoForm extends Vue {
   border-radius: 7px;
 }
 
+.produto {
+  padding-left: 0 !important;
+}
+
+.adicionar {
+  background-color: #1271ff;
+  color: #fff
+}
+
+.adicionar:hover {
+  background-color: #68a4ff;
+  color: #fff
+}
+
 ::placeholder {
   color: rgb(255, 255, 255);
 }
@@ -323,6 +519,7 @@ export default class ProdutoForm extends Vue {
 
 .ativo,
 .salvar {
+  width: 100%;
   color: #fff !important;
   border-radius: 7px !important;
   background-color: #1bc856 !important;
@@ -330,6 +527,7 @@ export default class ProdutoForm extends Vue {
 
 .voltar,
 .inativo {
+  width: 100%;
   color: #fff !important;
   border-radius: 7px !important;
   background-color: #e51a1a !important;
