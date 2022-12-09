@@ -28,109 +28,70 @@
             </div>
 
 
-          <div class="linha2 columns is-12 pr-0">
-            <div class="produto column is-7 pr-0">
-              <div class="column is-12">
-                <label class="label">Produto</label>
-                <div class="control" style="display: flex;">
-                  <select class="input " id="movEstoqueProduto" v-model="movEstoqueProduto.produto">
-                    <option value="" disabled selected>Lista de Produtos</option>
-                    <option v-for="item in produtoList" v-bind:key="item.id" v-bind:value="item">
-                      {{ item.nome }}
-                    </option>
-                  </select>
-                  <button type="button" class="button adicionar" @click="onClickAdicionarProduto(movEstoqueProduto)">
-                    +
-                  </button>
-                </div>
-              </div>
-
-
-              <div class="column is-12 table-produtos">
-                <div style="background-color: #d4d4d4; height: 320px;">
-                  <table class="table-list-produtos">
-                    <tbody>
-                      <tr v-for="(item, index) in movEstoqueProdutoList" :key="item.id">
-                        <th>{{ item.produto.nome }}</th>
-                        <th>{{ item.produto.valorCusto }}</th>
-                        <th>
-                          <button type="button" @click="setQuantidade('-', index)" class="botao menos">
-                            -
-                          </button>
-                          {{ item.quantidade }}
-                          <button type="button" @click="setQuantidade('+', index)" class="botao mais">
-                            +
-                          </button>
-                        </th>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-            <div class="valores column is-5 pr-0">
-              <div class="column is-12 pl-0 pr-0">
-                <div class="venda-linha1 columns is-6 m-0 p-0">
-                  <div class="control column is-6 pl-0">
-                    <label class="label">Total</label>
-                    <input class="input" type="number" v-model="venda.valorTotal" placeholder="000"
-                      :disabled="model === 'detalhar' || model != 'detalhar'" />
-                  </div>
-                  <div class="control column is-6 pl-0">
-                    <label class="label">Desconto</label>
-                    <input class="input" type="number" v-model="venda.valorDesconto" placeholder="000"
-                      v-on:change="calculaValoresVenda(vendaProduto)" />
-                  </div>
-                </div>
-                <div class="venda-linha2 columns is-6 m-0 p-0">
-                  <div class="control column is-half pl-0">
-                    <label class="label">Total final</label>
-                    <input class="input" type="number" v-model="venda.valorFinal" placeholder="000"
-                      :disabled="model === 'detalhar' || model != 'detalhar'" />
-                  </div>
-                </div>
-                <div class="venda-linha3 columns is-6 m-0 p-0">
-                  <div class="control column is-half pl-0">
-                    <label class="label">Recebido</label>
-                    <input class="input" type="number" v-model="venda.valorRecebido" placeholder="000"
-                      v-on:change="calculaValoresVenda(vendaProduto)" />
-                  </div>
-                  <div class="control column is-half pl-0">
-                    <label class="label">Troco</label>
-                    <input class="input" type="number" v-model="venda.valorTroco" placeholder="000"
-                      :disabled="model === 'detalhar' || model != 'detalhar'" />
-                  </div>
-                </div>
-                <!-- <div class="venda-linha4 columns is-6 m-0 p-0">
-                  <div class="control column is-full pl-0">
-                    <label class="label">Forma de pagamento</label>
-                    <select class="input" id="cliente" v-model="venda.cliente.id">
-                      <option value="Forma de Pagamento" disabled selected>
-                        Lista de formas
-                      </option>
-                      <option
-                        v-for="item in clienteList"
-                        v-bind:key="item.id"
-                        v-bind:value="item.id"
-                      >
+            <div class="linha2 columns is-12 pr-0">
+              <div class="produto column is-7 pr-0">
+                <div class="column is-12">
+                  <label class="label">Produto</label>
+                  <div class="control" style="display: flex;">
+                    <select class="input " id="movEstoqueProduto" v-model="movEstoqueProduto.produto">
+                      <option value="" disabled selected>Lista de Produtos</option>
+                      <option v-for="item in produtoList" v-bind:key="item.id" v-bind:value="item">
                         {{ item.nome }}
                       </option>
                     </select>
+                    <button type="button" class="button adicionar" @click="onClickAdicionarProduto(movEstoqueProduto)">
+                      +
+                    </button>
                   </div>
-                </div> -->
-                <div class="venda-linha5 columns is-6 m-0 p-0">
-                  <div class="column is-6 pl-0">
-                    <!-- <a type="button" href="/venda-list" class="button voltar">
+                </div>
+
+
+                <div class="column is-12 table-produtos">
+                  <div style="background-color: #d4d4d4; height: 320px;">
+                    <table class="table-list-produtos">
+                      <tbody>
+                        <tr v-for="(item, index) in movEstoqueProdutoList" :key="item.id">
+                          <th>{{ item.produto.nome }}</th>
+                          <th>{{ item.produto.valorCusto }}</th>
+                          <th>
+                            <button type="button" @click="setQuantidade('-', index)" class="botao menos">
+                              -
+                            </button>
+                            {{ item.quantidade }}
+                            <button type="button" @click="setQuantidade('+', index)" class="botao mais">
+                              +
+                            </button>
+                          </th>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="valores column is-5 pr-0">
+                <div class="column is-12 pl-0 pr-0">
+                  <div class="venda-linha1 columns is-6 m-0 p-0">
+                    <div class="control column is-6 pl-0">
+                      <label class="label">Total</label>
+                      <input class="input" type="number" v-model="movimentoEstoque.valorTotal" placeholder="000"
+                        :disabled="model === 'detalhar' || model != 'detalhar'" />
+                    </div>
+
+                    <div class="venda-linha5 columns is-6 m-0 p-0">
+                      <div class="column is-6 pl-0">
+                        <!-- <a type="button" href="/venda-list" class="button voltar">
                       CANCELAR
                     </a> -->
-                    <button type="button" class="button voltar" @click="onClickCancelar()">
-                      CANCELAR
-                    </button>
-                  </div>
-                  <div class="column is-6 pl-0">
-                    <button type="button" class="button salvar" @click="onClickCadastrar()">
-                      SALVAR
-                    </button>
+                        <button type="button" class="button voltar" @click="onClickCancelar()">
+                          CANCELAR
+                        </button>
+                      </div>
+                      <div class="column is-6 pl-0">
+                        <button type="button" class="button salvar" @click="onClickCadastrar()">
+                          SALVAR
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -321,69 +282,34 @@ export default class EstoqueForm extends Vue {
   public setQuantidade(sinal: string, index: number): void {
     debugger;
     if (sinal == "-") {
-      if (this.vendaProdutoList[index].quantidade != 1) {
-        this.vendaProdutoList[index].quantidade--;
-        this.vendaProdutoList[index].precoFinal = this.vendaProdutoList[index].precoUnitario * this.vendaProdutoList[index].quantidade;
-        this.venda.valorTotal -= this.vendaProdutoList[index].precoUnitario;
+      if (this.movEstoqueProdutoList[index].quantidade != 1) {
+        this.movEstoqueProdutoList[index].quantidade--;
       } else {
-        this.vendaProdutoList.splice(index, 1)
+        this.movEstoqueProdutoList.splice(index, 1)
       }
     } else {
-      this.vendaProdutoList[index].quantidade++;
-      this.vendaProdutoList[index].precoFinal = this.vendaProdutoList[index].precoUnitario * this.vendaProdutoList[index].quantidade;
-      this.venda.valorTotal += this.vendaProdutoList[index].precoUnitario;
+      this.movEstoqueProdutoList[index].quantidade++;
     }
-
-    this.calculaValoresVenda(this.vendaProdutoList[index]);
 
   }
 
-  public onClickAdicionarProduto(vendaProdutoNew: VendaProduto): void {
+  public onClickAdicionarProduto(movEstoqueProdutoNew: MovEstoqueProduto): void {
     debugger;
-    if (vendaProdutoNew.produto.id != null) {
-      vendaProdutoNew = new VendaProduto();
-      vendaProdutoNew.quantidade = 1;
-      vendaProdutoNew.venda = this.venda;
-      vendaProdutoNew.produto = this.vendaProduto.produto;
-      vendaProdutoNew.precoUnitario = this.vendaProduto.produto.valorVenda;
-      vendaProdutoNew.precoFinal = vendaProdutoNew.precoUnitario * vendaProdutoNew.quantidade;
-      if (this.venda.valorTotal == null) {
-        this.venda.valorTotal = 0;
-        this.venda.valorDesconto = 0;
-        this.venda.valorFinal = 0;
-        this.venda.valorRecebido = 0;
-        this.venda.valorTroco = 0;
+    if (movEstoqueProdutoNew.produto.id != null) {
+      movEstoqueProdutoNew = new MovEstoqueProduto();
+      movEstoqueProdutoNew.quantidade = 1;
+      movEstoqueProdutoNew.movimentoEstoque = this.movimentoEstoque;
+      movEstoqueProdutoNew.produto = this.movEstoqueProduto.produto;
+      if (this.movimentoEstoque.valorTotal == null) {
+        this.movimentoEstoque.valorTotal = 0;
       }
-      this.venda.valorTotal += vendaProdutoNew.precoFinal;
+      this.movimentoEstoque.valorTotal += movEstoqueProdutoNew.precoFinal;
 
-      this.calculaValoresVenda(vendaProdutoNew);
 
-      this.vendaProdutoList.push(vendaProdutoNew);
+      this.movEstoqueProdutoList.push(movEstoqueProdutoNew);
     }
   }
 
-  public calculaValoresVenda(vendaProdutoNew: VendaProduto): void {
-    debugger;
-
-
-    this.venda.valorFinal = this.venda.valorTotal - this.venda.valorDesconto;
-
-
-    if (this.venda.valorRecebido > 0) {
-      this.venda.valorTroco = this.venda.valorRecebido - this.venda.valorFinal
-    }
-
-
-  }
-
-  // public formatCurrency(): void {
-  //   debugger;
-  //   console.log(this.venda.valorVenda)
-  //   this.venda.valorVenda = Number(this.venda.valorVenda).toFixed(2);
-  //   console.log(this.venda.valorVenda)
-  // }
-
-  // private created(): void { }
 }
 </script>
   
