@@ -46,13 +46,13 @@
               <select
                 class="input"
                 id="funcionario"
-                v-model="venda.funcionario.id"
+                v-model="venda.funcionario"
               >
                 <option value="" disabled selected>Lista de Vendedores</option>
                 <option
                   v-for="item in funcionarioList"
                   v-bind:key="item.id"
-                  v-bind:value="item.id"
+                  v-bind:value="item"
                 >
                   {{ item.nome }}
                 </option>
@@ -60,12 +60,12 @@
             </div>
             <div class="control column pr-0">
               <label class="label">Cliente</label>
-              <select class="input" id="cliente" v-model="venda.cliente.id">
+              <select class="input" id="cliente" v-model="venda.cliente">
                 <option value="" disabled selected>Lista de Clientes</option>
                 <option
                   v-for="item in clienteList"
                   v-bind:key="item.id"
-                  v-bind:value="item.id"
+                  v-bind:value="item"
                 >
                   {{ item.nome }}
                 </option>
@@ -100,33 +100,19 @@
                   </button>
                 </div>
               </div>
-              <div class="column is-12 table-produtos">
-                <div style="background-color: #d4d4d4; height: 320px;">
-                  <table class="table-list-produtos">
-                    <tbody>
-                      <tr v-for="(item, index) in vendaProdutoList" :key="item.id">
-                        <th>{{ item.produto.nome }}</th>
-                        <th>{{ item.produto.valorVenda }}</th>
-                        <th>
-                          <button
-                            type="button"
-                            @click="setQuantidade('-', index)"
-                            class="botao menos"
-                          >
-                            -
-                          </button>
-                          {{ item.quantidade }}
-                          <button
-                            type="button"
-                            @click="setQuantidade('+', index)"
-                            class="botao mais"
-                          >
-                            +
-                          </button>
-                        </th>
-                      </tr>
-                    </tbody>
-                  </table>
+              <div class="column is-12 prod-table-body">
+                <div class="prod-table-row" v-for="(item, index) in vendaProdutoList" :key="item.id">
+                  <div class="prod-table-cell" style="width: 60%; margin-left: 2.5%"><p>{{item.produto.nome}}</p></div>
+                  <div class="prod-table-cell" style="width: 30%;"><p>{{ item.precoFinal }}</p></div>
+                  <div class="prod-table-cell" style="width: 10%;">
+                    <button type="button" @click="setQuantidade('-', index)" class="botao menos">
+                      -
+                    </button>
+                      {{ item.quantidade }}
+                    <button type="button" @click="setQuantidade('+', index)" class="botao mais">
+                      +
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -212,7 +198,7 @@
                     </a> -->
                     <button
                       type="button"
-                      class="button voltar"
+                      class="button voltar-venda"
                       @click="onClickCancelar()"
                     >
                       CANCELAR
@@ -221,7 +207,7 @@
                   <div class="column is-6 pl-0">
                     <button
                       type="button"
-                      class="button salvar"
+                      class="button salvar-venda"
                       @click="onClickCadastrar()"
                     >
                       SALVAR
@@ -258,7 +244,6 @@ import { VendaProduto } from "@/model/vendaProduto";
 import { VendaProdutoClient } from "@/client/vendaProduto.client";
 
 export default class vendaForm extends Vue {
-  public abstractEntity: AbstractEntity = new AbstractEntity();
   public pageRequest: PageRequest = new PageRequest();
   public pageResponse: PageResponse<Cliente> = new PageResponse();
   public pageResponse2: PageResponse<Funcionario> = new PageResponse();
@@ -343,7 +328,8 @@ export default class vendaForm extends Vue {
 
   public onClickCadastrar(): void {
     debugger;
-    this.vendaClient.cadastrar(this.venda).then(
+    
+    this.vendaClient.cadastrar(this.venda, this.vendaProdutoList).then(
       (success) => {
         this.notification = this.notification.new(
           true,
@@ -360,9 +346,9 @@ export default class vendaForm extends Vue {
         );
       }
     );
-    this.vendaProdutoList.forEach((element) => {
-      this.vendaProdutoClient.cadastrar(element);
-    });
+    console.log(this.venda);
+    console.log(this.vendaProdutoList);
+    
   }
 
   public onClickDeletar(): void {
@@ -454,6 +440,7 @@ export default class vendaForm extends Vue {
         this.vendaProdutoList[index].precoFinal = this.vendaProdutoList[index].precoUnitario * this.vendaProdutoList[index].quantidade;
         this.venda.valorTotal -= this.vendaProdutoList[index].precoUnitario;
       } else {
+        this.venda.valorTotal -= this.vendaProdutoList[index].precoUnitario;
         this.vendaProdutoList.splice(index , 1)
       }
     } else {
@@ -525,11 +512,6 @@ export default class vendaForm extends Vue {
 .pesquisaVenda .input {
   border-radius: 7px 0px 0px 7px;
   background: #d4d4d4;
-}
-
-.table-produtos {
-  width: 100%;
-  background-color: #eaeaea;
 }
 
 .table-list-produtos {
@@ -620,6 +602,52 @@ export default class vendaForm extends Vue {
   color: #fff
 }
 
+.prod-table-body{
+  width: 90%;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  text-transform: uppercase;
+  font-size: 20px;
+  overflow-y: auto;
+}
+
+.prod-table-row{
+  width: 100%;
+  min-height: 40px;
+  background: #d4d4d4;
+  display: flex;
+  align-items: center;
+  border-radius: 7px;
+  font-size: 20px;
+  /* margin-top: 10p;s */
+  margin-bottom: 10px;
+  box-shadow: 0px 6px 9px rgba(0, 0, 0, 0.19);
+}
+
+/* width */
+.prod-table-body::-webkit-scrollbar {
+  width: 40px;
+}
+  
+  /* Track */
+.prod-table-body::-webkit-scrollbar-track {
+  background: #d4d4d4;
+  border-radius: 10px;
+}
+  
+  /* Handle */
+.prod-table-body::-webkit-scrollbar-thumb {
+  background: #B1B1B1;
+  border-radius: 10px;
+  box-shadow: 0px 4px 9px rgba(0, 0, 0, 0.10);
+}
+  
+  /* Handle on hover */
+.prod-table-body::-webkit-scrollbar-thumb:hover {
+  background: #a8a6a0;
+}
+
 ::placeholder {
   color: rgb(255, 255, 255);
 }
@@ -629,51 +657,34 @@ export default class vendaForm extends Vue {
   color: rgb(255, 255, 255);
 }
 
-.ativo,
-.salvar {
+.ativo-venda,
+.salvar-venda {
   width:100%;
   color: #fff !important;
   border-radius: 7px !important;
   background-color: #1bc856 !important;
 }
 
-.voltar,
-.inativo {
+.voltar-venda,
+.inativo-venda {
   width:100%;
   color: #fff !important;
   border-radius: 7px !important;
   background-color: #e51a1a !important;
 }
 
-.voltar:hover,
-.inativo:hover {
+.voltar-venda:hover,
+.inativo-venda:hover {
   color: #fff;
   background-color: #ff5353 !important;
   border: solid 1px #ff5353;
 }
 
-.salvar:hover,
-.ativo:hover {
+.salvar-venda:hover,
+.ativo-venda:hover {
   color: #fff;
   background-color: #34f374 !important;
   border: solid 1px #34f374;
 }
 
-.editar {
-  background-color: #11138d;
-}
-
-.editar:hover {
-  color: #fff;
-  background-color: #2125fd;
-}
-
-.excluir {
-  background-color: #641c1c;
-}
-
-.excluir:hover {
-  color: #fff;
-  background-color: #fa0909;
-}
 </style>

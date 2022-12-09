@@ -3,6 +3,7 @@ import axios, { AxiosInstance } from "axios";
 import { Venda } from "@/model/venda";
 import { PageRequest } from "@/model/page/page-request";
 import { PageResponse } from "@/model/page/page-response";
+import { VendaProduto } from "@/model/vendaProduto";
 
 
 export class VendaClient {
@@ -24,9 +25,9 @@ export class VendaClient {
         }
     }
 
-	public async cadastrar(venda: Venda): Promise<void> {
+	public async cadastrar(venda: Venda, vendaProdutos: VendaProduto[]): Promise<void> {
 		try {
-			return (await this.axiosClient.post('/', venda))
+			return (await this.axiosClient.post('/', {data: {venda, vendaProdutos}}))
 		} catch (error:any) {
 			return Promise.reject(error.response)
 		}
