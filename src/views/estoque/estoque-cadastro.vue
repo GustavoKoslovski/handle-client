@@ -298,7 +298,7 @@ export default class EstoqueForm extends Vue {
     if (movEstoqueProdutoNew.produto.id != null) {
       movEstoqueProdutoNew = new MovEstoqueProduto();
       movEstoqueProdutoNew.quantidade = 1;
-      movEstoqueProdutoNew.movimentoEstoque = this.movimentoEstoque;
+      movEstoqueProdutoNew.produto = this.movimentoEstoque;
       movEstoqueProdutoNew.produto = this.movEstoqueProduto.produto;
       if (this.movimentoEstoque.valorTotal == null) {
         this.movimentoEstoque.valorTotal = 0;

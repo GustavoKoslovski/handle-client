@@ -11,5 +11,6 @@ export class MovEstoqueProduto extends AbstractEntity {
     super();
     this.ativo = true;
     this.produto = new Produto();
+    this.movimentoEstoque = new MovimentoEstoque();
   }
 }
