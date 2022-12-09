@@ -303,7 +303,6 @@ export default class EstoqueForm extends Vue {
       if (this.movimentoEstoque.valorTotal == null) {
         this.movimentoEstoque.valorTotal = 0;
       }
-      this.movimentoEstoque.valorTotal += movEstoqueProdutoNew.precoFinal;
 
 
       this.movEstoqueProdutoList.push(movEstoqueProdutoNew);
