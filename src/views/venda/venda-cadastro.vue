@@ -27,7 +27,6 @@
               <input
                 class="input"
                 type="number"
-                v-model="venda.id"
                 placeholder="000"
                 :disabled="model === 'detalhar' || model != 'detalhar'"
               />
@@ -37,7 +36,6 @@
               <input
                 class="input"
                 type="datetime"
-                v-model="venda.data"
                 :disabled="model === 'detalhar' || model != 'detalhar'"
               />
             </div>
@@ -327,7 +325,7 @@ export default class vendaForm extends Vue {
   }
 
   public onClickCadastrar(): void {
-    debugger;
+    
     
     this.vendaClient.cadastrar(this.venda, this.vendaProdutoList).then(
       (success) => {

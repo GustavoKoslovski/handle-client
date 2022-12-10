@@ -293,21 +293,21 @@ export default class EstoqueForm extends Vue {
 
   }
 
-  public onClickAdicionarProduto(movEstoqueProdutoNew: MovEstoqueProduto): void {
-    debugger;
-    if (movEstoqueProdutoNew.produto.id != null) {
-      movEstoqueProdutoNew = new MovEstoqueProduto();
-      movEstoqueProdutoNew.quantidade = 1;
-      movEstoqueProdutoNew.produto = this.movimentoEstoque;
-      movEstoqueProdutoNew.produto = this.movEstoqueProduto.produto;
-      if (this.movimentoEstoque.valorTotal == null) {
-        this.movimentoEstoque.valorTotal = 0;
-      }
+  // // public onClickAdicionarProduto(movEstoqueProdutoNew: MovEstoqueProduto): void {
+  // //   debugger;
+  // //   if (movEstoqueProdutoNew.produto.id != null) {
+  // //     movEstoqueProdutoNew = new MovEstoqueProduto();
+  // //     movEstoqueProdutoNew.quantidade = 1;
+  // //     movEstoqueProdutoNew.produto = this.movimentoEstoque;
+  // //     movEstoqueProdutoNew.produto = this.movEstoqueProduto.produto;
+  // //     if (this.movimentoEstoque.valorTotal == null) {
+  // //       this.movimentoEstoque.valorTotal = 0;
+  // //     }
 
 
-      this.movEstoqueProdutoList.push(movEstoqueProdutoNew);
-    }
-  }
+  // //     this.movEstoqueProdutoList.push(movEstoqueProdutoNew);
+  // //   }
+  // // }
 
 }
 </script>
