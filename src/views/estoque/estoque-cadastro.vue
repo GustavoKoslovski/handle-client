@@ -21,86 +21,101 @@
               <input class="input" type="number" v-model="movimentoEstoque.id" placeholder="000"
                 :disabled="model === 'detalhar' || model != 'detalhar'" />
             </div>
-            <div class="control column is-3">
+            <div class="control column is-4">
               <label class="label">Data</label>
               <input class="input" type="datetime" v-model="movimentoEstoque.data"
                 :disabled="model === 'detalhar' || model != 'detalhar'" />
             </div>
 
 
-            <div class="linha2 columns is-12 pr-0">
-              <div class="produto column is-7 pr-0">
-                <div class="column is-12">
-                  <label class="label">Produto</label>
-                  <div class="control" style="display: flex;">
-                    <select class="input " id="movEstoqueProduto" v-model="movEstoqueProduto.produto">
-                      <option value="" disabled selected>Lista de Produtos</option>
-                      <option v-for="item in produtoList" v-bind:key="item.id" v-bind:value="item">
-                        {{ item.nome }}
-                      </option>
-                    </select>
-                    <button type="button" class="button adicionar" @click="onClickAdicionarProduto(movEstoqueProduto)">
+
+            <div class="control column is-6">
+              <label class="label">Produto</label>
+              <div class="control" style="display: flex;">
+                <select class="input " id="movEstoqueProduto" v-model="movEstoqueProduto.produto">
+                  <option value="" disabled selected>Lista de Produtos</option>
+                  <option v-for="item in produtoList" v-bind:key="item.id" v-bind:value="item">
+                    {{ item.nome }}
+                  </option>
+                </select>
+                <button type="button" class="button adicionar" @click="onClickAdicionarProduto(movEstoqueProduto)">
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="linha 4 columns is-12 prod-table-body">
+            <div class="prod-table-row" v-for="(item, index) in movEstoqueProdutoList" :key="item.id">
+                  <div class="prod-table-cell" style="width: 60%; margin-left: 2.5%"><p>{{item.produto.nome}}</p></div>
+                  <div class="prod-table-cell" style="width: 30%;"><p>{{ item.produto.valorCusto }}</p></div>
+                  <div class="prod-table-cell" style="width: 10%;">
+                    <button type="button" @click="setQuantidade('-', index)" class="botao menos">
+                      -
+                    </button>
+                      {{ item.quantidade }}
+                    <button type="button" @click="setQuantidade('+', index)" class="botao mais">
                       +
                     </button>
                   </div>
-                </div>
+            </div>
+             
 
 
-                <div class="column is-12 table-produtos">
-                  <div style="background-color: #d4d4d4; height: 320px;">
-                    <table class="table-list-produtos">
-                      <tbody>
-                        <tr v-for="(item, index) in movEstoqueProdutoList" :key="item.id">
-                          <th>{{ item.produto.nome }}</th>
-                          <th>{{ item.produto.valorCusto }}</th>
-                          <th>
-                            <button type="button" @click="setQuantidade('-', index)" class="botao menos">
-                              -
-                            </button>
-                            {{ item.quantidade }}
-                            <button type="button" @click="setQuantidade('+', index)" class="botao mais">
-                              +
-                            </button>
-                          </th>
-                        </tr>
-                      </tbody>
-                    </table>
+            <!-- <div class="control column is-8">
+              <div style="background-color: #d4d4d4; height: 320px;">
+                <table class="table-list-produtos">
+                  <tbody>
+                    <tr v-for="(item, index) in movEstoqueProdutoList" :key="item.id">
+                      <th>{{ item.produto.nome }}</th>
+                      <th>{{ item.produto.valorCusto }}</th>
+                      <th>
+                        <button type="button" @click="setQuantidade('-', index)" class="botao menos">
+                          -
+                        </button>
+                        {{ item.quantidade }}
+                        <button type="button" @click="setQuantidade('+', index)" class="botao mais">
+                          +
+                        </button>
+                      </th>
+                    </tr>
+                  </tbody>
+                </table>
+              </div> -->
+            </div>
+            <div class="valores column is-5 pr-0">
+              <div class="column is-12 pl-0 pr-0">
+                <div class="venda-linha1 columns is-6 m-0 p-0">
+                  <div class="control column is-4">
+                    <label class="label">Total</label>
+                    <input class="input" type="number" v-model="movimentoEstoque.valorTotal" placeholder="000"
+                      :disabled="model === 'detalhar' || model != 'detalhar'" />
                   </div>
                 </div>
-              </div>
-              <div class="valores column is-5 pr-0">
-                <div class="column is-12 pl-0 pr-0">
-                  <div class="venda-linha1 columns is-6 m-0 p-0">
-                    <div class="control column is-6 pl-0">
-                      <label class="label">Total</label>
-                      <input class="input" type="number" v-model="movimentoEstoque.valorTotal" placeholder="000"
-                        :disabled="model === 'detalhar' || model != 'detalhar'" />
-                    </div>
 
-                    <div class="venda-linha5 columns is-6 m-0 p-0">
-                      <div class="column is-6 pl-0">
-                        <!-- <a type="button" href="/venda-list" class="button voltar">
+
+                <div class="venda-linha5 columns is-6 m-0 p-0">
+                  <div class="column is-6 pl-0">
+                    <!-- <a type="button" href="/venda-list" class="button voltar">
                       CANCELAR
                     </a> -->
-                        <button type="button" class="button voltar" @click="onClickCancelar()">
-                          CANCELAR
-                        </button>
-                      </div>
-                      <div class="column is-6 pl-0">
-                        <button type="button" class="button salvar" @click="onClickCadastrar()">
-                          SALVAR
-                        </button>
-                      </div>
-                    </div>
+                    <button type="button" class="button voltar" @click="onClickCancelar()">
+                      CANCELAR
+                    </button>
+                  </div>
+                  <div class="column is-6 pl-0">
+                    <button type="button" class="button salvar" @click="onClickCadastrar()">
+                      SALVAR
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </form>
-  </div>
+      </form>
+    </div>
 </template>
   
 <script lang="ts">
@@ -293,21 +308,20 @@ export default class EstoqueForm extends Vue {
 
   }
 
-  // // public onClickAdicionarProduto(movEstoqueProdutoNew: MovEstoqueProduto): void {
-  // //   debugger;
-  // //   if (movEstoqueProdutoNew.produto.id != null) {
-  // //     movEstoqueProdutoNew = new MovEstoqueProduto();
-  // //     movEstoqueProdutoNew.quantidade = 1;
-  // //     movEstoqueProdutoNew.produto = this.movimentoEstoque;
-  // //     movEstoqueProdutoNew.produto = this.movEstoqueProduto.produto;
-  // //     if (this.movimentoEstoque.valorTotal == null) {
-  // //       this.movimentoEstoque.valorTotal = 0;
-  // //     }
+  public onClickAdicionarProduto(movEstoqueProdutoNew: MovEstoqueProduto): void {
+    debugger;
+    if (movEstoqueProdutoNew.produto.id != null) {
+      movEstoqueProdutoNew = new MovEstoqueProduto();
+      movEstoqueProdutoNew.quantidade = 1;
+      movEstoqueProdutoNew.produto = this.movEstoqueProduto.produto;
+      if (this.movimentoEstoque.valorTotal == null) {
+        this.movimentoEstoque.valorTotal = 0;
+      }
 
 
-  // //     this.movEstoqueProdutoList.push(movEstoqueProdutoNew);
-  // //   }
-  // // }
+      this.movEstoqueProdutoList.push(movEstoqueProdutoNew);
+    }
+  }
 
 }
 </script>
@@ -334,6 +348,7 @@ export default class EstoqueForm extends Vue {
   background: #d4d4d4;
   border-radius: 7px;
 }
+
 
 .pesquisaVenda {
   width: 100%;
@@ -403,6 +418,52 @@ export default class EstoqueForm extends Vue {
   background-color: #d4d4d4;
   color: rgb(0, 0, 0);
   border-radius: 7px;
+}
+
+.prod-table-body{
+  width: 90%;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  text-transform: uppercase;
+  font-size: 20px;
+  overflow-y: auto;
+}
+
+.prod-table-row{
+  width: 100%;
+  min-height: 40px;
+  background: #d4d4d4;
+  display: flex;
+  align-items: center;
+  border-radius: 7px;
+  font-size: 20px;
+  /* margin-top: 10p;s */
+  margin-bottom: 10px;
+  box-shadow: 0px 6px 9px rgba(0, 0, 0, 0.19);
+}
+
+/* width */
+.prod-table-body::-webkit-scrollbar {
+  width: 40px;
+}
+  
+  /* Track */
+.prod-table-body::-webkit-scrollbar-track {
+  background: #d4d4d4;
+  border-radius: 10px;
+}
+  
+  /* Handle */
+.prod-table-body::-webkit-scrollbar-thumb {
+  background: #B1B1B1;
+  border-radius: 10px;
+  box-shadow: 0px 4px 9px rgba(0, 0, 0, 0.10);
+}
+  
+  /* Handle on hover */
+.prod-table-body::-webkit-scrollbar-thumb:hover {
+  background: #a8a6a0;
 }
 
 .produto {
