@@ -6,6 +6,8 @@ export class MovEstoqueProduto extends AbstractEntity {
   produto!: Produto;
   movimentoEstoque!: MovimentoEstoque;
   quantidade!: number;
+  precoUnitario!: number;
+  precoFinal!: number;
 
   constructor() {
     super();

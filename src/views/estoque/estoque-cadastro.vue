@@ -45,77 +45,55 @@
             </div>
           </div>
 
-
-          <div class="linha 4 columns is-12 prod-table-body">
+          <div class="column is-6 prod-table-body" style="display:flex">
             <div class="prod-table-row" v-for="(item, index) in movEstoqueProdutoList" :key="item.id">
-                  <div class="prod-table-cell" style="width: 60%; margin-left: 2.5%"><p>{{item.produto.nome}}</p></div>
-                  <div class="prod-table-cell" style="width: 30%;"><p>{{ item.produto.valorCusto }}</p></div>
-                  <div class="prod-table-cell" style="width: 10%;">
-                    <button type="button" @click="setQuantidade('-', index)" class="botao menos">
-                      -
-                    </button>
-                      {{ item.quantidade }}
-                    <button type="button" @click="setQuantidade('+', index)" class="botao mais">
-                      +
-                    </button>
-                  </div>
+              <div class="prod-table-cell" style="width: 50%; margin-left: 2.5%">
+                <p>{{ item.produto.nome }}</p>
+              </div>
+              <div class="prod-table-cell" style="width: 25%;">
+                <p>{{ item.produto.valorCusto }}</p>
+              </div>
+              <div class="prod-table-cell" style="width: 20%;">
+                <button type="button" @click="setQuantidade('-', index)" class="botao menos">
+                  -
+                </button>
+                {{ item.quantidade }}
+                <button type="button" @click="setQuantidade('+', index)" class="botao mais">
+                  +
+                </button>
+              </div>
             </div>
-             
+          </div>
 
+          <div class="column is-6 pl-0 ">
+            <button type="button" class="button status" @click="onClickCancelar()">
+              <p>TOTAL: </p>
+            </button>
+          </div>
 
-            <!-- <div class="control column is-8">
-              <div style="background-color: #d4d4d4; height: 320px;">
-                <table class="table-list-produtos">
-                  <tbody>
-                    <tr v-for="(item, index) in movEstoqueProdutoList" :key="item.id">
-                      <th>{{ item.produto.nome }}</th>
-                      <th>{{ item.produto.valorCusto }}</th>
-                      <th>
-                        <button type="button" @click="setQuantidade('-', index)" class="botao menos">
-                          -
-                        </button>
-                        {{ item.quantidade }}
-                        <button type="button" @click="setQuantidade('+', index)" class="botao mais">
-                          +
-                        </button>
-                      </th>
-                    </tr>
-                  </tbody>
-                </table>
-              </div> -->
-            </div>
-            <div class="valores column is-5 pr-0">
-              <div class="column is-12 pl-0 pr-0">
-                <div class="venda-linha1 columns is-6 m-0 p-0">
-                  <div class="control column is-4">
-                    <label class="label">Total</label>
-                    <input class="input" type="number" v-model="movimentoEstoque.valorTotal" placeholder="000"
-                      :disabled="model === 'detalhar' || model != 'detalhar'" />
-                  </div>
-                </div>
-
-
-                <div class="venda-linha5 columns is-6 m-0 p-0">
-                  <div class="column is-6 pl-0">
-                    <!-- <a type="button" href="/venda-list" class="button voltar">
+          <div class="opcoes column is-5 pr-0">
+            <div class="column is-12 pl-0 pr-0">
+              <div class="venda-linha5 columns is-6 m-0 p-0">
+                <div class="column is-6 pl-0">
+                  <!-- <a type="button" href="/venda-list" class="button voltar">
                       CANCELAR
                     </a> -->
-                    <button type="button" class="button voltar" @click="onClickCancelar()">
-                      CANCELAR
-                    </button>
-                  </div>
-                  <div class="column is-6 pl-0">
-                    <button type="button" class="button salvar" @click="onClickCadastrar()">
-                      SALVAR
-                    </button>
-                  </div>
+                  <button type="button" class="button voltar" @click="onClickCancelar()">
+                    CANCELAR
+                  </button>
+                </div>
+                <div class="column is-6 pl-0">
+                  <button type="button" class="button salvar" @click="onClickCadastrar()">
+                    SALVAR
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
+  </div>
 </template>
   
 <script lang="ts">
@@ -190,7 +168,6 @@ export default class EstoqueForm extends Vue {
   }
 
   public onClickCadastrar(): void {
-    debugger;
     this.movimentoEstoqueClient.cadastrar(this.movimentoEstoque).then(
       (success) => {
         this.notification = this.notification.new(
@@ -299,11 +276,16 @@ export default class EstoqueForm extends Vue {
     if (sinal == "-") {
       if (this.movEstoqueProdutoList[index].quantidade != 1) {
         this.movEstoqueProdutoList[index].quantidade--;
+        this.movEstoqueProdutoList[index].precoFinal = this.movEstoqueProdutoList[index].precoUnitario * this.movEstoqueProdutoList[index].quantidade;
+        this.movimentoEstoque.valorTotal -= this.movEstoqueProdutoList[index].precoUnitario;
       } else {
+        this.movimentoEstoque.valorTotal -= this.movEstoqueProdutoList[index].precoUnitario;
         this.movEstoqueProdutoList.splice(index, 1)
       }
     } else {
       this.movEstoqueProdutoList[index].quantidade++;
+      this.movEstoqueProdutoList[index].precoFinal = this.movEstoqueProdutoList[index].precoUnitario * this.movEstoqueProdutoList[index].quantidade;
+      this.movimentoEstoque.valorTotal += this.movEstoqueProdutoList[index].precoUnitario;
     }
 
   }
@@ -314,10 +296,12 @@ export default class EstoqueForm extends Vue {
       movEstoqueProdutoNew = new MovEstoqueProduto();
       movEstoqueProdutoNew.quantidade = 1;
       movEstoqueProdutoNew.produto = this.movEstoqueProduto.produto;
+      movEstoqueProdutoNew.precoUnitario = this.movEstoqueProduto.produto.valorCusto;
+      movEstoqueProdutoNew.precoFinal = movEstoqueProdutoNew.precoUnitario * movEstoqueProdutoNew.quantidade;
       if (this.movimentoEstoque.valorTotal == null) {
         this.movimentoEstoque.valorTotal = 0;
       }
-
+      this.movimentoEstoque.valorTotal += movEstoqueProdutoNew.precoFinal;
 
       this.movEstoqueProdutoList.push(movEstoqueProdutoNew);
     }
@@ -410,6 +394,7 @@ export default class EstoqueForm extends Vue {
   padding: 0 !important;
 }
 
+
 .control {
   padding-top: 0;
 }
@@ -420,7 +405,7 @@ export default class EstoqueForm extends Vue {
   border-radius: 7px;
 }
 
-.prod-table-body{
+.prod-table-body {
   width: 90%;
   height: 400px;
   display: flex;
@@ -430,7 +415,7 @@ export default class EstoqueForm extends Vue {
   overflow-y: auto;
 }
 
-.prod-table-row{
+.prod-table-row {
   width: 100%;
   min-height: 40px;
   background: #d4d4d4;
@@ -447,21 +432,21 @@ export default class EstoqueForm extends Vue {
 .prod-table-body::-webkit-scrollbar {
   width: 40px;
 }
-  
-  /* Track */
+
+/* Track */
 .prod-table-body::-webkit-scrollbar-track {
   background: #d4d4d4;
   border-radius: 10px;
 }
-  
-  /* Handle */
+
+/* Handle */
 .prod-table-body::-webkit-scrollbar-thumb {
   background: #B1B1B1;
   border-radius: 10px;
   box-shadow: 0px 4px 9px rgba(0, 0, 0, 0.10);
 }
-  
-  /* Handle on hover */
+
+/* Handle on hover */
 .prod-table-body::-webkit-scrollbar-thumb:hover {
   background: #a8a6a0;
 }
