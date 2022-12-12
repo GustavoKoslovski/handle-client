@@ -3,7 +3,6 @@
     <div class="title-box columns is-12 title is-4" v-if="model != 'detalhar' && model != 'editar'">
       <p style="margin-left: 15px">Estoque - Novo Registro</p>
     </div>
-
     <form class="form columns is-12 mt-4">
       <div class="columns is-12 form-inputs">
         <div class="column is-12 is-size-3 form-inputs pr-0">
@@ -26,9 +25,6 @@
               <input class="input" type="datetime" v-model="movimentoEstoque.data"
                 :disabled="model === 'detalhar' || model != 'detalhar'" />
             </div>
-
-
-
             <div class="control column is-6">
               <label class="label">Produto</label>
               <div class="control" style="display: flex;">
@@ -45,13 +41,14 @@
             </div>
           </div>
 
-          <div class="column is-6 prod-table-body" style="display:flex">
+          <div class="columns is-12 " >
+          <div class="column is-6 prod-table-body" style="margin-top: 4px;" >
             <div class="prod-table-row" v-for="(item, index) in movEstoqueProdutoList" :key="item.id">
               <div class="prod-table-cell" style="width: 50%; margin-left: 2.5%">
                 <p>{{ item.produto.nome }}</p>
               </div>
               <div class="prod-table-cell" style="width: 25%;">
-                <p>{{ item.produto.valorCusto }}</p>
+                <p>R$ {{ item.produto.valorCusto }},00</p>
               </div>
               <div class="prod-table-cell" style="width: 20%;">
                 <button type="button" @click="setQuantidade('-', index)" class="botao menos">
@@ -64,17 +61,27 @@
               </div>
             </div>
           </div>
-
-          <div class="column is-6 pl-0 ">
-            <button type="button" class="button status" @click="onClickCancelar()">
-              <p>TOTAL: </p>
-            </button>
+          <div class="formDados">
+          <div class="column is-6 ">
+            <button type="button" class="button-saida"
+                v-bind:class="[movimentoEstoque.tipoMovimento == true ? 'entrada' : 'saida']" @click="setStatusMovimento()">
+                {{ movimentoEstoque.tipoMovimento == true ? "ENTRADA" : "SAIDA" }} 
+              </button>
           </div>
-
-          <div class="opcoes column is-5 pr-0">
+          <div class="control column is-6" style="display:flex; align-items: center; margin-top: 3vh;" >
+              <label class="label" style=" width: 6vw ">Total Final:</label>
+              <input 
+                class="input"
+                type="number"
+                v-model="movimentoEstoque.valor"
+                placeholder="000"
+                :disabled="model === 'detalhar' || model != 'detalhar'"
+              />
+            </div>
+          <div class="column is-9 pr-0">
             <div class="column is-12 pl-0 pr-0">
               <div class="venda-linha5 columns is-6 m-0 p-0">
-                <div class="column is-6 pl-0">
+                <div class="opcoes column is-6 pl-0 ">
                   <!-- <a type="button" href="/venda-list" class="button voltar">
                       CANCELAR
                     </a> -->
@@ -89,7 +96,9 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div>      
+        </div>
+        </div>
         </div>
       </div>
     </form>
@@ -158,18 +167,21 @@ export default class EstoqueForm extends Vue {
     this.produtoClient = new ProdutoClient();
     this.listarProduto();
     this.movEstoqueProdutoClient = new MovEstoqueProdutoClient();
-    this.listarMovimentoProduto();
     this.movimentoEstoqueClient = new MovimentoEstoqueClient();
     var currentDate = moment().format("YYYY-MM-DD HH:mm:ss");
     this.movimentoEstoque.data = currentDate;
-    this.carregarEstoque();
-
-    console.log(this.model);
   }
 
   public onClickCadastrar(): void {
     this.movimentoEstoqueClient.cadastrar(this.movimentoEstoque).then(
       (success) => {
+         if(success != null){
+           this.movEstoqueProdutoList.map((movimento) => {
+
+           movimento.movimentoEstoque = success;
+            this.movEstoqueProdutoClient.cadastrar(movimento)
+         })
+      }
         this.notification = this.notification.new(
           true,
           "notification is-success",
@@ -185,9 +197,6 @@ export default class EstoqueForm extends Vue {
         );
       }
     );
-    this.movEstoqueProdutoList.forEach((element) => {
-      this.movEstoqueProdutoClient.cadastrar(element);
-    });
   }
 
   public onClickDeletar(): void {
@@ -263,49 +272,56 @@ export default class EstoqueForm extends Vue {
     this.movimentoEstoque = new MovimentoEstoque();
   }
 
-  public setStatus(): void {
-    if (this.movimentoEstoque.ativo == false) {
-      this.movimentoEstoque.ativo = true;
+  public setStatusMovimento(): void {
+    if (this.movimentoEstoque.tipoMovimento == false) {
+      this.movimentoEstoque.tipoMovimento = true;
     } else {
-      this.movimentoEstoque.ativo = false;
+      this.movimentoEstoque.tipoMovimento = false;
     }
   }
 
   public setQuantidade(sinal: string, index: number): void {
-    debugger;
     if (sinal == "-") {
       if (this.movEstoqueProdutoList[index].quantidade != 1) {
         this.movEstoqueProdutoList[index].quantidade--;
         this.movEstoqueProdutoList[index].precoFinal = this.movEstoqueProdutoList[index].precoUnitario * this.movEstoqueProdutoList[index].quantidade;
-        this.movimentoEstoque.valorTotal -= this.movEstoqueProdutoList[index].precoUnitario;
+        this.movimentoEstoque.valor -= this.movEstoqueProdutoList[index].precoUnitario;
       } else {
-        this.movimentoEstoque.valorTotal -= this.movEstoqueProdutoList[index].precoUnitario;
+        this.movimentoEstoque.valor -= this.movEstoqueProdutoList[index].precoUnitario;
         this.movEstoqueProdutoList.splice(index, 1)
       }
     } else {
       this.movEstoqueProdutoList[index].quantidade++;
       this.movEstoqueProdutoList[index].precoFinal = this.movEstoqueProdutoList[index].precoUnitario * this.movEstoqueProdutoList[index].quantidade;
-      this.movimentoEstoque.valorTotal += this.movEstoqueProdutoList[index].precoUnitario;
+      this.movimentoEstoque.valor += this.movEstoqueProdutoList[index].precoUnitario;
     }
 
   }
 
   public onClickAdicionarProduto(movEstoqueProdutoNew: MovEstoqueProduto): void {
-    debugger;
     if (movEstoqueProdutoNew.produto.id != null) {
       movEstoqueProdutoNew = new MovEstoqueProduto();
       movEstoqueProdutoNew.quantidade = 1;
       movEstoqueProdutoNew.produto = this.movEstoqueProduto.produto;
       movEstoqueProdutoNew.precoUnitario = this.movEstoqueProduto.produto.valorCusto;
       movEstoqueProdutoNew.precoFinal = movEstoqueProdutoNew.precoUnitario * movEstoqueProdutoNew.quantidade;
-      if (this.movimentoEstoque.valorTotal == null) {
-        this.movimentoEstoque.valorTotal = 0;
+      if (this.movimentoEstoque.valor == null) {
+        this.movimentoEstoque.valor = 0;
       }
-      this.movimentoEstoque.valorTotal += movEstoqueProdutoNew.precoFinal;
+      if(this.movimentoEstoque.tipoMovimento == null){
+        this.movimentoEstoque.tipoMovimento = false;
+        this.movEstoqueProduto.produto.quantidade -= movEstoqueProdutoNew.quantidade;
+      }
+      else(this.movEstoqueProduto.produto.quantidade += movEstoqueProdutoNew.quantidade)
+
+      this.movimentoEstoque.valor += movEstoqueProdutoNew.precoFinal;
+       
 
       this.movEstoqueProdutoList.push(movEstoqueProdutoNew);
     }
   }
+
+  
 
 }
 </script>
@@ -381,6 +397,15 @@ export default class EstoqueForm extends Vue {
   width: 100%;
 }
 
+
+.formDados{
+  margin-top: 30px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .form-inputs {
   width: 100%;
   padding-left: 0 !important;
@@ -393,6 +418,7 @@ export default class EstoqueForm extends Vue {
 .linha4 {
   padding: 0 !important;
 }
+
 
 
 .control {
@@ -427,6 +453,8 @@ export default class EstoqueForm extends Vue {
   margin-bottom: 10px;
   box-shadow: 0px 6px 9px rgba(0, 0, 0, 0.19);
 }
+
+
 
 /* width */
 .prod-table-body::-webkit-scrollbar {
@@ -474,7 +502,16 @@ export default class EstoqueForm extends Vue {
   color: rgb(255, 255, 255);
 }
 
-.ativo,
+.button-saida{
+  height: 20vh;
+  width: 90%;
+  text-transform: uppercase;
+  font-size: 35px;
+  align-items: center;
+  border: none;
+}
+
+.entrada,
 .salvar {
   width: 100%;
   color: #fff !important;
@@ -483,7 +520,7 @@ export default class EstoqueForm extends Vue {
 }
 
 .voltar,
-.inativo {
+.saida {
   width: 100%;
   color: #fff !important;
   border-radius: 7px !important;

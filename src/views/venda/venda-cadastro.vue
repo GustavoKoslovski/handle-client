@@ -26,6 +26,7 @@
               <label class="label">ID</label>
               <input
                 class="input"
+                id="id"
                 type="number"
                 placeholder="000"
                 :disabled="model === 'detalhar' || model != 'detalhar'"
@@ -35,6 +36,7 @@
               <label class="label">Data</label>
               <input
                 class="input"
+                id="cadastro"
                 v-model="venda.data"
                 type="datetime"
                 :disabled="model === 'detalhar' || model != 'detalhar'"
@@ -102,7 +104,7 @@
               <div class="column is-12 prod-table-body">
                 <div class="prod-table-row" v-for="(item, index) in vendaProdutoList" :key="item.id">
                   <div class="prod-table-cell" style="width: 60%; margin-left: 2.5%"><p>{{item.produto.nome}}</p></div>
-                  <div class="prod-table-cell" style="width: 30%;"><p>{{ item.precoFinal }}</p></div>
+                  <div class="prod-table-cell" style="width: 30%;"><p> R$ {{ item.precoFinal }}</p></div>
                   <div class="prod-table-cell" style="width: 10%;">
                     <button type="button" @click="setQuantidade('-', index)" class="botao menos">
                       -
@@ -142,7 +144,7 @@
                 <div class="venda-linha2 columns is-6 m-0 p-0">
                   <div class="control column is-half pl-0">
                     <label class="label">Total final</label>
-                    <input
+                    <input 
                       class="input"
                       type="number"
                       v-model="venda.valorFinal"
@@ -316,17 +318,13 @@ export default class vendaForm extends Vue {
     this.produtoClient = new ProdutoClient();
     this.listarProduto();
     this.vendaProdutoClient = new VendaProdutoClient();
-    // this.listarVendaProduto();
     this.vendaClient = new VendaClient();
     var currentDate = moment().format("YYYY-MM-DD HH:mm:ss");
     this.venda.data = currentDate;
-
-    console.log(this.model);
+    
   }
 
   public onClickCadastrar(): void {
-    debugger;
-    
     this.vendaClient.cadastrar(this.venda).then(
       (success) => {
 
@@ -337,8 +335,6 @@ export default class vendaForm extends Vue {
            this.vendaProdutoClient.cadastrar(produto)
         })
       }
-
-
         this.notification = this.notification.new(
           true,
           "notification is-success",
@@ -358,11 +354,6 @@ export default class vendaForm extends Vue {
     console.log(this.vendaProdutoList);
     
   }
-
-
-  // public cadastroVendaproduto(): void{
-   
-  // }
 
   public onClickDeletar(): void {
     this.vendaClient.desativar(this.venda).then(
@@ -386,9 +377,6 @@ export default class vendaForm extends Vue {
   public onClickCancelar(): void {
     this.$router.push("venda-list");
   }
-
- 
-
 
   public onClickPaginaEditar(idvenda: number) {
     this.$router.push({
@@ -464,9 +452,7 @@ export default class vendaForm extends Vue {
       this.vendaProdutoList[index].precoFinal = this.vendaProdutoList[index].precoUnitario * this.vendaProdutoList[index].quantidade;
       this.venda.valorTotal += this.vendaProdutoList[index].precoUnitario;
     }
-    
-    this.calculaValoresVenda(this.vendaProdutoList[index]);
-    
+    this.calculaValoresVenda(this.vendaProdutoList[index]);  
   }
 
   public onClickAdicionarProduto(vendaProdutoNew: VendaProduto): void {
@@ -494,27 +480,13 @@ export default class vendaForm extends Vue {
   }
 
   public calculaValoresVenda(vendaProdutoNew: VendaProduto): void {
-    
-    
-
+  
       this.venda.valorFinal = this.venda.valorTotal - this.venda.valorDesconto;
-      
-
+  
       if(this.venda.valorRecebido > 0){
         this.venda.valorTroco = this.venda.valorRecebido - this.venda.valorFinal
       }
-      
-
   }
-
-  // public formatCurrency(): void {
-  //   debugger;
-  //   console.log(this.venda.valorVenda)
-  //   this.venda.valorVenda = Number(this.venda.valorVenda).toFixed(2);
-  //   console.log(this.venda.valorVenda)
-  // }
-
-  // private created(): void { }
 }
 </script>
   

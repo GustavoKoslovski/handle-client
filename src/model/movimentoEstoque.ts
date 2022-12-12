@@ -5,7 +5,7 @@ export class MovimentoEstoque extends AbstractEntity {
   produto!: Produto;
   tipoMovimento!: boolean;
   data!: string;
-  valorTotal!: number;
+  valor!: number;
   quantidadeTotal!: number;
 
   constructor() {

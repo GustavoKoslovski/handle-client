@@ -30,13 +30,9 @@
         </thead>
         <tbody>
           <tr v-for="item in vendaList" :key="item.id">
-            <th>{{ item.id }}</th>
-            <th>
-              <span v-if="item.ativo" class="tag is-success"> Ativo </span>
-              <span v-if="!item.ativo" class="tag is-danger"> Inativo </span>
-            </th>
             <th>{{ item.cliente.nome }}</th>
             <th>{{ item.funcionario.nome }}</th>
+            <th>{{ item.valorFinal }}</th>
             <th>
               <button class="botao detalhar">
                 <router-link

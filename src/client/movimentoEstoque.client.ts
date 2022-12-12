@@ -9,7 +9,7 @@ export class MovimentoEstoqueClient {
 
   constructor() {
     this.axiosClient = axios.create({
-      baseURL: "http://localhost:8080/api/movimentoEstoque",
+      baseURL: "http://localhost:8080/api/movimentos_estoque",
       headers: { "Content-type": "application/json" },
     });
   }
@@ -22,13 +22,13 @@ export class MovimentoEstoqueClient {
     }
   }
 
-  public async cadastrar(movimentoEstoque: MovimentoEstoque): Promise<void> {
-    try {
-      return await this.axiosClient.post("/", movimentoEstoque);
-    } catch (error: any) {
-      return Promise.reject(error.response);
-    }
-  }
+  public async cadastrar(movimentoEstoque: MovimentoEstoque): Promise<MovimentoEstoque> {
+		try {
+			return (await this.axiosClient.post('/', movimentoEstoque)).data
+		} catch (error:any) {
+			return Promise.reject(error.response)
+		}
+	}
 
   public async editar(movimentoEstoque: MovimentoEstoque): Promise<void> {
     try {
