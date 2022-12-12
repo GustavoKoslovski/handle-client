@@ -35,6 +35,7 @@
               <label class="label">Data</label>
               <input
                 class="input"
+                v-model="venda.data"
                 type="datetime"
                 :disabled="model === 'detalhar' || model != 'detalhar'"
               />
@@ -315,24 +316,33 @@ export default class vendaForm extends Vue {
     this.produtoClient = new ProdutoClient();
     this.listarProduto();
     this.vendaProdutoClient = new VendaProdutoClient();
-    this.listarVendaProduto();
+    // this.listarVendaProduto();
     this.vendaClient = new VendaClient();
     var currentDate = moment().format("YYYY-MM-DD HH:mm:ss");
     this.venda.data = currentDate;
-    this.carregarVenda();
 
     console.log(this.model);
   }
 
   public onClickCadastrar(): void {
+    debugger;
     
-    
-    this.vendaClient.cadastrar(this.venda, this.vendaProdutoList).then(
+    this.vendaClient.cadastrar(this.venda).then(
       (success) => {
+
+        if(success != null){
+           this.vendaProdutoList.map((produto) => {
+
+            produto.venda = success;
+           this.vendaProdutoClient.cadastrar(produto)
+        })
+      }
+
+
         this.notification = this.notification.new(
           true,
           "notification is-success",
-          "venda Cadastrado com sucesso!"
+          "Venda realizada com sucesso!"
         );
       },
       (error) => {
@@ -348,6 +358,11 @@ export default class vendaForm extends Vue {
     console.log(this.vendaProdutoList);
     
   }
+
+
+  // public cadastroVendaproduto(): void{
+   
+  // }
 
   public onClickDeletar(): void {
     this.vendaClient.desativar(this.venda).then(
@@ -371,6 +386,9 @@ export default class vendaForm extends Vue {
   public onClickCancelar(): void {
     this.$router.push("venda-list");
   }
+
+ 
+
 
   public onClickPaginaEditar(idvenda: number) {
     this.$router.push({
@@ -431,7 +449,7 @@ export default class vendaForm extends Vue {
   }
 
   public setQuantidade(sinal: string, index: number): void {
-    debugger;
+    
     if (sinal == "-") {
       if (this.vendaProdutoList[index].quantidade != 1) {
         this.vendaProdutoList[index].quantidade--;
@@ -452,7 +470,7 @@ export default class vendaForm extends Vue {
   }
 
   public onClickAdicionarProduto(vendaProdutoNew: VendaProduto): void {
-    debugger;
+    
     if(vendaProdutoNew.produto.id != null){
       vendaProdutoNew = new VendaProduto();
       vendaProdutoNew.quantidade = 1;
@@ -476,7 +494,7 @@ export default class vendaForm extends Vue {
   }
 
   public calculaValoresVenda(vendaProdutoNew: VendaProduto): void {
-    debugger;
+    
     
 
       this.venda.valorFinal = this.venda.valorTotal - this.venda.valorDesconto;

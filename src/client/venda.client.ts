@@ -25,9 +25,9 @@ export class VendaClient {
         }
     }
 
-	public async cadastrar(venda: Venda, vendaProduto: VendaProduto[]): Promise<void> {
+	public async cadastrar(venda: Venda): Promise<Venda> {
 		try {
-			return (await this.axiosClient.post('/',  {params : {venda: venda, vendaProduto: vendaProduto}}))
+			return (await this.axiosClient.post('/', venda)).data
 		} catch (error:any) {
 			return Promise.reject(error.response)
 		}
