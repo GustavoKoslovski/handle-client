@@ -3,7 +3,7 @@
     <div class="columns is-12">
       <div class="column is-1 side-menu">
         <div class="side-menu-options">
-          <router-link to="/home"
+          <router-link to="/"
             ><div class="fundo-botao">
               <img src="./imagens/home.png" />
             </div>

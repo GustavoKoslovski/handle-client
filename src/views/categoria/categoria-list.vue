@@ -27,7 +27,6 @@
       <table class="table-list">
         <thead>
           <tr>
-            <th>ID</th>
             <th>Ativo</th>
             <th>Nome</th>
             <th>Opções</th>
@@ -35,20 +34,27 @@
         </thead>
         <tbody>
           <tr v-for="item in categoriaList" :key="item.id">
-            <th>{{ item.id }}</th>
             <th>
               <span v-if="item.ativo" class="tag is-success"> Ativo </span>
               <span v-if="!item.ativo" class="tag is-danger"> Inativo </span>
             </th>
             <th>{{ item.nome }}</th>
             <th>
-              <button class="button botao detalhar">
+              <button class="button botao detalhar" style="align-items: center;">
                 <router-link
                   to="/categoria-cadastro"
-                  @click="onClickPaginaDetalhar(item.id)"
-                  >Detalhar</router-link
+                  @click="onClickPaginaEditar(item.id)"
+                  ><img src="../imagens/editar.png" alt=""></router-link
                 >
               </button>
+              <button class="button botao excluir">
+                <router-link
+                  to="/categoria-cadastro"
+                  @click="onClickPaginaEditar(item.id)"
+                  ><img src="../imagens/lixeira.png" alt="" style="width: 18px"></router-link
+                >
+              </button>
+              
             </th>
           </tr>
         </tbody>
@@ -75,6 +81,13 @@ export default class categoriaList extends Vue {
   public mounted(): void {
     this.categoriaClient = new CategoriaClient();
     this.listarcategoria();
+  }
+
+  public onClickPaginaEditar(idCategoria: number) {
+    this.$router.push({
+      name: "categoria-editar",
+      params: { id: idCategoria, model: "editar" },
+    });
   }
 
   public listarcategoria(): void {
@@ -205,5 +218,14 @@ export default class categoriaList extends Vue {
 
 .detalhar:hover {
   color: #177b88;
+}
+
+.excluir {
+  color: #050505;
+  background-color: #E51A1A;
+}
+
+.detalhar:hover {
+  color: #ff0000;
 }
 </style>

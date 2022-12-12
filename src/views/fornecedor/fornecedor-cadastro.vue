@@ -208,7 +208,6 @@ export default class fornecedorForm extends Vue {
       params: { id: idfornecedor, model: "editar" },
     });
 
-    console.log("ta chamando");
   }
 
   public onClickSalvarAlteracao(): void {

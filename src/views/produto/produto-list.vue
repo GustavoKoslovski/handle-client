@@ -35,7 +35,6 @@
       <table class="table-list">
         <thead>
           <tr>
-            <th>ID</th>
             <th>Ativo</th>
             <th>Nome</th>
             <th>Ações</th>
@@ -43,18 +42,24 @@
         </thead>
         <tbody>
           <tr v-for="item in produtoList" :key="item.id">
-            <th>{{ item.id }}</th>
             <th>
               <span v-if="item.ativo" class="tag is-success"> Ativo </span>
               <span v-if="!item.ativo" class="tag is-danger"> Inativo </span>
             </th>
             <th>{{ item.nome }}</th>
             <th>
-              <button class="botao detalhar">
+              <button class="button botao detalhar" style="align-items: center;">
                 <router-link
                   to="/produto-cadastro"
-                  @click="onClickPaginaDetalhar(item.id)"
-                  >Detalhar</router-link
+                  @click="onClickPaginaEditar(item.id)"
+                  ><img src="../imagens/editar.png" alt=""></router-link
+                >
+              </button>
+              <button class="button botao excluir">
+                <router-link
+                  to="/produto-cadastro"
+                  @click="onClickPaginaEditar(item.id)"
+                  ><img src="../imagens/lixeira.png" alt="" style="width: 18px"></router-link
                 >
               </button>
             </th>
@@ -83,6 +88,13 @@ export default class ProdutoList extends Vue {
   public mounted(): void {
     this.produtoClient = new ProdutoClient();
     this.listarProduto();
+  }
+  public onClickPaginaEditar(idProduto: number) {
+    this.$router.push({
+      name: "produto-editar",
+      params: { id: idProduto, model: "editar" },
+    });
+    console.log("ta chamando");
   }
 
   public listarProduto(): void {
@@ -209,6 +221,14 @@ export default class ProdutoList extends Vue {
 
 .detalhar:hover {
   color: rgb(208, 255, 0);
+}
+.excluir {
+  color: #050505;
+  background-color: #E51A1A;
+}
+
+.detalhar:hover {
+  color: #ff0000;
 }
 
 

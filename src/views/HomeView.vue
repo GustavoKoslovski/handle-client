@@ -1,9 +1,9 @@
 <template>
-  <div class="home columns is-centered" style="margin-top: 100px">
-    <div class="columns is-centered">
-      <div class="column is-11 is-size-3"></div>
+  <div class="home columns">
+      <div class="column is-11 is-size-3">
+        <h1>HANDLE</h1>
+      </div>
     </div>
-  </div>
 </template>
 
 <script lang="ts">

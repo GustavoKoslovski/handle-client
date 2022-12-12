@@ -33,11 +33,18 @@
             <th>{{ item.funcionario.nome }}</th>
             <th>R$ {{ item.valorFinal }},00</th>
             <th>
-              <button class="botao detalhar">
+              <button class="button botao detalhar" style="align-items: center;">
                 <router-link
                   to="/venda-cadastro"
-                  @click="onClickPaginaDetalhar(item.id)"
-                  >Detalhar</router-link
+                  @click="onClickPaginaEditar(item.id)"
+                  ><img src="../imagens/editar.png" alt=""></router-link
+                >
+              </button>
+              <button class="button botao excluir">
+                <router-link
+                  to="/venda-cadastro"
+                  @click="onClickPaginaEditar(item.id)"
+                  ><img src="../imagens/lixeira.png" alt="" style="width: 18px"></router-link
                 >
               </button>
             </th>
@@ -77,7 +84,14 @@ export default class vendaList extends Vue {
       (error) => console.log(error)
     );
   }
-
+  public onClickPaginaEditar(idvenda: number) {
+    this.$router.push({
+      name: "venda-editar",
+      params: { id: idvenda, model: "editar" },
+    });
+    console.log("ta chamando");
+  }
+ 
   public onClickPaginaDetalhar(idvenda: number) {
     this.$router.push({
       name: "venda-detalhar",
@@ -191,6 +205,15 @@ export default class vendaList extends Vue {
 
 .detalhar:hover {
   color: #177b88;
+}
+
+.excluir {
+  color: #050505;
+  background-color: #E51A1A;
+}
+
+.detalhar:hover {
+  color: #ff0000;
 }
 </style>
   

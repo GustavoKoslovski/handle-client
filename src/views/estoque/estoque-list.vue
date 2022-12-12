@@ -35,11 +35,18 @@
             <th>{{ item.tipoMovimento }}</th>
             <th>{{ item.valor }}</th>
             <th>
-              <button class="botao detalhar">
+              <button class="button botao detalhar" style="align-items: center;">
                 <router-link
                   to="/estoque-cadastro"
-                  @click="onClickPaginaDetalhar(item.id)"
-                  >Detalhar</router-link
+                  @click="onClickPaginaEditar(item.id)"
+                  ><img src="../imagens/editar.png" alt=""></router-link
+                >
+              </button>
+              <button class="button botao excluir">
+                <router-link
+                  to="/estoque-cadastro"
+                  @click="onClickPaginaEditar(item.id)"
+                  ><img src="../imagens/lixeira.png" alt="" style="width: 18px"></router-link
                 >
               </button>
             </th>
@@ -68,6 +75,14 @@ export default class ProdutoList extends Vue {
     this.movimentoEstoqueClient = new  MovimentoEstoqueClient();
     this.listarMovimentoEstoque();
   }
+
+  public onClickPaginaEditar(idMovimentoEstoque: number) {
+    this.$router.push({
+      name: "movimentoEstoque-editar",
+      params: { id: idMovimentoEstoque, model: "editar" },
+    });
+  }
+
 
   public listarMovimentoEstoque(): void {
     this.movimentoEstoqueClient.findByFiltrosPaginado(this.pageRequest).then(
@@ -193,5 +208,13 @@ export default class ProdutoList extends Vue {
 
 .detalhar:hover {
   color: #177b88;
+}
+.excluir {
+  color: #050505;
+  background-color: #E51A1A;
+}
+
+.detalhar:hover {
+  color: #ff0000;
 }
 </style>
