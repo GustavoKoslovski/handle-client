@@ -23,17 +23,17 @@
       <table class="table-list">
         <thead>
           <tr>
-            <th>Código</th>
-            <th>Nome</th>
-            <th>Quantidade</th>
+            <th>Data</th>
+            <th>Saída/Entrada</th>
+            <th>Valor Total</th>
             <th>Ações</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in produtoList" :key="item.id">
-            <th>{{ item.id }}</th>
-            <th>{{ item.nome }}</th>
-            <th>{{ item.quantidade }}</th>
+          <tr v-for="item in movimentoEstoqueList" :key="item.id">
+            <th>{{ item.data }}</th>
+            <th>{{ item.tipoMovimento }}</th>
+            <th>{{ item.valor }}</th>
             <th>
               <button class="botao detalhar">
                 <router-link
@@ -53,37 +53,36 @@
 <script lang="ts">
 import { Vue } from "vue-class-component";
 
+import { MovimentoEstoqueClient } from "@/client/movimentoEstoque.client";
 import { PageRequest } from "@/model/page/page-request";
 import { PageResponse } from "@/model/page/page-response";
-
-import { Produto } from "@/model/produto";
-import { ProdutoClient } from "@/client/produto.client";
+import { MovimentoEstoque } from "@/model/movimentoEstoque";
 
 export default class ProdutoList extends Vue {
   public pageRequest: PageRequest = new PageRequest();
-  public pageResponse: PageResponse<Produto> = new PageResponse();
-  public produtoList: Produto[] = [];
-  public produtoClient!: ProdutoClient;
+  public pageResponse: PageResponse<MovimentoEstoque> = new PageResponse();
+  public movimentoEstoqueList: MovimentoEstoque[] = [];
+  public movimentoEstoqueClient!: MovimentoEstoqueClient;
 
   public mounted(): void {
-    this.produtoClient = new ProdutoClient();
-    this.listarProduto();
+    this.movimentoEstoqueClient = new  MovimentoEstoqueClient();
+    this.listarMovimentoEstoque();
   }
 
-  public listarProduto(): void {
-    this.produtoClient.findByFiltrosPaginado(this.pageRequest).then(
+  public listarMovimentoEstoque(): void {
+    this.movimentoEstoqueClient.findByFiltrosPaginado(this.pageRequest).then(
       (success) => {
         this.pageResponse = success;
-        this.produtoList = this.pageResponse.content;
+        this.movimentoEstoqueList = this.pageResponse.content;
       },
       (error) => console.log(error)
     );
   }
 
-  public onClickPaginaDetalhar(idProduto: number) {
+  public onClickPaginaDetalhar(idMovimentoEstoque: number) {
     this.$router.push({
       name: "estoque-detalhar",
-      params: { id: idProduto, model: "detalhar" },
+      params: { id: idMovimentoEstoque, model: "detalhar" },
     });
   }
 }
@@ -189,10 +188,10 @@ export default class ProdutoList extends Vue {
 
 .detalhar {
   color: #fff;
-  background-color: yellow;
+  background-color: #31A4B4;
 }
 
 .detalhar:hover {
-  color: rgb(208, 255, 0);
+  color: #177b88;
 }
 </style>

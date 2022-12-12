@@ -21,10 +21,9 @@
       <table class="table-list">
         <thead>
           <tr>
-            <th>ID</th>
-            <th></th>
             <th>Cliente</th>
-            <th>Funcionario</th>
+            <th>Vendedor</th>
+            <th>Valor Final</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -32,7 +31,7 @@
           <tr v-for="item in vendaList" :key="item.id">
             <th>{{ item.cliente.nome }}</th>
             <th>{{ item.funcionario.nome }}</th>
-            <th>{{ item.valorFinal }}</th>
+            <th>R$ {{ item.valorFinal }},00</th>
             <th>
               <button class="botao detalhar">
                 <router-link
@@ -187,11 +186,11 @@ export default class vendaList extends Vue {
 
 .detalhar {
   color: #fff;
-  background-color: yellow;
+  background-color: #31A4B4;
 }
 
 .detalhar:hover {
-  color: rgb(208, 255, 0);
+  color: #177b88;
 }
 </style>
   

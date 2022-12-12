@@ -206,11 +206,11 @@ export default class fornecedorList extends Vue {
 
 .detalhar {
   color: #fff;
-  background-color: yellow;
+  background-color: #31A4B4;
 }
 
 .detalhar:hover {
-  color: rgb(208, 255, 0);
+  color: #177b88;
 }
 
 
