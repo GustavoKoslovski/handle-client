@@ -23,7 +23,6 @@
       <table class="table-list">
         <thead>
           <tr>
-            <th>Data</th>
             <th>Saída/Entrada</th>
             <th>Valor Total</th>
             <th>Ações</th>
@@ -31,8 +30,7 @@
         </thead>
         <tbody>
           <tr v-for="item in movimentoEstoqueList" :key="item.id">
-            <th>{{ item.data }}</th>
-            <th>{{ item.tipoMovimento }}</th>
+            <th>{{( item.tipoMovimento == true ? "ENTRADA" : "SAIDA")}}</th>
             <th>{{ item.valor }}</th>
             <th>
               <button class="button botao detalhar" style="align-items: center;">

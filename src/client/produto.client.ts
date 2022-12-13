@@ -31,8 +31,10 @@ export class ProdutoClient {
   }
 
   public async editar(produto: Produto): Promise<void> {
+    debugger;
     try {
-      return (await this.axiosClient.put(`/${produto.id}`, Produto)).data;
+      debugger;
+      return (await this.axiosClient.put(`/${produto.id}`, produto)).data;
     } catch (error: any) {
       return Promise.reject(error.response);
     }

@@ -2,7 +2,6 @@ import { AbstractEntity } from "./abstract-entity";
 import { Produto } from "./produto";
 
 export class MovimentoEstoque extends AbstractEntity {
-  produto!: Produto;
   tipoMovimento!: boolean;
   data!: string;
   valor!: number;
@@ -11,6 +10,5 @@ export class MovimentoEstoque extends AbstractEntity {
   constructor() {
     super();
     this.ativo = true;
-    this.produto = new Produto();
   }
 }

@@ -170,32 +170,39 @@ export default class EstoqueForm extends Vue {
     this.movimentoEstoqueClient = new MovimentoEstoqueClient();
     var currentDate = moment().format("YYYY-MM-DD HH:mm:ss");
     this.movimentoEstoque.data = currentDate;
+    this.movimentoEstoque.quantidadeTotal = 0;
   }
 
   public onClickCadastrar(): void {
-    this.movimentoEstoqueClient.cadastrar(this.movimentoEstoque).then(
-      (success) => {
-         if(success != null){
-           this.movEstoqueProdutoList.map((movimento) => {
+    this.movimentoEstoqueClient.cadastrar(this.movimentoEstoque).then((success) => {
+      if(success != null){
+        this.movEstoqueProdutoList.map((movimento) => {
+          
+          if(this.movimentoEstoque.tipoMovimento == false){
+            movimento.produto.quantidade -= movimento.quantidade
+          } else {
+            movimento.produto.quantidade += movimento.quantidade
+          }
+          this.produtoClient.editar(movimento.produto)
 
-           movimento.movimentoEstoque = success;
-            this.movEstoqueProdutoClient.cadastrar(movimento)
-         })
+          movimento.movimentoEstoque = success;
+          this.movEstoqueProdutoClient.cadastrar(movimento)
+        });
       }
-        this.notification = this.notification.new(
-          true,
-          "notification is-success",
-          "Movimento de Estoque Cadastrado com sucesso!"
-        );
-      },
-      (error) => {
-        console.log(error.response);
-        this.notification = this.notification.new(
-          true,
-          "notification is-danger",
-          "Error: " + error.data
-        );
-      }
+      this.notification = this.notification.new(
+        true,
+        "notification is-success",
+        "Movimento de Estoque Cadastrado com sucesso!"
+      );
+    },
+    (error) => {
+      console.log(error.response);
+      this.notification = this.notification.new(
+        true,
+        "notification is-danger",
+        "Error: " + error.data
+      );
+    }
     );
   }
 
@@ -286,14 +293,17 @@ export default class EstoqueForm extends Vue {
         this.movEstoqueProdutoList[index].quantidade--;
         this.movEstoqueProdutoList[index].precoFinal = this.movEstoqueProdutoList[index].precoUnitario * this.movEstoqueProdutoList[index].quantidade;
         this.movimentoEstoque.valor -= this.movEstoqueProdutoList[index].precoUnitario;
+        this.movimentoEstoque.quantidadeTotal -= this.movEstoqueProdutoList[index].quantidade;
       } else {
         this.movimentoEstoque.valor -= this.movEstoqueProdutoList[index].precoUnitario;
+        this.movimentoEstoque.quantidadeTotal -= this.movEstoqueProdutoList[index].quantidade;
         this.movEstoqueProdutoList.splice(index, 1)
       }
     } else {
       this.movEstoqueProdutoList[index].quantidade++;
       this.movEstoqueProdutoList[index].precoFinal = this.movEstoqueProdutoList[index].precoUnitario * this.movEstoqueProdutoList[index].quantidade;
       this.movimentoEstoque.valor += this.movEstoqueProdutoList[index].precoUnitario;
+      this.movimentoEstoque.quantidadeTotal += this.movEstoqueProdutoList[index].quantidade;
     }
 
   }
@@ -308,15 +318,9 @@ export default class EstoqueForm extends Vue {
       if (this.movimentoEstoque.valor == null) {
         this.movimentoEstoque.valor = 0;
       }
-      if(this.movimentoEstoque.tipoMovimento == null){
-        this.movimentoEstoque.tipoMovimento = false;
-        this.movEstoqueProduto.produto.quantidade -= movEstoqueProdutoNew.quantidade;
-      }
-      else(this.movEstoqueProduto.produto.quantidade += movEstoqueProdutoNew.quantidade)
 
       this.movimentoEstoque.valor += movEstoqueProdutoNew.precoFinal;
        
-
       this.movEstoqueProdutoList.push(movEstoqueProdutoNew);
     }
   }

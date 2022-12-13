@@ -37,6 +37,7 @@
           <tr>
             <th>Ativo</th>
             <th>Nome</th>
+            <th>Quantidade</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -47,6 +48,7 @@
               <span v-if="!item.ativo" class="tag is-danger"> Inativo </span>
             </th>
             <th>{{ item.nome }}</th>
+            <th>{{ item.quantidade }}</th>
             <th>
               <button class="button botao detalhar" style="align-items: center;">
                 <router-link
@@ -216,12 +218,13 @@ export default class ProdutoList extends Vue {
 
 .detalhar {
   color: #fff;
-  background-color: yellow;
+  background-color: #31A4B4;
 }
 
 .detalhar:hover {
-  color: rgb(208, 255, 0);
+  color: #177b88;
 }
+
 .excluir {
   color: #050505;
   background-color: #E51A1A;

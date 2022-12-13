@@ -3,6 +3,7 @@ import axios, { AxiosInstance } from "axios";
 import { MovimentoEstoque } from "@/model/movimentoEstoque";
 import { PageRequest } from "@/model/page/page-request";
 import { PageResponse } from "@/model/page/page-response";
+import { MovEstoqueProduto } from "@/model/movEstoqueProduto";
 
 export class MovimentoEstoqueClient {
   private axiosClient: AxiosInstance;
@@ -33,7 +34,7 @@ export class MovimentoEstoqueClient {
   public async editar(movimentoEstoque: MovimentoEstoque): Promise<void> {
     try {
       return (
-        await this.axiosClient.put(`/${movimentoEstoque.id}`, MovimentoEstoque)
+        await this.axiosClient.put(`/${movimentoEstoque.id}`, movimentoEstoque)
       ).data;
     } catch (error: any) {
       return Promise.reject(error.response);

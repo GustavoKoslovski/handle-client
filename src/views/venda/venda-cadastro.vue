@@ -243,6 +243,8 @@ import { PageRequest } from "@/model/page/page-request";
 import { PageResponse } from "@/model/page/page-response";
 import { VendaProduto } from "@/model/vendaProduto";
 import { VendaProdutoClient } from "@/client/vendaProduto.client";
+import { MovimentoEstoqueClient } from "@/client/movimentoEstoque.client";
+import { MovimentoEstoque } from "@/model/movimentoEstoque";
 
 export default class vendaForm extends Vue {
   public pageRequest: PageRequest = new PageRequest();
@@ -262,6 +264,8 @@ export default class vendaForm extends Vue {
   public vendaProduto: VendaProduto = new VendaProduto();
   public vendaProdutoList: VendaProduto[] = [];
   public vendaProdutoClient!: VendaProdutoClient;
+  public movimentoEstoqueClient!: MovimentoEstoqueClient;
+  public movimentoEstoque!: MovimentoEstoque;
   public notification: Notification = new Notification();
 
   @Prop({ type: Number, required: false })
@@ -319,22 +323,35 @@ export default class vendaForm extends Vue {
     this.listarProduto();
     this.vendaProdutoClient = new VendaProdutoClient();
     this.vendaClient = new VendaClient();
+    this.movimentoEstoqueClient = new MovimentoEstoqueClient();
     var currentDate = moment().format("YYYY-MM-DD HH:mm:ss");
     this.venda.data = currentDate;
+    this.movimentoEstoque = new MovimentoEstoque();
+    this.movimentoEstoque.quantidadeTotal = 0;
+    this.movimentoEstoque.data = this.venda.data;
     
   }
 
   public onClickCadastrar(): void {
     this.vendaClient.cadastrar(this.venda).then(
       (success) => {
-
         if(success != null){
-           this.vendaProdutoList.map((produto) => {
-
+          
+          this.vendaProdutoList.map((produto) => {
             produto.venda = success;
-           this.vendaProdutoClient.cadastrar(produto)
-        })
-      }
+            this.movimentoEstoque.quantidadeTotal += produto.quantidade;
+            this.movimentoEstoque.valor = this.venda.valorTotal;
+            this.vendaProdutoClient.cadastrar(produto);
+            produto.produto.quantidade -= produto.quantidade
+            this.produtoClient.editar(produto.produto)
+          });
+
+          this.movimentoEstoque.tipoMovimento = false;
+          
+          this.movimentoEstoqueClient.cadastrar(this.movimentoEstoque);
+
+        }
+        
         this.notification = this.notification.new(
           true,
           "notification is-success",
